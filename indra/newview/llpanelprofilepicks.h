@@ -33,6 +33,9 @@
 #include "llpanelavatar.h"
 #include "llremoteparcelrequest.h"
 
+//#include "rlvhandler.h"
+#include "RRInterface.h" 
+
 class LLTabContainer;
 class LLTextureCtrl;
 class LLMediaCtrl;
@@ -83,6 +86,9 @@ private:
     void onClickNewBtn();
     void onClickDelete();
     void callbackDeletePick(const LLSD& notification, const LLSD& response);
+
+		boost::signals2::connection mRlvBehaviorCallbackConnection;
+		void updateRlvRestrictions(std::string behavior, bool added);
 
     bool canAddNewPick();
     bool canDeletePick();
@@ -243,6 +249,9 @@ protected:
     bool                mIsEditing;
 
     void onDescriptionFocusReceived();
+
+		boost::signals2::connection mRlvBehaviorCallbackConnection;
+		void updateRlvRestrictions(std::string behavior, bool added);
 };
 
 #endif // LL_LLPANELPICKS_H

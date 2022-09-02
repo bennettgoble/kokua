@@ -44,6 +44,9 @@
 // class LLPanelProfileFirstLife;
 // class LLPanelProfileNotes;
 
+//#include "rlvhandler.h"
+#include "RRInterface.h" 
+
 class LLAvatarName;
 class LLButton;
 class LLCheckBoxCtrl;
@@ -218,6 +221,8 @@ private:
     LLUUID				mImageId;
 
 	boost::signals2::connection	mAvatarNameCacheConnection;
+	boost::signals2::connection mRlvBehaviorCallbackConnection;
+	void updateRlvRestrictions(std::string behavior);
 };
 
 

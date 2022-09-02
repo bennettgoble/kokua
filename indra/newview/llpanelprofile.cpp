@@ -1620,7 +1620,13 @@ bool LLPanelProfileSecondLife::onEnableMenu(const LLSD& userdata)
     const LLUUID agent_id = getAvatarId();
     if (item_name == "offer_teleport" || item_name == "request_teleport")
     {
-        return LLAvatarActions::canOfferTeleport(agent_id);
+	    	bool can_offer_tp = LLAvatarActions::canOfferTeleport(agent_id);
+//			bool rlv_offer_tp = (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC) ||
+//								(gRlvHandler.isException(RLV_BHVR_TPLURE, agent_id, ERlvExceptionCheck::Permissive));
+				bool rlv_offer_tp = (!gAgent.mRRInterface.mContainsShowloc) ||
+									(!gAgent.mRRInterface.containsWithoutException("tplure",agent_id.asString()));
+
+        return (can_offer_tp && rlv_offer_tp);
     }
     else if (item_name == "voice_call")
     {
@@ -1640,8 +1646,13 @@ bool LLPanelProfileSecondLife::onEnableMenu(const LLSD& userdata)
     }
     else if (item_name == "can_show_on_map")
     {
-        return (LLAvatarTracker::instance().isBuddyOnline(agent_id) && is_agent_mappable(agent_id))
+        bool can_show_on_map = (LLAvatarTracker::instance().isBuddyOnline(agent_id) && is_agent_mappable(agent_id))
         || gAgent.isGodlike();
+//				bool rlv_show_on_map = (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC) ||
+//										gRlvHandler.isException(RLV_BHVR_TPLURE, agent_id, ERlvExceptionCheck::Permissive));
+				bool rlv_show_on_map = (!gAgent.mRRInterface.mContainsShowloc) ||
+										(!gAgent.mRRInterface.containsWithoutException("tplure",agent_id.asString()));
+				return (can_show_on_map && rlv_show_on_map);        
     }
     else if (item_name == "toggle_block_agent")
     {
