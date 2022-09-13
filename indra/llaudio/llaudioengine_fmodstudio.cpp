@@ -628,11 +628,11 @@ void LLAudioChannelFMODSTUDIO::update3DPosition()
 		return;
 	}
 
-	if (mCurrentSourcep->isAmbient())
-	{
-		// Ambient sound, don't need to do any positional updates.
-		set3DMode(false);
-	}
+    if (mCurrentSourcep->isForcedPriority())
+    {
+        // Prioritized UI and preview sounds don't need to do any positional updates.
+        set3DMode(false);
+    }
 	else
 	{
 		// Localized sound.  Update the position and velocity of the sound.

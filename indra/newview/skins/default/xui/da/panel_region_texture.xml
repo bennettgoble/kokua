@@ -8,7 +8,7 @@
 	</text>
 	<text name="detail_texture_text">
 		Terræn teksturer (kræver 1024 x 1024, 24 bit .tga filer)
-	</text>
+  </text>
 	<text name="height_text_lbl">
 		1 (Lav)
 	</text>

@@ -44,7 +44,6 @@ class LLRadioGroup;
 class LLSlider;
 class LLTabContainer;
 class LLTextBox;
-class LLMediaCtrl;
 class LLTool;
 class LLParcelSelection;
 class LLObjectSelection;
@@ -102,12 +101,7 @@ public:
 	static void setEditTool(void* data);
 	void setTool(const LLSD& user_data);
 	void saveLastTool();
-	void onClickBtnDeleteMedia();
-	void onClickBtnAddMedia();
-	void onClickBtnEditMedia();
 	void onClickBtnGiveMenu();
-	void clearMediaSettings();
-	bool selectedMediaEditable();
 	void updateLandImpacts();
 	void onClickBtnCopyKeys();
 
@@ -117,13 +111,6 @@ public:
 
 private:
 	void refresh();
-	void refreshMedia();
-	void getMediaState();
-	void updateMediaSettings();
-	void navigateToTitleMedia( const std::string url ); // navigate if changed
-	void updateMediaTitle();
-	static bool deleteMediaConfirm(const LLSD& notification, const LLSD& response);
-	static bool multipleFacesSelectedConfirm(const LLSD& notification, const LLSD& response);
 	static void setObjectType( LLPCode pcode );
 	void onClickGridOptions();
 
@@ -205,19 +192,12 @@ public:
 	LLParcelSelectionHandle	mParcelSelection;
 	LLObjectSelectionHandle	mObjectSelection;
 
-	LLMediaCtrl				*mTitleMedia;
-	bool					mNeedMediaTitle;
-
 private:
 	BOOL					mDirty;
 	U32						mPrecision;
 	BOOL                    mHasSelection;
 
 	std::map<std::string, std::string> mStatusText;
-
-
-protected:
-	LLSD				mMediaSettings;
 
 public:
 	static bool		sShowObjectCost;

@@ -11,7 +11,7 @@
 	<spinner label="Untere Terraingrenze" name="terrain_lower_spin"/>
 	<text name="detail_texture_text">
 		Terraintexturen (erfordert 24-Bit-.tga-Dateien mit einer Größe von 1024 x 1024)
-	</text>
+  </text>
 	<text name="height_text_lbl">
 		1 (niedrig)
 	</text>
