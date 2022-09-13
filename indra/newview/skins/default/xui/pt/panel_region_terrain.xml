@@ -13,7 +13,7 @@ terreno" name="terrain_raise_spin"/>
 terreno" name="terrain_lower_spin"/>
 	<text name="detail_texture_text">
 		Texturas de terreno (exige arquivos .tga 1024 x 1024, 24 bit)
-	</text>
+  </text>
 	<text name="height_text_lbl">
 		1 (Baixo)
 	</text>

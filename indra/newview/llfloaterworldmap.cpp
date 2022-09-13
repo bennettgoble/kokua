@@ -1303,7 +1303,7 @@ void LLFloaterWorldMap::clearAvatarSelection(BOOL clear_ui)
 	{
 		mTrackedStatus = LLTracker::TRACKING_NOTHING;
 		LLCtrlListInterface *list = mListFriendCombo;
-		if (list)
+		if (list && list->getSelectedValue().asString() != "None")
 		{
 			list->selectByValue( "None" );
 		}
