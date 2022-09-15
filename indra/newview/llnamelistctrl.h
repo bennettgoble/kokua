@@ -186,7 +186,7 @@ public:
 	/*virtual*/ void updateColumns(bool force_update) override;
 
 	/*virtual*/ void mouseOverHighlightNthItem( S32 index ) override;
-    /*virtual*/ BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
+    /*virtual*/ BOOL handleRightMouseDown(S32 x, S32 y, MASK mask) override;
 private:
 	void showInspector(const LLUUID& avatar_id, bool is_group, bool is_experience = false);
 	void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name, std::string suffix, std::string prefix, LLHandle<LLNameListItem> item);
