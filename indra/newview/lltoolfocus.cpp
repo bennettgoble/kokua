@@ -39,6 +39,7 @@
 #include "llagentcamera.h"
 #include "llbutton.h"
 #include "llviewercontrol.h"
+#include "llviewerinput.h"//<FS:JL> Mouse movement by Singularity
 #include "lldrawable.h"
 #include "lltooltip.h"
 #include "llhudmanager.h"
@@ -322,10 +323,17 @@ BOOL LLToolCamera::handleMouseUp(S32 x, S32 y, MASK mask)
 	return TRUE;
 }
 
+static bool right_hold_mouse_walk = false;//<FS:JL> Mouse movement by Singularity
 
 BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 {
 	static LLCachedControl<F32> camera_mouse_speed_multiplier(gSavedSettings, "CameraMouseSpeedMultiplier", 1.0f);
+	//<FS:JL> Mouse movement by Singularity
+	if (right_hold_mouse_walk)
+	{
+		agent_push_forward(KEYSTATE_LEVEL);
+	}
+	//</FS:JL>
 	
 	S32 dx = gViewerWindow->getCurrentMouseDX();
 	S32 dy = gViewerWindow->getCurrentMouseDY();
@@ -460,9 +468,39 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 	
 	return TRUE;
 }
+//<FS:JL> Mouse movement by Singularity
+BOOL LLToolCamera::handleRightMouseDown(S32 x, S32 y, MASK mask)
+{
+	if (mMouseSteering && gSavedSettings.getBOOL("KokuaSingularityMouseMovement"))
+	{
+		agent_push_forward(KEYSTATE_DOWN);
+		right_hold_mouse_walk = true;
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
 
+BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
+{
+	if (mMouseSteering || right_hold_mouse_walk)
+	{
+		agent_push_forward(KEYSTATE_UP);
+		right_hold_mouse_walk = false;
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+//</FS:JL>
 
 void LLToolCamera::onMouseCaptureLost()
 {
 	releaseMouse();
+	// <FS:Ansariel> Mouse movement by Singularity
+	handleRightMouseUp(0,0,0);
 }
