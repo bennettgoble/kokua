@@ -401,20 +401,29 @@
   </combo_box>
   <check_box
    control_name="EnableCollisionSounds"
-   height="20"
+   height="16"
    label="Play sound on collisions"
    layout="topleft"
    left="83"
    name="sound_on_collisions"
    top_pad="10"
    width="200" />
+  <check_box
+   control_name="KokuaSingularityMouseMovement"
+   height="16"
+   label="Walk/Run/Fly when left+right mouse held down on avatar"
+   layout="topleft"
+   left="83"
+   name="mouse_movement"
+   top_pad="3"
+   width="400" />
   <button
    height="23"
    label="Other Devices"
    left="30"
    name="joystick_setup_button"
    follows="left|top"
-   top_pad="4"
+   top_pad="6"
    width="155">
     <button.commit_callback
      function="Floater.Show"

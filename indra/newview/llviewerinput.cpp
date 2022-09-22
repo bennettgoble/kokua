@@ -1168,7 +1168,6 @@ bool LLViewerInput::handleGlobalBindsMouse(EMouseClickType clicktype, MASK mask,
     S32 mode = getMode();
     if (down)
     {
-        S32 mode = getMode();
         res = scanMouse(mGlobalMouseBindings[mode], mGlobalMouseBindings[mode].size(), clicktype, mask, MOUSE_STATE_DOWN, true);
     }
     else
