@@ -218,6 +218,16 @@
    name="crouch_toggle_mode"
    width="237"
    top_pad="3"/>
+  <check_box
+   control_name="TurnAroundWhenWalkingBackwards"
+   follows="left|top"
+   height="16"
+   label="Avatars turn around when walking backwards (local effect only)"
+   layout="topleft"
+   left_delta="0"
+   name="avatar_turn_mode"
+   width="237"
+   top_pad="3"/>
         </panel>
 
 				<!--Mouse-->
