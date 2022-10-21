@@ -474,7 +474,7 @@ void LLFloaterModelPreview::loadHighLodModel()
 	loadModel(3);
 }
 
-void LLFloaterModelPreview::loadModel(S32 lod)
+void LLFloaterModelPreview::prepareToLoadModel(S32 lod)
 {
 	// <FS:Ansariel> FIRE-15204: Viewer crashes when clicking "upload model" quickly twice then closing both filepickers
 	if (mModelPreview->mLoading)
@@ -488,8 +488,12 @@ void LLFloaterModelPreview::loadModel(S32 lod)
 	{
 		// loading physics from file
 		mModelPreview->mPhysicsSearchLOD = lod;
+		mModelPreview->mWarnOfUnmatchedPhyicsMeshes = false;
 	}
-
+}
+void LLFloaterModelPreview::loadModel(S32 lod)
+{
+	prepareToLoadModel(lod);
 	(new LLMeshFilePicker(mModelPreview, lod))->getFile();
 }
 
@@ -502,8 +506,7 @@ void LLFloaterModelPreview::loadModel(S32 lod, const std::string& file_name, boo
 	}
 	// </FS:Ansariel>
 
-	mModelPreview->mLoading = true;
-
+	prepareToLoadModel(lod);
 	mModelPreview->loadModel(file_name, lod, force_disable_slm);
 }
 
@@ -1128,10 +1131,17 @@ void LLFloaterModelPreview::onPhysicsUseLOD(LLUICtrl* ctrl, void* userdata)
 	}
 
 	S32 file_mode = iface->getItemCount() - 1;
-	if (which_mode < file_mode)
+	S32 cube_mode = file_mode - 1;
+	if (which_mode < cube_mode)
 	{
 		S32 which_lod = num_lods - which_mode;
 		sInstance->mModelPreview->setPhysicsFromLOD(which_lod);
+	}
+	else if (which_mode == cube_mode)
+	{
+		std::string path = gDirUtilp->getAppRODataDir();
+		gDirUtilp->append(path, "cube.dae");
+		sInstance->loadModel(LLModel::LOD_PHYSICS, path);
 	}
 
 	LLModelPreview *model_preview = sInstance->mModelPreview;
@@ -1727,11 +1737,11 @@ LLFloaterModelPreview::DecompRequest::DecompRequest(const std::string& stage, LL
 void LLFloaterModelPreview::setCtrlLoadFromFile(S32 lod)
 {
     if (lod == LLModel::LOD_PHYSICS)
-    {
+	{
         LLComboBox* lod_combo = findChild<LLComboBox>("physics_lod_combo");
         if (lod_combo)
         {
-            lod_combo->setCurrentByIndex(5);
+            lod_combo->setCurrentByIndex(lod_combo->getItemCount() - 1);
         }
     }
     else

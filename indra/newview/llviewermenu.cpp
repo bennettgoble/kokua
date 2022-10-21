@@ -57,6 +57,7 @@
 #include "llcompilequeue.h"
 #include "llconsole.h"
 #include "lldebugview.h"
+#include "lldiskcache.h"
 // [SL:KB] - Patch: World-Derender | Checked: 2011-12-15 (Catznip-3.2)
 #include "llderenderlist.h"
 // [/SL:KB]
@@ -2167,6 +2168,32 @@ class LLAdvancedDropPacket : public view_listener_t
 	}
 };
 
+//////////////////////
+// PURGE DISK CACHE //
+//////////////////////
+
+
+class LLAdvancedPurgeDiskCache : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+        LL::WorkQueue::ptr_t main_queue = LL::WorkQueue::getInstance("mainloop");
+        LL::WorkQueue::ptr_t general_queue = LL::WorkQueue::getInstance("General");
+        llassert_always(main_queue);
+        llassert_always(general_queue);
+        main_queue->postTo(
+            general_queue,
+            []() // Work done on general queue
+            {
+                LLDiskCache::getInstance()->purge();
+                // Nothing needed to return
+            },
+            [](){}); // Callback to main thread is empty as there is nothing left to do
+
+		return true;
+	}
+};
+
 
 ////////////////////
 // EVENT Recorder //
@@ -2391,25 +2418,13 @@ class LLAdvancedEnableObjectObjectOcclusion: public view_listener_t
 };
 
 /////////////////////////////////////
-// Enable Framebuffer Objects	  ///
-/////////////////////////////////////
-class LLAdvancedEnableRenderFBO: public view_listener_t
-{
-	bool handleEvent(const LLSD& userdata)
-	{
-		bool new_value = gGLManager.mHasFramebufferObject;
-		return new_value;
-	}
-};
-
-/////////////////////////////////////
 // Enable Deferred Rendering	  ///
 /////////////////////////////////////
 class LLAdvancedEnableRenderDeferred: public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		bool new_value = gGLManager.mHasFramebufferObject && LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_WINDLIGHT) > 1 &&
+		bool new_value = LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_WINDLIGHT) > 1 &&
 			LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_AVATAR) > 0;
 		return new_value;
 	}
@@ -2422,7 +2437,7 @@ class LLAdvancedEnableRenderDeferredOptions: public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-		bool new_value = gGLManager.mHasFramebufferObject && LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_WINDLIGHT) > 1 &&
+		bool new_value = LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_WINDLIGHT) > 1 &&
 			LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_AVATAR) > 0 && gSavedSettings.getBOOL("RenderDeferred");
 		return new_value;
 	}
@@ -10317,7 +10332,6 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAdvancedCheckWireframe(), "Advanced.CheckWireframe");
 	// Develop > Render
 	view_listener_t::addMenu(new LLAdvancedEnableObjectObjectOcclusion(), "Advanced.EnableObjectObjectOcclusion");
-	view_listener_t::addMenu(new LLAdvancedEnableRenderFBO(), "Advanced.EnableRenderFBO");
 	view_listener_t::addMenu(new LLAdvancedEnableRenderDeferred(), "Advanced.EnableRenderDeferred");
 	view_listener_t::addMenu(new LLAdvancedEnableRenderDeferredOptions(), "Advanced.EnableRenderDeferredOptions");
 	view_listener_t::addMenu(new LLAdvancedToggleRandomizeFramerate(), "Advanced.ToggleRandomizeFramerate");
@@ -10419,6 +10433,9 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAdvancedEnableMessageLog(), "Advanced.EnableMessageLog");
 	view_listener_t::addMenu(new LLAdvancedDisableMessageLog(), "Advanced.DisableMessageLog");
 	view_listener_t::addMenu(new LLAdvancedDropPacket(), "Advanced.DropPacket");
+
+    // Advanced > Cache
+    view_listener_t::addMenu(new LLAdvancedPurgeDiskCache(), "Advanced.PurgeDiskCache");
 
 	// Advanced > Recorder
 	view_listener_t::addMenu(new LLAdvancedAgentPilot(), "Advanced.AgentPilot");

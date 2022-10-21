@@ -414,6 +414,8 @@ public:
 	
 	void cancelMimeTypeProbe();
 	
+    bool isAttachedToHUD() const;
+
 	// Is this media attached to an avatar *not* self
 	bool isAttachedToAnotherAvatar() const;
 	

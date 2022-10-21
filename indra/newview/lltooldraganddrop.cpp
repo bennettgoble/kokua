@@ -63,6 +63,7 @@
 #include "llworld.h"
 #include "fscommon.h"
 #include "llpanelface.h"
+#include "lluiusage.h"
 
 // syntactic sugar
 #define callMemberFunction(object,ptrToMember)  ((object).*(ptrToMember))
@@ -1308,10 +1309,12 @@ void LLToolDragAndDrop::dropObject(LLViewerObject* raycast_target,
 	LLMessageSystem* msg = gMessageSystem;
 	if (mSource == SOURCE_NOTECARD)
 	{
+		LLUIUsage::instance().logCommand("Object.RezObjectFromNotecard");
 		msg->newMessageFast(_PREHASH_RezObjectFromNotecard);
 	}
 	else
 	{
+		LLUIUsage::instance().logCommand("Object.RezObject");
 		msg->newMessageFast(_PREHASH_RezObject);
 	}
 	msg->nextBlockFast(_PREHASH_AgentData);
