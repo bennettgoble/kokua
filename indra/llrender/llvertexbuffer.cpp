@@ -1048,7 +1048,7 @@ void LLVertexBuffer::releaseIndices()
 
 bool LLVertexBuffer::createGLBuffer(U32 size)
 {
-	if (mGLBuffer)
+	if (mGLBuffer || mMappedData)
 	{
 		destroyGLBuffer();
 	}

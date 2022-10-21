@@ -222,34 +222,56 @@
     <menu
        label="Zoom"
        name="Zoom">
-       <menu_item_call
-         label="Zoom Close"
-         name="Zoom Close">
-           <menu_item_call.on_click
-             function="Minimap.Zoom"
-             parameter="close" />
-       </menu_item_call>
-       <menu_item_call
-         label="Zoom Medium"
-         name="Zoom Medium">
-           <menu_item_call.on_click
-             function="Minimap.Zoom"
-             parameter="medium" />
-       </menu_item_call>
-       <menu_item_call
-         label="Zoom Far"
-         name="Zoom Far">
-             <menu_item_call.on_click
-               function="Minimap.Zoom"
-               parameter="far" />
-       </menu_item_call>
-       <menu_item_call
-         label="Zoom Default"
-         name="Zoom Default">
-           <menu_item_call.on_click
-             function="Minimap.Zoom"
-             parameter="default" />
-       </menu_item_call>
+    <menu_item_check
+     label="Zoom very close"
+     name="Zoom very close">
+        <menu_item_check.on_check
+         function="Minimap.Zoom.Check"
+         parameter="very close" />
+        <menu_item_check.on_click
+         function="Minimap.Zoom.Set"
+         parameter="very close" />
+    </menu_item_check>
+    <menu_item_check
+     label="Zoom close"
+     name="Zoom close">
+        <menu_item_check.on_check
+         function="Minimap.Zoom.Check"
+         parameter="close" />
+        <menu_item_check.on_click
+         function="Minimap.Zoom.Set"
+         parameter="close" />
+    </menu_item_check>
+    <menu_item_check
+     label="Zoom medium"
+     name="Zoom medium">
+        <menu_item_check.on_check
+         function="Minimap.Zoom.Check"
+         parameter="medium" />
+        <menu_item_check.on_click
+         function="Minimap.Zoom.Set"
+         parameter="medium" />
+    </menu_item_check>
+    <menu_item_check
+     label="Zoom far"
+     name="Zoom far">
+        <menu_item_check.on_check
+         function="Minimap.Zoom.Check"
+         parameter="far" />
+        <menu_item_check.on_click
+         function="Minimap.Zoom.Set"
+         parameter="far" />
+    </menu_item_check>
+    <menu_item_check
+     label="Zoom default"
+     name="Zoom far">
+        <menu_item_check.on_check
+         function="Minimap.Zoom.Check"
+         parameter="default" />
+        <menu_item_check.on_click
+         function="Minimap.Zoom.Set"
+         parameter="default" />
+    </menu_item_check>
     </menu>
     <menu_item_call
       label="Stop Tracking"
@@ -264,6 +286,12 @@
         <menu_item_call.on_click
          function="Minimap.ShowProfile"
          parameter="place" />
+    </menu_item_call>
+    <menu_item_call
+     label="About Land"
+     name="About Land">
+        <menu_item_call.on_click
+         function="Minimap.AboutLand" />
     </menu_item_call>
     <menu_item_call
       label="Open World Map"

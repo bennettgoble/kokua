@@ -580,15 +580,14 @@ void LLViewerShaderMgr::setShaders()
     mShaderLevel[SHADER_DEFERRED] = deferred_class;
     mShaderLevel[SHADER_TRANSFORM] = transform_class;
 
-    BOOL loaded = loadBasicShaders();
-    if (loaded)
+    std::string shader_name = loadBasicShaders();
+    if (shader_name.empty())
     {
         LL_INFOS() << "Loaded basic shaders." << LL_ENDL;
     }
     else
     {
-        LL_ERRS() << "Unable to load basic shaders, verify graphics driver installed and current." << LL_ENDL;
-        llassert(loaded);
+        LL_ERRS() << "Unable to load basic shader " << shader_name << ", verify graphics driver installed and current." << LL_ENDL;
         reentrance = false; // For hygiene only, re-try probably helps nothing 
         return;
     }
@@ -596,7 +595,7 @@ void LLViewerShaderMgr::setShaders()
     gPipeline.mShadersLoaded = true;
 
     // Load all shaders to set max levels
-    loaded = loadShadersEnvironment();
+    BOOL loaded = loadShadersEnvironment();
 
     if (loaded)
     {
@@ -883,7 +882,7 @@ void LLViewerShaderMgr::unloadShaders()
 	gPipeline.mShadersLoaded = false;
 }
 
-BOOL LLViewerShaderMgr::loadBasicShaders()
+std::string LLViewerShaderMgr::loadBasicShaders()
 {
 	// Load basic dependency shaders first
 	// All of these have to load for any shaders to function
@@ -969,8 +968,8 @@ BOOL LLViewerShaderMgr::loadBasicShaders()
 		// Note usage of GL_VERTEX_SHADER_ARB
 		if (loadShaderFile(shaders[i].first, shaders[i].second, GL_VERTEX_SHADER_ARB, &attribs) == 0)
 		{
-			LL_SHADER_LOADING_WARNS() << "Failed to load vertex shader " << shaders[i].first << LL_ENDL;
-			return FALSE;
+			LL_WARNS("Shader") << "Failed to load vertex shader " << shaders[i].first << LL_ENDL;
+			return shaders[i].first;
 		}
 	}
 
@@ -1029,12 +1028,12 @@ BOOL LLViewerShaderMgr::loadBasicShaders()
 		// Note usage of GL_FRAGMENT_SHADER_ARB
 		if (loadShaderFile(shaders[i].first, shaders[i].second, GL_FRAGMENT_SHADER_ARB, &attribs, index_channels[i]) == 0)
 		{
-			LL_SHADER_LOADING_WARNS() << "Failed to load fragment shader " << shaders[i].first << LL_ENDL;
-			return FALSE;
+			LL_WARNS("Shader") << "Failed to load fragment shader " << shaders[i].first << LL_ENDL;
+			return shaders[i].first;
 		}
 	}
 
-	return TRUE;
+	return std::string();
 }
 
 BOOL LLViewerShaderMgr::loadShadersEnvironment()
@@ -1508,6 +1507,12 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
             gDeferredMaterialProgram[i].addPermutation("DIFFUSE_ALPHA_MODE", llformat("%d", alpha_mode));
 
+            if (alpha_mode != 0)
+            {
+                gDeferredMaterialProgram[i].mFeatures.hasAlphaMask = true;
+                gDeferredMaterialProgram[i].addPermutation("HAS_ALPHA_MASK", "1");
+            }
+
             if (use_sun_shadow)
             {
                 gDeferredMaterialProgram[i].addPermutation("HAS_SUN_SHADOW", "1");
@@ -1566,6 +1571,12 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
             }
 
             gDeferredMaterialWaterProgram[i].addPermutation("DIFFUSE_ALPHA_MODE", llformat("%d", alpha_mode));
+            if (alpha_mode != 0)
+            {
+                gDeferredMaterialWaterProgram[i].mFeatures.hasAlphaMask = true;
+                gDeferredMaterialWaterProgram[i].addPermutation("HAS_ALPHA_MASK", "1");
+            }
+
             if (use_sun_shadow)
             {
                 gDeferredMaterialWaterProgram[i].addPermutation("HAS_SUN_SHADOW", "1");

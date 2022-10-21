@@ -72,6 +72,7 @@
 #include "llsdserialize.h"
 #include "llcallstack.h"
 #include "llcorehttputil.h"
+#include "lluiusage.h"
 #include "llfloaterreg.h"
 #include "llviewertexturelist.h"
 
@@ -3020,6 +3021,7 @@ void LLVOAvatarSelf::onCustomizeStart(bool disable_camera_switch)
 {
 	if (isAgentAvatarValid())
 	{
+		LLUIUsage::instance().logCommand("Avatar.CustomizeStart");
 		if (!gAgentAvatarp->mEndCustomizeCallback.get())
 		{
 			gAgentAvatarp->mEndCustomizeCallback = new LLUpdateAppearanceOnDestroy;

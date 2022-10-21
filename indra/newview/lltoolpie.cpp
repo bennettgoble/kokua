@@ -73,6 +73,7 @@
 #include "llui.h"
 #include "llweb.h"
 #include "pipeline.h"	// setHighlightObject
+#include "lluiusage.h"
 #include "kokuarlvextras.h"
 
 extern BOOL gDebugClicks;
@@ -667,6 +668,8 @@ bool LLToolPie::walkToClickedLocation()
         return false;
     }
 
+	LLUIUsage::instance().logCommand("Agent.WalkToClickedLocation");
+	
     LLPickInfo saved_pick = mPick;
     if (gAgentCamera.getCameraMode() != CAMERA_MODE_MOUSELOOK)
     {

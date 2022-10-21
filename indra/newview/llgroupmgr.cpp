@@ -63,6 +63,7 @@
 #include "llviewerregion.h"
 #include <boost/regex.hpp>
 #include "llcorehttputil.h"
+#include "lluiusage.h"
 
 #if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__ ) >= 40800
    #pragma GCC diagnostic push
@@ -1896,6 +1897,9 @@ void LLGroupMgr::sendGroupRoleMemberChanges(const LLUUID& group_id)
 //static
 void LLGroupMgr::sendGroupMemberJoin(const LLUUID& group_id)
 {
+
+	LLUIUsage::instance().logCommand("Group.Join");
+
 	LLMessageSystem *msg = gMessageSystem;
 
 	msg->newMessageFast(_PREHASH_JoinGroupRequest);
