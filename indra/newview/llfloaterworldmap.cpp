@@ -519,7 +519,6 @@ void LLFloaterWorldMap::draw()
 	static LLView* show_destination_btn = getChildView("Show Destination");
 	static LLView* copy_slurl_btn = getChildView("copy_slurl");
 	static LLView* go_home_btn = getChildView("Go Home");
-	static LLUICtrl* zoom_slider = getChild<LLUICtrl>("zoom slider");
 	static LLView* people_chk = getChildView("people_chk");
 	static LLView* infohub_chk = getChildView("infohub_chk");
 	static LLView* land_for_sale_chk = getChildView("land_for_sale_chk");
