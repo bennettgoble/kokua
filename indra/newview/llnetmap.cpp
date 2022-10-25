@@ -1091,7 +1091,7 @@ BOOL LLNetMap::handleToolTip(S32 x, S32 y, MASK mask)
 //MK
 	if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
 	{
-			args["[REGION]"] = "(Region hidden)\n";
+			msg = "(Region hidden)\n";
 	}
 	else
 //mk
