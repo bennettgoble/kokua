@@ -694,8 +694,14 @@ BOOL LLPanelPeople::postBuild()
 	//colouring based on contact sets
 	mNearbyList->setUseContactColors(true);
 	mMiniMap = (LLNetMap*)getChildView("Net Map",true);
-	mMiniMap->setToolTipMsg(gSavedSettings.getBOOL("DoubleClickTeleport") ? 
-		getString("AltMiniMapToolTipMsg") :	getString("MiniMapToolTipMsg"));
+  mMiniMap->setToolTipMsg(getString("ToolTipMsg"));
+  mMiniMap->setParcelNameMsg(getString("ParcelNameMsg"));
+  mMiniMap->setParcelSalePriceMsg(getString("ParcelSalePriceMsg"));
+  mMiniMap->setParcelSaleAreaMsg(getString("ParcelSaleAreaMsg"));
+  mMiniMap->setParcelOwnerMsg(getString("ParcelOwnerMsg"));
+  mMiniMap->setRegionNameMsg(getString("RegionNameMsg"));
+  mMiniMap->setToolTipHintMsg(getString("ToolTipHintMsg"));
+  mMiniMap->setAltToolTipHintMsg(getString("AltToolTipHintMsg"));
 //MK
 	mNearbyList->showRange(true); 
 	mNearbyList->showFirstSeen(true);
