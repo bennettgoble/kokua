@@ -49,141 +49,141 @@ class LLMenuGL;
 //class FSRadarListCtrl;
 
 class LLPanelPeople 
-	: public LLPanel
-	, public LLVoiceClientStatusObserver
+    : public LLPanel
+    , public LLVoiceClientStatusObserver
 {
-	LOG_CLASS(LLPanelPeople);
+    LOG_CLASS(LLPanelPeople);
 public:
-	LLPanelPeople();
-	virtual ~LLPanelPeople();
+    LLPanelPeople();
+    virtual ~LLPanelPeople();
 
-	/*virtual*/ BOOL 	postBuild();
-	/*virtual*/ void	onOpen(const LLSD& key);
-	/*virtual*/ bool	notifyChildren(const LLSD& info);
-	// Implements LLVoiceClientStatusObserver::onChange() to enable call buttons
-	// when voice is available
-	/*virtual*/ void onChange(EStatusType status, const std::string &channelURI, bool proximal);
+    /*virtual*/ BOOL    postBuild();
+    /*virtual*/ void    onOpen(const LLSD& key);
+    /*virtual*/ bool    notifyChildren(const LLSD& info);
+    // Implements LLVoiceClientStatusObserver::onChange() to enable call buttons
+    // when voice is available
+    /*virtual*/ void onChange(EStatusType status, const std::string &channelURI, bool proximal);
 
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.0d) | Added: RLVa-1.2.0d
-	// Externalized to FSRadar
-	//LLAvatarList* getNearbyList() { return mNearbyList; }
+    // Externalized to FSRadar
+    //LLAvatarList* getNearbyList() { return mNearbyList; }
 // [/RLVa:KB]
 
-	// <FS:Ansariel> Firestorm radar
-	void updateNearby(const std::vector<LLSD>& entries, const LLSD& stats);
+    // <FS:Ansariel> Firestorm radar
+    void updateNearby(const std::vector<LLSD>& entries, const LLSD& stats);
 
-	// internals
-	class Updater;
+    // internals
+    class Updater;
 
-	bool updateNearbyArrivalTime();
+    bool updateNearbyArrivalTime();
 
 private:
 
-	typedef enum e_sort_oder {
-		E_SORT_BY_NAME = 0,
-		E_SORT_BY_STATUS = 1,
-		E_SORT_BY_MOST_RECENT = 2,
-		E_SORT_BY_DISTANCE = 3,
-		E_SORT_BY_RECENT_SPEAKERS = 4,
-		E_SORT_BY_RECENT_ARRIVAL = 5
-	} ESortOrder;
+    typedef enum e_sort_oder {
+        E_SORT_BY_NAME = 0,
+        E_SORT_BY_STATUS = 1,
+        E_SORT_BY_MOST_RECENT = 2,
+        E_SORT_BY_DISTANCE = 3,
+        E_SORT_BY_RECENT_SPEAKERS = 4,
+        E_SORT_BY_RECENT_ARRIVAL = 5
+    } ESortOrder;
 
-    void				    removePicker();
+    void                    removePicker();
 
-	// methods indirectly called by the updaters
+    // methods indirectly called by the updaters
 //CA
-	void					giveMessage(const LLUUID& agent_id, const LLAvatarName& av_name, const std::string& postMsg);
+    void                    giveMessage(const LLUUID& agent_id, const LLAvatarName& av_name, const std::string& postMsg);
 //ca
-	void					updateFriendListHelpText();
-	void					updateFriendList();
-	void					updateNearbyList();
-	void					updateRecentList();
+    void                    updateFriendListHelpText();
+    void                    updateFriendList();
+    void                    updateNearbyList();
+    void                    updateRecentList();
 //MK
     void                    updateNearbyRange();
 //mk
 
-	bool					isItemsFreeOfFriends(const uuid_vec_t& uuids);
+    bool                    isItemsFreeOfFriends(const uuid_vec_t& uuids);
 
-	void					updateButtons();
-	std::string				getActiveTabName() const;
-	LLUUID					getCurrentItemID() const;
-	void					getCurrentItemIDs(uuid_vec_t& selected_uuids) const;
+    void                    updateButtons();
+    std::string             getActiveTabName() const;
+    LLUUID                  getCurrentItemID() const;
+    void                    getCurrentItemIDs(uuid_vec_t& selected_uuids) const;
 //MK
     void                    reportToNearbyChat(std::string message);
 //mk
-    void					showGroupMenu(LLMenuGL* menu);
-	void					setSortOrder(LLAvatarList* list, ESortOrder order, bool save = true);
+    void                    showGroupMenu(LLMenuGL* menu);
+    void                    setSortOrder(LLAvatarList* list, ESortOrder order, bool save = true);
 
-	// UI callbacks
-	void					onFilterEdit(const std::string& search_string);
-	void					onGroupLimitInfo();
-	void					onTabSelected(const LLSD& param);
-	void					onAddFriendButtonClicked();
-	void					onAddFriendWizButtonClicked();
-	void					onDeleteFriendButtonClicked();
-	void					onChatButtonClicked();
-	void					onGearButtonClicked(LLUICtrl* btn);
-	void					onImButtonClicked();
-	void					onMoreButtonClicked();
-	void					onAvatarListDoubleClicked(LLUICtrl* ctrl);
-	void					onAvatarListCommitted(LLAvatarList* list);
-	bool					onGroupPlusButtonValidate();
-	void					onGroupMinusButtonClicked();
-	void					onGroupPlusMenuItemClicked(const LLSD& userdata);
+    // UI callbacks
+    void                    onFilterEdit(const std::string& search_string);
+    void                    onGroupLimitInfo();
+    void                    onTabSelected(const LLSD& param);
+    void                    onAddFriendButtonClicked();
+    void                    onAddFriendWizButtonClicked();
+    void                    onDeleteFriendButtonClicked();
+    void                    onChatButtonClicked();
+    void                    onGearButtonClicked(LLUICtrl* btn);
+    void                    onImButtonClicked();
+    void                    onMoreButtonClicked();
+    void                    onAvatarListDoubleClicked(LLUICtrl* ctrl);
+    void                    onAvatarListCommitted(LLAvatarList* list);
+    bool                    onGroupPlusButtonValidate();
+    void                    onGroupMinusButtonClicked();
+    void                    onGroupPlusMenuItemClicked(const LLSD& userdata);
 
-	void					onFriendsViewSortMenuItemClicked(const LLSD& userdata);
-	void					onNearbyViewSortMenuItemClicked(const LLSD& userdata);
-	void					onGroupsViewSortMenuItemClicked(const LLSD& userdata);
-	void					onRecentViewSortMenuItemClicked(const LLSD& userdata);
+    void                    onFriendsViewSortMenuItemClicked(const LLSD& userdata);
+    void                    onNearbyViewSortMenuItemClicked(const LLSD& userdata);
+    void                    onGroupsViewSortMenuItemClicked(const LLSD& userdata);
+    void                    onRecentViewSortMenuItemClicked(const LLSD& userdata);
 
-	//returns false only if group is "none"
-	bool					isRealGroup();
-	bool					onFriendsViewSortMenuItemCheck(const LLSD& userdata);
-	bool					onRecentViewSortMenuItemCheck(const LLSD& userdata);
-	bool					onNearbyViewSortMenuItemCheck(const LLSD& userdata);
+    //returns false only if group is "none"
+    bool                    isRealGroup();
+    bool                    onFriendsViewSortMenuItemCheck(const LLSD& userdata);
+    bool                    onRecentViewSortMenuItemCheck(const LLSD& userdata);
+    bool                    onNearbyViewSortMenuItemCheck(const LLSD& userdata);
 
-	void					onViewLoginNamesMenuItemToggle();
-	bool					onViewLoginNamesMenuItemCheck();
+    void                    onViewLoginNamesMenuItemToggle();
+    bool                    onViewLoginNamesMenuItemCheck();
 
-	// misc callbacks
-	static void				onAvatarPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
+    // misc callbacks
+    static void             onAvatarPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
 
-	void					onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list);
+    void                    onFriendsAccordionExpandedCollapsed(LLUICtrl* ctrl, const LLSD& param, LLAvatarList* avatar_list);
 
-	void					showAccordion(const std::string name, bool show);
+    void                    showAccordion(const std::string name, bool show);
 
-	void					showFriendsAccordionsIfNeeded();
+    void                    showFriendsAccordionsIfNeeded();
 
-	void					onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param);
+    void                    onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param);
 
-	void					setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed);
-	void					setAccordionCollapsedByUser(const std::string& name, bool collapsed);
-	bool					isAccordionCollapsedByUser(LLUICtrl* acc_tab);
-	bool					isAccordionCollapsedByUser(const std::string& name);
+    void                    setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed);
+    void                    setAccordionCollapsedByUser(const std::string& name, bool collapsed);
+    bool                    isAccordionCollapsedByUser(LLUICtrl* acc_tab);
+    bool                    isAccordionCollapsedByUser(const std::string& name);
 
-	// <FS:Ansariel> Firestorm callback handler
-//	void					onRadarListDoubleClicked();
-//	void					onGlobalVisToggleButtonClicked();
-	// </FS:Ansariel> Firestorm callback handler
+    // <FS:Ansariel> Firestorm callback handler
+//  void                    onRadarListDoubleClicked();
+//  void                    onGlobalVisToggleButtonClicked();
+    // </FS:Ansariel> Firestorm callback handler
 
-	LLFilterEditor*			mFilterEditor;
-	LLTabContainer*			mTabContainer;
-	LLAvatarList*			mOnlineFriendList;
-	LLAvatarList*			mAllFriendList;
-	LLAvatarList*			mNearbyList;
-	LLAvatarList*			mContactSetList;	// [FS:CR] Contact sets
-	LLAvatarList*			mRecentList;
-	LLGroupList*			mGroupList;
-	LLNetMap*				mMiniMap;
+    LLFilterEditor*         mFilterEditor;
+    LLTabContainer*         mTabContainer;
+    LLAvatarList*           mOnlineFriendList;
+    LLAvatarList*           mAllFriendList;
+    LLAvatarList*           mNearbyList;
+    LLAvatarList*           mContactSetList;    // [FS:CR] Contact sets
+    LLAvatarList*           mRecentList;
+    LLGroupList*            mGroupList;
+    LLNetMap*               mMiniMap;
 
-	std::vector<std::string> mSavedOriginalFilters;
-	std::vector<std::string> mSavedFilters;
+    std::vector<std::string> mSavedOriginalFilters;
+    std::vector<std::string> mSavedFilters;
 
-	Updater*				mFriendListUpdater;
-	Updater*				mNearbyListUpdater;
-	Updater*				mRecentListUpdater;
-	Updater*				mButtonsUpdater;
-    LLHandle< LLFloater >	mPicker;
+    Updater*                mFriendListUpdater;
+    Updater*                mNearbyListUpdater;
+    Updater*                mRecentListUpdater;
+    Updater*                mButtonsUpdater;
+    LLHandle< LLFloater >   mPicker;
     //MK
     LLMenuButton*            mNearbyGearButton;
     LLMenuButton*            mFriendsGearButton;
@@ -204,18 +204,18 @@ private:
     };
     std::map < LLUUID, radarFields > lastRadarSweep;
     //mk
-	// [FS:CR] Contact sets
-	bool					onContactSetsEnable(const LLSD& userdata);
-	void					onContactSetsMenuItemClicked(const LLSD& userdata);
-	void					handlePickerCallback(const uuid_vec_t& ids, const std::string& set);
-	void					refreshContactSets();
-	void					generateContactList(const std::string& contact_set);
-	void					generateCurrentContactList();
-	
-	void					updateContactSets(LGGContactSets::EContactSetUpdate type);
-	boost::signals2::connection mContactSetChangedConnection;
-	LLComboBox* mContactSetCombo;
-	// [/FS:CR]    
+    // [FS:CR] Contact sets
+    bool                    onContactSetsEnable(const LLSD& userdata);
+    void                    onContactSetsMenuItemClicked(const LLSD& userdata);
+    void                    handlePickerCallback(const uuid_vec_t& ids, const std::string& set);
+    void                    refreshContactSets();
+    void                    generateContactList(const std::string& contact_set);
+    void                    generateCurrentContactList();
+    
+    void                    updateContactSets(LGGContactSets::EContactSetUpdate type);
+    boost::signals2::connection mContactSetChangedConnection;
+    LLComboBox* mContactSetCombo;
+    // [/FS:CR]    
 };
 
 #endif //LL_LLPANELPEOPLE_H

@@ -28,8 +28,8 @@
 #ifndef LLSCROLLLISTCELL_H
 #define LLSCROLLLISTCELL_H
 
-#include "llfontgl.h"		// HAlign
-#include "llpointer.h"		// LLPointer<>
+#include "llfontgl.h"       // HAlign
+#include "llpointer.h"      // LLPointer<>
 #include "lluistring.h"
 #include "v4color.h"
 #include "llui.h"
@@ -53,101 +53,101 @@ class LLScrollListCell
 {
 public:
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-	typedef boost::function<void(LLScrollListCell* cell)> commit_callback_t;
-	typedef boost::signals2::signal<void(LLScrollListCell* cell)> commit_signal_t;
+    typedef boost::function<void(LLScrollListCell* cell)> commit_callback_t;
+    typedef boost::signals2::signal<void(LLScrollListCell* cell)> commit_signal_t;
 // [/SL:KB]
 
-	struct Params : public LLInitParam::Block<Params>
-	{
-		Optional<std::string>		type,
-									column;
+    struct Params : public LLInitParam::Block<Params>
+    {
+        Optional<std::string>       type,
+                                    column;
 
-		Optional<S32>				width;
-		Optional<bool>				enabled,
-									visible;
+        Optional<S32>               width;
+        Optional<bool>              enabled,
+                                    visible;
 
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-		Optional<commit_callback_t> commit_callback;
+        Optional<commit_callback_t> commit_callback;
 // [/SL:KB]
 
-		Optional<void*>				userdata;
-		Optional<LLSD>				value; // state of checkbox, icon id/name, date
-		Optional<LLSD>				alt_value;
-		Optional<std::string>		label; // description or text
-		Optional<std::string>		tool_tip;
+        Optional<void*>             userdata;
+        Optional<LLSD>              value; // state of checkbox, icon id/name, date
+        Optional<LLSD>              alt_value;
+        Optional<std::string>       label; // description or text
+        Optional<std::string>       tool_tip;
 
-		Optional<const LLFontGL*>	font;
-		Optional<LLColor4>			font_color;
-		Optional<LLFontGL::HAlign>	font_halign;
+        Optional<const LLFontGL*>   font;
+        Optional<LLColor4>          font_color;
+        Optional<LLFontGL::HAlign>  font_halign;
 
-		Optional<LLColor4>			color;
+        Optional<LLColor4>          color;
 
-		Params()
-		:	type("type", "text"),
-			column("column"),
-			width("width"),
-			enabled("enabled", true),
-			visible("visible", true),
+        Params()
+        :   type("type", "text"),
+            column("column"),
+            width("width"),
+            enabled("enabled", true),
+            visible("visible", true),
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-			commit_callback("commit_callback"),
+            commit_callback("commit_callback"),
 // [/SL:KB]
-			value("value"),
-			alt_value("alt_value", ""),
-			label("label"),
-			tool_tip("tool_tip", ""),
-			font("font", LLFontGL::getFontSansSerifSmall()),
-			font_color("font_color", LLColor4::black),
-			color("color", LLColor4::white),
-			font_halign("halign", LLFontGL::LEFT)
-		{
-			addSynonym(column, "name");
-			addSynonym(font_color, "font-color");
-		}
-	};
+            value("value"),
+            alt_value("alt_value", ""),
+            label("label"),
+            tool_tip("tool_tip", ""),
+            font("font", LLFontGL::getFontSansSerifSmall()),
+            font_color("font_color", LLColor4::black),
+            color("color", LLColor4::white),
+            font_halign("halign", LLFontGL::LEFT)
+        {
+            addSynonym(column, "name");
+            addSynonym(font_color, "font-color");
+        }
+    };
 
-	static LLScrollListCell* create(const Params&);
+    static LLScrollListCell* create(const Params&);
 
-	LLScrollListCell(const LLScrollListCell::Params&);
-	virtual ~LLScrollListCell() {};
+    LLScrollListCell(const LLScrollListCell::Params&);
+    virtual ~LLScrollListCell() {};
 
-	virtual void			draw(const LLColor4& color, const LLColor4& highlight_color) const {};		// truncate to given width, if possible
-	virtual S32				getWidth() const {return mWidth;}
-	virtual S32				getContentWidth() const { return 0; }
-	virtual S32				getHeight() const { return 0; }
-	virtual const LLSD		getValue() const;
-	virtual const LLSD		getAltValue() const;
-	virtual void			setValue(const LLSD& value) { }
-	virtual void			setAltValue(const LLSD& value) { }
+    virtual void            draw(const LLColor4& color, const LLColor4& highlight_color) const {};      // truncate to given width, if possible
+    virtual S32             getWidth() const {return mWidth;}
+    virtual S32             getContentWidth() const { return 0; }
+    virtual S32             getHeight() const { return 0; }
+    virtual const LLSD      getValue() const;
+    virtual const LLSD      getAltValue() const;
+    virtual void            setValue(const LLSD& value) { }
+    virtual void            setAltValue(const LLSD& value) { }
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-	virtual const std::string &getColumnName() const { return mColumnName; }
+    virtual const std::string &getColumnName() const { return mColumnName; }
 // [/SL:KB]
-	virtual const std::string &getToolTip() const { return mToolTip; }
-	virtual void			setToolTip(const std::string &str) { mToolTip = str; }
-	virtual BOOL			getVisible() const { return TRUE; }
-	virtual void			setWidth(S32 width) { mWidth = width; }
-	virtual void			highlightText(S32 offset, S32 num_chars) {}
-	virtual BOOL			isText() const { return FALSE; }
-	virtual BOOL			needsToolTip() const { return ! mToolTip.empty(); }
-	virtual void			setColor(const LLColor4&) {}
-	virtual void			onCommit() {};
+    virtual const std::string &getToolTip() const { return mToolTip; }
+    virtual void            setToolTip(const std::string &str) { mToolTip = str; }
+    virtual BOOL            getVisible() const { return TRUE; }
+    virtual void            setWidth(S32 width) { mWidth = width; }
+    virtual void            highlightText(S32 offset, S32 num_chars) {}
+    virtual BOOL            isText() const { return FALSE; }
+    virtual BOOL            needsToolTip() const { return ! mToolTip.empty(); }
+    virtual void            setColor(const LLColor4&) {}
+    virtual void            onCommit() {};
 
-	virtual BOOL			handleClick() { return FALSE; }
-	virtual	void			setEnabled(BOOL enable) { }
+    virtual BOOL            handleClick() { return FALSE; }
+    virtual void            setEnabled(BOOL enable) { }
 
 private:
-	S32 mWidth;
+    S32 mWidth;
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-	std::string mColumnName;
+    std::string mColumnName;
 // [/SL:KB]
-	std::string mToolTip;
+    std::string mToolTip;
 };
 
 class LLScrollListSpacer : public LLScrollListCell
 {
 public:
-	LLScrollListSpacer(const LLScrollListCell::Params& p) : LLScrollListCell(p) {}
-	/*virtual*/ ~LLScrollListSpacer() {};
-	/*virtual*/ void			draw(const LLColor4& color, const LLColor4& highlight_color) const {}
+    LLScrollListSpacer(const LLScrollListCell::Params& p) : LLScrollListCell(p) {}
+    /*virtual*/ ~LLScrollListSpacer() {};
+    /*virtual*/ void            draw(const LLColor4& color, const LLColor4& highlight_color) const {}
 };
 
 /*
@@ -156,47 +156,47 @@ public:
 class LLScrollListText : public LLScrollListCell
 {
 public:
-	LLScrollListText(const LLScrollListCell::Params&);
-	/*virtual*/ ~LLScrollListText();
+    LLScrollListText(const LLScrollListCell::Params&);
+    /*virtual*/ ~LLScrollListText();
 
-	/*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
-	/*virtual*/ S32		getContentWidth() const;
-	/*virtual*/ S32		getHeight() const;
-	/*virtual*/ void	setValue(const LLSD& value);
-	/*virtual*/ void	setAltValue(const LLSD& value);
-	/*virtual*/ const LLSD getValue() const;
-	/*virtual*/ const LLSD getAltValue() const;
-	/*virtual*/ BOOL	getVisible() const;
-	/*virtual*/ void	highlightText(S32 offset, S32 num_chars);
+    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ S32     getContentWidth() const;
+    /*virtual*/ S32     getHeight() const;
+    /*virtual*/ void    setValue(const LLSD& value);
+    /*virtual*/ void    setAltValue(const LLSD& value);
+    /*virtual*/ const LLSD getValue() const;
+    /*virtual*/ const LLSD getAltValue() const;
+    /*virtual*/ BOOL    getVisible() const;
+    /*virtual*/ void    highlightText(S32 offset, S32 num_chars);
 
-	/*virtual*/ void	setColor(const LLColor4&);
-	/*virtual*/ BOOL	isText() const;
-	/*virtual*/ const std::string &	getToolTip() const;
-	/*virtual*/ BOOL	needsToolTip() const;
+    /*virtual*/ void    setColor(const LLColor4&);
+    /*virtual*/ BOOL    isText() const;
+    /*virtual*/ const std::string & getToolTip() const;
+    /*virtual*/ BOOL    needsToolTip() const;
 
-	S32				getTextWidth() const { return mTextWidth;}
-	void			setTextWidth(S32 value) { mTextWidth = value;} 
-	virtual void	setWidth(S32 width) { LLScrollListCell::setWidth(width); mTextWidth = width; }
+    S32             getTextWidth() const { return mTextWidth;}
+    void            setTextWidth(S32 value) { mTextWidth = value;} 
+    virtual void    setWidth(S32 width) { LLScrollListCell::setWidth(width); mTextWidth = width; }
 
-	void			setText(const LLStringExplicit& text);
-	void			setFontStyle(const U8 font_style);
+    void            setText(const LLStringExplicit& text);
+    void            setFontStyle(const U8 font_style);
 
 protected:
-	LLUIString		mText;
-	LLUIString		mAltText;
-	S32				mTextWidth;
-	const LLFontGL*	mFont;
-	LLColor4		mColor;
-	LLColor4		mHighlightColor;
-	U8				mUseColor;
-	LLFontGL::HAlign mFontAlignment;
-	BOOL			mVisible;
-	S32				mHighlightCount;
-	S32				mHighlightOffset;
+    LLUIString      mText;
+    LLUIString      mAltText;
+    S32             mTextWidth;
+    const LLFontGL* mFont;
+    LLColor4        mColor;
+    LLColor4        mHighlightColor;
+    U8              mUseColor;
+    LLFontGL::HAlign mFontAlignment;
+    BOOL            mVisible;
+    S32             mHighlightCount;
+    S32             mHighlightOffset;
 
-	LLPointer<LLUIImage> mRoundedRectImage;
+    LLPointer<LLUIImage> mRoundedRectImage;
 
-	static U32 sCount;
+    static U32 sCount;
 };
 
 /*
@@ -205,19 +205,19 @@ protected:
 class LLScrollListIcon : public LLScrollListCell
 {
 public:
-	LLScrollListIcon(const LLScrollListCell::Params& p);
-	/*virtual*/ ~LLScrollListIcon();
-	/*virtual*/ void	draw(const LLColor4& color, const LLColor4& highlight_color) const;
-	/*virtual*/ S32		getWidth() const;
-	/*virtual*/ S32		getHeight() const;
-	/*virtual*/ const LLSD		getValue() const;
-	/*virtual*/ void	setColor(const LLColor4&);
-	/*virtual*/ void	setValue(const LLSD& value);
+    LLScrollListIcon(const LLScrollListCell::Params& p);
+    /*virtual*/ ~LLScrollListIcon();
+    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ S32     getWidth() const;
+    /*virtual*/ S32     getHeight() const;
+    /*virtual*/ const LLSD      getValue() const;
+    /*virtual*/ void    setColor(const LLColor4&);
+    /*virtual*/ void    setValue(const LLSD& value);
 
 private:
-	LLPointer<LLUIImage>	mIcon;
-	LLColor4				mColor;
-	LLFontGL::HAlign		mAlignment;
+    LLPointer<LLUIImage>    mIcon;
+    LLColor4                mColor;
+    LLFontGL::HAlign        mAlignment;
 };
 
 /*
@@ -226,35 +226,35 @@ private:
 class LLScrollListCheck : public LLScrollListCell
 {
 public:
-	LLScrollListCheck( const LLScrollListCell::Params&);
-	/*virtual*/ ~LLScrollListCheck();
-	/*virtual*/ void	draw(const LLColor4& color, const LLColor4& highlight_color) const;
-	/*virtual*/ S32		getHeight() const			{ return 0; } 
-	/*virtual*/ const LLSD	getValue() const;
-	/*virtual*/ void	setValue(const LLSD& value);
-	/*virtual*/ void	onCommit();
+    LLScrollListCheck( const LLScrollListCell::Params&);
+    /*virtual*/ ~LLScrollListCheck();
+    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ S32     getHeight() const           { return 0; } 
+    /*virtual*/ const LLSD  getValue() const;
+    /*virtual*/ void    setValue(const LLSD& value);
+    /*virtual*/ void    onCommit();
 
-	/*virtual*/ BOOL	handleClick();
-	/*virtual*/ void	setEnabled(BOOL enable);
+    /*virtual*/ BOOL    handleClick();
+    /*virtual*/ void    setEnabled(BOOL enable);
 
-	LLCheckBoxCtrl*	getCheckBox()				{ return mCheckBox; }
+    LLCheckBoxCtrl* getCheckBox()               { return mCheckBox; }
 
 private:
-	LLCheckBoxCtrl* mCheckBox;
+    LLCheckBoxCtrl* mCheckBox;
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-	commit_signal_t* mCommitSignal = nullptr;
+    commit_signal_t* mCommitSignal = nullptr;
 // [/SL:KB]
 };
 
 class LLScrollListDate : public LLScrollListText
 {
 public:
-	LLScrollListDate( const LLScrollListCell::Params& p );
-	virtual void	setValue(const LLSD& value);
-	virtual const LLSD getValue() const;
+    LLScrollListDate( const LLScrollListCell::Params& p );
+    virtual void    setValue(const LLSD& value);
+    virtual const LLSD getValue() const;
 
 private:
-	LLDate		mDate;
+    LLDate      mDate;
 };
 
 /*
@@ -266,17 +266,17 @@ class LLScrollListIconText : public LLScrollListText
 public:
     LLScrollListIconText(const LLScrollListCell::Params& p);
     /*virtual*/ ~LLScrollListIconText();
-    /*virtual*/ void	draw(const LLColor4& color, const LLColor4& highlight_color) const;
-    /*virtual*/ const LLSD		getValue() const;
-    /*virtual*/ void	setValue(const LLSD& value);
+    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ const LLSD      getValue() const;
+    /*virtual*/ void    setValue(const LLSD& value);
 
 
-    S32					getIconWidth() const;
-    /*virtual*/ void	setWidth(S32 width);/* { LLScrollListCell::setWidth(width); mTextWidth = width - ; }*/
+    S32                 getIconWidth() const;
+    /*virtual*/ void    setWidth(S32 width);/* { LLScrollListCell::setWidth(width); mTextWidth = width - ; }*/
 
 private:
-    LLPointer<LLUIImage>	mIcon;
-    S32						mPad;
+    LLPointer<LLUIImage>    mIcon;
+    S32                     mPad;
 };
 
 #endif

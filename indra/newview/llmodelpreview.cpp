@@ -2197,21 +2197,21 @@ void LLModelPreview::updateStatusMessages()
         }
     }
 
-	// flag degenerates here rather than deferring to a MAV error later
-	// <FS>
-	//mFMP->childSetVisible("physics_status_message_text", mHasDegenerate); //display or clear
-	//auto degenerateIcon = mFMP->getChild<LLIconCtrl>("physics_status_message_icon");
-	//degenerateIcon->setVisible(mHasDegenerate);
-	// </FS>
-	if (mHasDegenerate)
-	{
-		has_physics_error |= PhysicsError::DEGENERATE;
-		// <FS>
-		//mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_degenerate_triangles"));
-		//LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
-		//degenerateIcon->setImage(img);
-		// </FS>
-	}
+    // flag degenerates here rather than deferring to a MAV error later
+    // <FS>
+    //mFMP->childSetVisible("physics_status_message_text", mHasDegenerate); //display or clear
+    //auto degenerateIcon = mFMP->getChild<LLIconCtrl>("physics_status_message_icon");
+    //degenerateIcon->setVisible(mHasDegenerate);
+    // </FS>
+    if (mHasDegenerate)
+    {
+        has_physics_error |= PhysicsError::DEGENERATE;
+        // <FS>
+        //mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_degenerate_triangles"));
+        //LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
+        //degenerateIcon->setImage(img);
+        // </FS>
+    }
 
     mFMP->childSetTextArg("submeshes_info", "[SUBMESHES]", llformat("%d", total_submeshes[LLModel::LOD_HIGH]));
 
@@ -2318,35 +2318,35 @@ void LLModelPreview::updateStatusMessages()
     }
 
 
-	//warn if hulls have more than 256 points in them
-	BOOL physExceededVertexLimit = FALSE;
-	for (U32 i = 0; mModelNoErrors && (i < mModel[LLModel::LOD_PHYSICS].size()); ++i)
-	{
-		LLModel* mdl = mModel[LLModel::LOD_PHYSICS][i];
+    //warn if hulls have more than 256 points in them
+    BOOL physExceededVertexLimit = FALSE;
+    for (U32 i = 0; mModelNoErrors && (i < mModel[LLModel::LOD_PHYSICS].size()); ++i)
+    {
+        LLModel* mdl = mModel[LLModel::LOD_PHYSICS][i];
 
-		if (mdl)
-		{
-			// <FS:Beq> Better error handling
-			auto num_hulls = mdl->mPhysics.mHull.size();
-			for (U32 j = 0; j < num_hulls; ++j)
-			{		
-			// </FS:Beq>
-				if (mdl->mPhysics.mHull[j].size() > 256)
-				{
-					physExceededVertexLimit = TRUE;
-					LL_INFOS() << "Physical model " << mdl->mLabel << " exceeds vertex per hull limitations." << LL_ENDL;
-					break;
-				}
-			}
-			// <FS:Beq> Better error handling
-			if (num_hulls > 256) // decomp cannot have more than 256 hulls (http://wiki.secondlife.com/wiki/Mesh/Mesh_physics)
-			{
-				LL_INFOS() << "Physical model " << mdl->mLabel << " exceeds 256 hull limitation." << LL_ENDL;
-				has_physics_error |= PhysicsError::TOOMANYHULLS;
-			}
-			// </FS:Beq>
-		}
-	}
+        if (mdl)
+        {
+            // <FS:Beq> Better error handling
+            auto num_hulls = mdl->mPhysics.mHull.size();
+            for (U32 j = 0; j < num_hulls; ++j)
+            {       
+            // </FS:Beq>
+                if (mdl->mPhysics.mHull[j].size() > 256)
+                {
+                    physExceededVertexLimit = TRUE;
+                    LL_INFOS() << "Physical model " << mdl->mLabel << " exceeds vertex per hull limitations." << LL_ENDL;
+                    break;
+                }
+            }
+            // <FS:Beq> Better error handling
+            if (num_hulls > 256) // decomp cannot have more than 256 hulls (http://wiki.secondlife.com/wiki/Mesh/Mesh_physics)
+            {
+                LL_INFOS() << "Physical model " << mdl->mLabel << " exceeds 256 hull limitation." << LL_ENDL;
+                has_physics_error |= PhysicsError::TOOMANYHULLS;
+            }
+            // </FS:Beq>
+        }
+    }
 
     if (physExceededVertexLimit)
     {
@@ -2354,65 +2354,65 @@ void LLModelPreview::updateStatusMessages()
     }
 
 // <FS:Beq> standardise error handling
-	//if (!(has_physics_error & PhysicsError::DEGENERATE)){ // only update this field (incluides clearing it) if it is not already in use.
-	//	mFMP->childSetVisible("physics_status_message_text", physExceededVertexLimit);
-	//	LLIconCtrl* physStatusIcon = mFMP->getChild<LLIconCtrl>("physics_status_message_icon");
-	//	physStatusIcon->setVisible(physExceededVertexLimit);
-	//	if (physExceededVertexLimit)
-	//	{
-	//		mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_vertex_limit_exceeded"));
-	//		LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Warning");
-	//		physStatusIcon->setImage(img);
-	//	}
-	//}
+    //if (!(has_physics_error & PhysicsError::DEGENERATE)){ // only update this field (incluides clearing it) if it is not already in use.
+    //  mFMP->childSetVisible("physics_status_message_text", physExceededVertexLimit);
+    //  LLIconCtrl* physStatusIcon = mFMP->getChild<LLIconCtrl>("physics_status_message_icon");
+    //  physStatusIcon->setVisible(physExceededVertexLimit);
+    //  if (physExceededVertexLimit)
+    //  {
+    //      mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_vertex_limit_exceeded"));
+    //      LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Warning");
+    //      physStatusIcon->setImage(img);
+    //  }
+    //}
 #ifndef HAVOK_TPV 
-	has_physics_error |= PhysicsError::NOHAVOK;
+    has_physics_error |= PhysicsError::NOHAVOK;
 #endif 
 
-	auto physStatusIcon = mFMP->getChild<LLIconCtrl>("physics_status_message_icon");
+    auto physStatusIcon = mFMP->getChild<LLIconCtrl>("physics_status_message_icon");
 
-	if (has_physics_error != PhysicsError::NONE)
-	{
-		mFMP->childSetVisible("physics_status_message_text", true); //display or clear
-		physStatusIcon->setVisible(true);
-		// The order here is important. 
-		if (has_physics_error & PhysicsError::TOOMANYHULLS)
-		{
-			mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_hull_limit_exceeded"));
-			LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
-			physStatusIcon->setImage(img);
-		}
-		else if (has_physics_error & PhysicsError::TOOMANYVERTSINHULL)
-		{
-			mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_vertex_limit_exceeded"));
-			LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
-			physStatusIcon->setImage(img);
-		}
-		else if (has_physics_error & PhysicsError::DEGENERATE)
-		{
-			mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_degenerate_triangles"));
-			LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
-			physStatusIcon->setImage(img);
-		}
-		else if (has_physics_error & PhysicsError::NOHAVOK)
-		{
-			mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_no_havok"));
-			LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Warning");
-			physStatusIcon->setImage(img);
-		}
-		else
-		{
-			// This should not happen
-			mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_unknown_error"));
-			LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Warning");
-			physStatusIcon->setImage(img);
-		}
-	}
-	else
-	{
-		mFMP->childSetVisible("physics_status_message_text", false); //display or clear
-		physStatusIcon->setVisible(false);
-	}
+    if (has_physics_error != PhysicsError::NONE)
+    {
+        mFMP->childSetVisible("physics_status_message_text", true); //display or clear
+        physStatusIcon->setVisible(true);
+        // The order here is important. 
+        if (has_physics_error & PhysicsError::TOOMANYHULLS)
+        {
+            mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_hull_limit_exceeded"));
+            LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
+            physStatusIcon->setImage(img);
+        }
+        else if (has_physics_error & PhysicsError::TOOMANYVERTSINHULL)
+        {
+            mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_vertex_limit_exceeded"));
+            LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
+            physStatusIcon->setImage(img);
+        }
+        else if (has_physics_error & PhysicsError::DEGENERATE)
+        {
+            mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_degenerate_triangles"));
+            LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Error");
+            physStatusIcon->setImage(img);
+        }
+        else if (has_physics_error & PhysicsError::NOHAVOK)
+        {
+            mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_no_havok"));
+            LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Warning");
+            physStatusIcon->setImage(img);
+        }
+        else
+        {
+            // This should not happen
+            mFMP->childSetValue("physics_status_message_text", mFMP->getString("phys_status_unknown_error"));
+            LLUIImagePtr img = LLUI::getUIImage("ModelImport_Status_Warning");
+            physStatusIcon->setImage(img);
+        }
+    }
+    else
+    {
+        mFMP->childSetVisible("physics_status_message_text", false); //display or clear
+        physStatusIcon->setVisible(false);
+    }
 // </FS:Beq>
     if (getLoadState() >= LLModelLoader::ERROR_PARSING)
     {
@@ -2440,10 +2440,10 @@ void LLModelPreview::updateStatusMessages()
             mModelNoErrors = false;
         }
     }
-	// <FS:Beq> Improve the error checking the TO DO here is no longer applicable but not an FS comment so edited to stop it being picked up
-	//if (!mModelNoErrors || mHasDegenerate)
+    // <FS:Beq> Improve the error checking the TO DO here is no longer applicable but not an FS comment so edited to stop it being picked up
+    //if (!mModelNoErrors || mHasDegenerate)
     if (!gSavedSettings.getBOOL("FSIgnoreClientsideMeshValidation") && (!mModelNoErrors || (has_physics_error > PhysicsError::NOHAVOK))) // block for all cases of phsyics error except NOHAVOK
-	// </FS:Beq>
+    // </FS:Beq>
     {
         mFMP->childDisable("ok_btn");
         mFMP->childDisable("calculate_btn");
@@ -3337,9 +3337,9 @@ BOOL LLModelPreview::render()
     LLQuaternion av_rot = camera_rot;
     F32 camera_distance = skin_weight ? SKIN_WEIGHT_CAMERA_DISTANCE : mCameraDistance;
     LLViewerCamera::getInstance()->setOriginAndLookAt(
-        target_pos + ((LLVector3(camera_distance, 0.f, 0.f) + offset) * av_rot),		// camera
-        LLVector3::z_axis,																	// up
-        target_pos);											// point of interest
+        target_pos + ((LLVector3(camera_distance, 0.f, 0.f) + offset) * av_rot),        // camera
+        LLVector3::z_axis,                                                                  // up
+        target_pos);                                            // point of interest
 
 
     z_near = llclamp(z_far * 0.001f, 0.001f, 0.1f);
@@ -3674,9 +3674,9 @@ BOOL LLModelPreview::render()
             bool pelvis_recalc = false;
 
             LLViewerCamera::getInstance()->setOriginAndLookAt(
-                target_pos + ((LLVector3(camera_distance, 0.f, 0.f) + offset) * av_rot),		// camera
-                LLVector3::z_axis,																	// up
-                target_pos);											// point of interest
+                target_pos + ((LLVector3(camera_distance, 0.f, 0.f) + offset) * av_rot),        // camera
+                LLVector3::z_axis,                                                                  // up
+                target_pos);                                            // point of interest
 
             for (LLModelLoader::scene::iterator iter = mScene[mPreviewLOD].begin(); iter != mScene[mPreviewLOD].end(); ++iter)
             {
@@ -3849,22 +3849,22 @@ BOOL LLModelPreview::render()
 void LLModelPreview::renderGroundPlane(float z_offset)
 {   // Not necesarilly general - beware - but it seems to meet the needs of LLModelPreview::render
 
-	gGL.diffuseColor3f( 1.0f, 0.0f, 1.0f );
+    gGL.diffuseColor3f( 1.0f, 0.0f, 1.0f );
 
-	gGL.begin(LLRender::LINES);
-	gGL.vertex3fv(mGroundPlane[0].mV);
-	gGL.vertex3fv(mGroundPlane[1].mV);
+    gGL.begin(LLRender::LINES);
+    gGL.vertex3fv(mGroundPlane[0].mV);
+    gGL.vertex3fv(mGroundPlane[1].mV);
 
-	gGL.vertex3fv(mGroundPlane[1].mV);
-	gGL.vertex3fv(mGroundPlane[2].mV);
+    gGL.vertex3fv(mGroundPlane[1].mV);
+    gGL.vertex3fv(mGroundPlane[2].mV);
 
-	gGL.vertex3fv(mGroundPlane[2].mV);
-	gGL.vertex3fv(mGroundPlane[3].mV);
+    gGL.vertex3fv(mGroundPlane[2].mV);
+    gGL.vertex3fv(mGroundPlane[3].mV);
 
-	gGL.vertex3fv(mGroundPlane[3].mV);
-	gGL.vertex3fv(mGroundPlane[0].mV);
+    gGL.vertex3fv(mGroundPlane[3].mV);
+    gGL.vertex3fv(mGroundPlane[0].mV);
 
-	gGL.end();
+    gGL.end();
 }
 
 

@@ -35,11 +35,11 @@
 class LLAudioStreamManagerFMODEX;
 namespace FMOD
 {
-	class System;
-	class Channel;
-	class ChannelGroup;
-	class Sound;
-	class DSP;
+    class System;
+    class Channel;
+    class ChannelGroup;
+    class Sound;
+    class DSP;
 }
 typedef struct FMOD_DSP_DESCRIPTION FMOD_DSP_DESCRIPTION;
 
@@ -47,94 +47,94 @@ typedef struct FMOD_DSP_DESCRIPTION FMOD_DSP_DESCRIPTION;
 class LLAudioEngine_FMODEX : public LLAudioEngine 
 {
 public:
-	LLAudioEngine_FMODEX(bool enable_profiler);
-	virtual ~LLAudioEngine_FMODEX();
+    LLAudioEngine_FMODEX(bool enable_profiler);
+    virtual ~LLAudioEngine_FMODEX();
 
-	// initialization/startup/shutdown
-	virtual bool init(const S32 num_channels, void *user_data);
-	virtual std::string getDriverName(bool verbose);
-	virtual void allocateListener();
+    // initialization/startup/shutdown
+    virtual bool init(const S32 num_channels, void *user_data);
+    virtual std::string getDriverName(bool verbose);
+    virtual void allocateListener();
 
-	virtual void shutdown();
+    virtual void shutdown();
 
-	/*virtual*/ bool initWind();
-	/*virtual*/ void cleanupWind();
+    /*virtual*/ bool initWind();
+    /*virtual*/ void cleanupWind();
 
-	/*virtual*/void updateWind(LLVector3 direction, F32 camera_height_above_water);
+    /*virtual*/void updateWind(LLVector3 direction, F32 camera_height_above_water);
 
-	typedef F32 MIXBUFFERFORMAT;
+    typedef F32 MIXBUFFERFORMAT;
 
-	FMOD::System *getSystem()				const {return mSystem;}
+    FMOD::System *getSystem()               const {return mSystem;}
 
-	// <FS:Ansariel> Output device selection
-	/*virtual*/ std::map<LLUUID, std::string> getDevices();
-	/*virtual*/ void setDevice(const LLUUID& device_uuid);
+    // <FS:Ansariel> Output device selection
+    /*virtual*/ std::map<LLUUID, std::string> getDevices();
+    /*virtual*/ void setDevice(const LLUUID& device_uuid);
 
-	LLUUID getSelectedDeviceUUID() const { return mSelectedDeviceUUID; }
-	// </FS:Ansariel>
+    LLUUID getSelectedDeviceUUID() const { return mSelectedDeviceUUID; }
+    // </FS:Ansariel>
 
 protected:
-	/*virtual*/ LLAudioBuffer *createBuffer(); // Get a free buffer, or flush an existing one if you have to.
-	/*virtual*/ LLAudioChannel *createChannel(); // Create a new audio channel.
+    /*virtual*/ LLAudioBuffer *createBuffer(); // Get a free buffer, or flush an existing one if you have to.
+    /*virtual*/ LLAudioChannel *createChannel(); // Create a new audio channel.
 
-	/*virtual*/ void setInternalGain(F32 gain);
+    /*virtual*/ void setInternalGain(F32 gain);
 
-	bool mInited;
+    bool mInited;
 
-	LLWindGen<MIXBUFFERFORMAT> *mWindGen;
+    LLWindGen<MIXBUFFERFORMAT> *mWindGen;
 
-	FMOD_DSP_DESCRIPTION *mWindDSPDesc;
-	FMOD::DSP *mWindDSP;
-	FMOD::System *mSystem;
-	bool mEnableProfiler;
+    FMOD_DSP_DESCRIPTION *mWindDSPDesc;
+    FMOD::DSP *mWindDSP;
+    FMOD::System *mSystem;
+    bool mEnableProfiler;
 
-	// <FS:Ansariel> Output device selection
-	LLUUID mSelectedDeviceUUID;
+    // <FS:Ansariel> Output device selection
+    LLUUID mSelectedDeviceUUID;
 
 public:
-	static FMOD::ChannelGroup *mChannelGroups[LLAudioEngine::AUDIO_TYPE_COUNT];
+    static FMOD::ChannelGroup *mChannelGroups[LLAudioEngine::AUDIO_TYPE_COUNT];
 };
 
 
 class LLAudioChannelFMODEX : public LLAudioChannel
 {
 public:
-	LLAudioChannelFMODEX(FMOD::System *audioengine);
-	virtual ~LLAudioChannelFMODEX();
+    LLAudioChannelFMODEX(FMOD::System *audioengine);
+    virtual ~LLAudioChannelFMODEX();
 
 protected:
-	/*virtual*/ void play();
-	/*virtual*/ void playSynced(LLAudioChannel *channelp);
-	/*virtual*/ void cleanup();
-	/*virtual*/ bool isPlaying();
+    /*virtual*/ void play();
+    /*virtual*/ void playSynced(LLAudioChannel *channelp);
+    /*virtual*/ void cleanup();
+    /*virtual*/ bool isPlaying();
 
-	/*virtual*/ bool updateBuffer();
-	/*virtual*/ void update3DPosition();
-	/*virtual*/ void updateLoop();
+    /*virtual*/ bool updateBuffer();
+    /*virtual*/ void update3DPosition();
+    /*virtual*/ void updateLoop();
 
-	void set3DMode(bool use3d);
+    void set3DMode(bool use3d);
 protected:
-	FMOD::System *getSystem()	const {return mSystemp;}
-	FMOD::System *mSystemp;
-	FMOD::Channel *mChannelp;
-	S32 mLastSamplePos;
+    FMOD::System *getSystem()   const {return mSystemp;}
+    FMOD::System *mSystemp;
+    FMOD::Channel *mChannelp;
+    S32 mLastSamplePos;
 };
 
 
 class LLAudioBufferFMODEX : public LLAudioBuffer
 {
 public:
-	LLAudioBufferFMODEX(FMOD::System *audioengine);
-	virtual ~LLAudioBufferFMODEX();
+    LLAudioBufferFMODEX(FMOD::System *audioengine);
+    virtual ~LLAudioBufferFMODEX();
 
-	/*virtual*/ bool loadWAV(const std::string& filename);
-	/*virtual*/ U32 getLength();
-	friend class LLAudioChannelFMODEX;
+    /*virtual*/ bool loadWAV(const std::string& filename);
+    /*virtual*/ U32 getLength();
+    friend class LLAudioChannelFMODEX;
 protected:
-	FMOD::System *getSystem()	const {return mSystemp;}
-	FMOD::System *mSystemp;
-	FMOD::Sound *getSound()		const{ return mSoundp; }
-	FMOD::Sound *mSoundp;
+    FMOD::System *getSystem()   const {return mSystemp;}
+    FMOD::System *mSystemp;
+    FMOD::Sound *getSound()     const{ return mSoundp; }
+    FMOD::Sound *mSoundp;
 };
 
 

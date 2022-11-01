@@ -205,22 +205,22 @@ void inventory_offer_handler(LLOfferInfo* info)
     if (gSavedSettings.getBOOL("AutoAcceptNewInventory")
         && (info->mType == LLAssetType::AT_NOTECARD
         || info->mType == LLAssetType::AT_LANDMARK
-		|| gSavedSettings.getBOOL("KokuaAutoAcceptAnyNewInventory") // RLV version will need protection against auto-accepting to RLV
+        || gSavedSettings.getBOOL("KokuaAutoAcceptAnyNewInventory") // RLV version will need protection against auto-accepting to RLV
         || info->mType == LLAssetType::AT_TEXTURE))
     {
         // For certain types, just accept the items into the inventory,
         // and possibly open them on receipt depending upon "ShowNewInventory".
         bAutoAccept = true;
 
-		// Do not auto accept into #RLV to avoid possible abuse - #RLV gives should always raise a prompt		
-		std::string folder_name(info->mDesc);
-		if (gRRenabled && !gSavedSettings.getBOOL("RestrainedLoveForbidGiveToRLV") &&
-			info->mType == LLAssetType::AT_CATEGORY &&
-			gAgent.mRRInterface.getRlvShare() &&
-			(folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 0 || folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 1))
-		{
-			bAutoAccept = false;
-		}
+        // Do not auto accept into #RLV to avoid possible abuse - #RLV gives should always raise a prompt       
+        std::string folder_name(info->mDesc);
+        if (gRRenabled && !gSavedSettings.getBOOL("RestrainedLoveForbidGiveToRLV") &&
+            info->mType == LLAssetType::AT_CATEGORY &&
+            gAgent.mRRInterface.getRlvShare() &&
+            (folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 0 || folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 1))
+        {
+            bAutoAccept = false;
+        }
     }
 
     // Strip any SLURL from the message display. (DEV-2754)
@@ -367,10 +367,10 @@ void inventory_offer_handler(LLOfferInfo* info)
             else
             {
                 std::string name_slurl = LLSLURL("agent", info->mFromID, "inspect").getSLURLString();
-				if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
-				{
-					name_slurl = gAgent.mRRInterface.getCensoredMessage(info->mFromName);
-				}
+                if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
+                {
+                    name_slurl = gAgent.mRRInterface.getCensoredMessage(info->mFromName);
+                }
 
                 chat_args["USER_NAME"] = name_slurl;
                 message_type = "InvOfferAutoAcceptUser";
@@ -500,124 +500,124 @@ void send_lures(const LLSD& notification, const LLSD& response);
 //mk
 
 void LLIMProcessing::processNewMessage(LLUUID from_id,
-	BOOL from_group,
-	LLUUID to_id,
-	U8 offline,
-	EInstantMessage dialog, // U8
-	LLUUID session_id,
-	U32 timestamp,
-	std::string agentName,
-	std::string message,
-	U32 parent_estate_id,
-	LLUUID region_id,
-	LLVector3 position,
-	U8 *binary_bucket,
-	S32 binary_bucket_size,
-	LLHost &sender,
-	LLUUID aux_id)
+    BOOL from_group,
+    LLUUID to_id,
+    U8 offline,
+    EInstantMessage dialog, // U8
+    LLUUID session_id,
+    U32 timestamp,
+    std::string agentName,
+    std::string message,
+    U32 parent_estate_id,
+    LLUUID region_id,
+    LLVector3 position,
+    U8 *binary_bucket,
+    S32 binary_bucket_size,
+    LLHost &sender,
+    LLUUID aux_id)
 {
-	LLChat chat;
-	std::string buffer;
-	std::string name = agentName;
+    LLChat chat;
+    std::string buffer;
+    std::string name = agentName;
 
-	// make sure that we don't have an empty or all-whitespace name
-	LLStringUtil::trim(name);
-	if (name.empty())
-	{
-		name = LLTrans::getString("Unnamed");
-	}
+    // make sure that we don't have an empty or all-whitespace name
+    LLStringUtil::trim(name);
+    if (name.empty())
+    {
+        name = LLTrans::getString("Unnamed");
+    }
 
-	// Preserve the unaltered name for use in group notice mute checking.
-	std::string original_name = name;
+    // Preserve the unaltered name for use in group notice mute checking.
+    std::string original_name = name;
 
-	// IDEVO convert new-style "Resident" names for display
-	name = clean_name_from_im(name, dialog);
+    // IDEVO convert new-style "Resident" names for display
+    name = clean_name_from_im(name, dialog);
 
-	BOOL is_do_not_disturb = gAgent.isDoNotDisturb();
-	BOOL is_muted = LLMuteList::getInstance()->isMuted(from_id, name, LLMute::flagTextChat)
-		// object IMs contain sender object id in session_id (STORM-1209)
-		|| (dialog == IM_FROM_TASK && LLMuteList::getInstance()->isMuted(session_id));
-	BOOL is_owned_by_me = FALSE;
-	BOOL is_friend = (LLAvatarTracker::instance().getBuddyInfo(from_id) == NULL) ? false : true;
+    BOOL is_do_not_disturb = gAgent.isDoNotDisturb();
+    BOOL is_muted = LLMuteList::getInstance()->isMuted(from_id, name, LLMute::flagTextChat)
+        // object IMs contain sender object id in session_id (STORM-1209)
+        || (dialog == IM_FROM_TASK && LLMuteList::getInstance()->isMuted(session_id));
+    BOOL is_owned_by_me = FALSE;
+    BOOL is_friend = (LLAvatarTracker::instance().getBuddyInfo(from_id) == NULL) ? false : true;
     BOOL accept_im_from_only_friend = gSavedPerAccountSettings.getBOOL("VoiceCallsFriendsOnly");
-	BOOL is_linden = chat.mSourceType != CHAT_SOURCE_OBJECT &&
-		LLMuteList::getInstance()->isLinden(name);
+    BOOL is_linden = chat.mSourceType != CHAT_SOURCE_OBJECT &&
+        LLMuteList::getInstance()->isLinden(name);
 
-	chat.mMuted = is_muted;
-	chat.mFromID = from_id;
-	chat.mFromName = name;
-	chat.mSourceType = (from_id.isNull() || (name == std::string(SYSTEM_FROM))) ? CHAT_SOURCE_SYSTEM : CHAT_SOURCE_AGENT;
+    chat.mMuted = is_muted;
+    chat.mFromID = from_id;
+    chat.mFromName = name;
+    chat.mSourceType = (from_id.isNull() || (name == std::string(SYSTEM_FROM))) ? CHAT_SOURCE_SYSTEM : CHAT_SOURCE_AGENT;
 
-	if (chat.mSourceType == CHAT_SOURCE_SYSTEM)
-	{ // Translate server message if required (MAINT-6109)
-		translate_if_needed(message);
-	}
+    if (chat.mSourceType == CHAT_SOURCE_SYSTEM)
+    { // Translate server message if required (MAINT-6109)
+        translate_if_needed(message);
+    }
 
-	LLViewerObject *source = gObjectList.findObject(session_id); //Session ID is probably the wrong thing.
-	if (source)
-	{
-		is_owned_by_me = source->permYouOwner();
-	}
+    LLViewerObject *source = gObjectList.findObject(session_id); //Session ID is probably the wrong thing.
+    if (source)
+    {
+        is_owned_by_me = source->permYouOwner();
+    }
 
-	std::string separator_string(": ");
+    std::string separator_string(": ");
 
-	LLSD args;
-	LLSD payload;
-	LLNotification::Params params;
+    LLSD args;
+    LLSD payload;
+    LLNotification::Params params;
 
-	switch (dialog)
-	{
-	case IM_CONSOLE_AND_CHAT_HISTORY:
+    switch (dialog)
+    {
+    case IM_CONSOLE_AND_CHAT_HISTORY:
 //MK
-		if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
-		{
-			// hide every occurrence of the Parcel name if the location restriction is active
-			message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
-			// hide every occurrence of the Region name if the location restriction is active
-			if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
-		}
+        if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
+        {
+            // hide every occurrence of the Parcel name if the location restriction is active
+            message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
+            // hide every occurrence of the Region name if the location restriction is active
+            if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
+        }
 
-		if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
-		{
-			// censor object IMs but not avatar IMs
-			message = gAgent.mRRInterface.getCensoredMessage(message);
-		}
+        if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
+        {
+            // censor object IMs but not avatar IMs
+            message = gAgent.mRRInterface.getCensoredMessage(message);
+        }
 //mk
-		args["MESSAGE"] = message;
-		payload["from_id"] = from_id;
+        args["MESSAGE"] = message;
+        payload["from_id"] = from_id;
 
-		params.name = "IMSystemMessageTip";
-		params.substitutions = args;
-		params.payload = payload;
-		LLPostponedNotification::add<LLPostponedIMSystemTipNotification>(params, from_id, false);
-		break;
+        params.name = "IMSystemMessageTip";
+        params.substitutions = args;
+        params.payload = payload;
+        LLPostponedNotification::add<LLPostponedIMSystemTipNotification>(params, from_id, false);
+        break;
 
-	case IM_NOTHING_SPECIAL:	// p2p IM
-		// Don't show dialog, just do IM
-		if (!gAgent.isGodlike()
-			&& gAgent.getRegion()->isPrelude()
-			&& to_id.isNull())
-		{
-			// do nothing -- don't distract newbies in
-			// Prelude with global IMs
-		}
-		else if (offline == IM_ONLINE
-			&& is_do_not_disturb
-			&& from_id.notNull() //not a system message
+    case IM_NOTHING_SPECIAL:    // p2p IM
+        // Don't show dialog, just do IM
+        if (!gAgent.isGodlike()
+            && gAgent.getRegion()->isPrelude()
+            && to_id.isNull())
+        {
+            // do nothing -- don't distract newbies in
+            // Prelude with global IMs
+        }
+        else if (offline == IM_ONLINE
+            && is_do_not_disturb
+            && from_id.notNull() //not a system message
 //MK
-			////					&& to_id.notNull()) //not global message
-			&& to_id.notNull() //not global message
-			// agent is not forbidden to receive IMs or the sender is an exception => send Busy response
-			&& (!KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
-			)
+            ////                    && to_id.notNull()) //not global message
+            && to_id.notNull() //not global message
+            // agent is not forbidden to receive IMs or the sender is an exception => send Busy response
+            && (!KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
+            )
 //mk
-		{
+        {
 
-			// now store incoming IM in chat history
+            // now store incoming IM in chat history
 
-			buffer = message;
+            buffer = message;
 
-			LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+            LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
                 // <FS:PP> FIRE-10178: Keyword Alerts in group IM do not work unless the group is in the foreground (notification on receipt of IM)
                 chat.mText = buffer;
@@ -629,252 +629,252 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                 }
                 // </FS:PP>
 
-			// add to IM panel, but do not bother the user
-			gIMMgr->addMessage(
-				session_id,
-				from_id,
-				name,
-				buffer,
-				IM_OFFLINE == offline,
-				LLStringUtil::null,
-				dialog,
-				parent_estate_id,
-				region_id,
-				position,
+            // add to IM panel, but do not bother the user
+            gIMMgr->addMessage(
+                session_id,
+                from_id,
+                name,
+                buffer,
+                IM_OFFLINE == offline,
+                LLStringUtil::null,
+                dialog,
+                parent_estate_id,
+                region_id,
+                position,
                     true,
                     false,
                     keyword_alert_performed);
 
-			if (!gIMMgr->isDNDMessageSend(session_id))
-			{
-				// return a standard "do not disturb" message, but only do it to online IM
-				// (i.e. not other auto responses and not store-and-forward IM)
-				send_do_not_disturb_message(gMessageSystem, from_id, session_id);
-				gIMMgr->setDNDMessageSent(session_id, true);
-			}
-		}
+            if (!gIMMgr->isDNDMessageSend(session_id))
+            {
+                // return a standard "do not disturb" message, but only do it to online IM
+                // (i.e. not other auto responses and not store-and-forward IM)
+                send_do_not_disturb_message(gMessageSystem, from_id, session_id);
+                gIMMgr->setDNDMessageSent(session_id, true);
+            }
+        }
 //MK
-		else if (!is_muted && gRRenabled && message == "@version")
-		{
-			// return the version message
-			std::string my_name;
-			LLAgentUI::buildFullname(my_name);
-			std::string response = gAgent.mRRInterface.getVersion();
-			pack_instant_message(
-				gMessageSystem,
-				gAgent.getID(),
-				FALSE,
-				gAgent.getSessionID(),
-				from_id,
-				my_name.c_str(),
-				response.c_str(),
-				IM_ONLINE,
-				IM_DO_NOT_DISTURB_AUTO_RESPONSE,
-				session_id);
-			gAgent.sendReliableMessage();
+        else if (!is_muted && gRRenabled && message == "@version")
+        {
+            // return the version message
+            std::string my_name;
+            LLAgentUI::buildFullname(my_name);
+            std::string response = gAgent.mRRInterface.getVersion();
+            pack_instant_message(
+                gMessageSystem,
+                gAgent.getID(),
+                FALSE,
+                gAgent.getSessionID(),
+                from_id,
+                my_name.c_str(),
+                response.c_str(),
+                IM_ONLINE,
+                IM_DO_NOT_DISTURB_AUTO_RESPONSE,
+                session_id);
+            gAgent.sendReliableMessage();
 
-			// remove the "XXX is typing..." label from the IM window
-			gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
-		}
-		else if (!is_muted && gRRenabled && message == "@getblacklist")
-		{
-			// return the contents of  the blacklist, without a filter
-			std::string my_name;
-			LLAgentUI::buildFullname(my_name);
-			std::string response = gAgent.mRRInterface.sBlacklist;
-			pack_instant_message(
-				gMessageSystem,
-				gAgent.getID(),
-				FALSE,
-				gAgent.getSessionID(),
-				from_id,
-				my_name.c_str(),
-				response.c_str(),
-				IM_ONLINE,
-				IM_DO_NOT_DISTURB_AUTO_RESPONSE,
-				session_id);
-			gAgent.sendReliableMessage();
+            // remove the "XXX is typing..." label from the IM window
+            gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
+        }
+        else if (!is_muted && gRRenabled && message == "@getblacklist")
+        {
+            // return the contents of  the blacklist, without a filter
+            std::string my_name;
+            LLAgentUI::buildFullname(my_name);
+            std::string response = gAgent.mRRInterface.sBlacklist;
+            pack_instant_message(
+                gMessageSystem,
+                gAgent.getID(),
+                FALSE,
+                gAgent.getSessionID(),
+                from_id,
+                my_name.c_str(),
+                response.c_str(),
+                IM_ONLINE,
+                IM_DO_NOT_DISTURB_AUTO_RESPONSE,
+                session_id);
+            gAgent.sendReliableMessage();
 
-			// remove the "XXX is typing..." label from the IM window
-			gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
-		}
-		else if (!is_muted && gRRenabled && message == "@list")
-		{
-			// return the list of restrictions
-			std::string my_name;
-			LLAgentUI::buildFullname(my_name);
-			std::string response = gAgent.mRRInterface.getRlvRestrictions();
+            // remove the "XXX is typing..." label from the IM window
+            gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
+        }
+        else if (!is_muted && gRRenabled && message == "@list")
+        {
+            // return the list of restrictions
+            std::string my_name;
+            LLAgentUI::buildFullname(my_name);
+            std::string response = gAgent.mRRInterface.getRlvRestrictions();
 
-			// The message may be very long, so we might need to chop in chunks of 1023 characters 
-			// and send several IMs in a row or else it will be truncated by the server.
-			while (response.length() > 1023)
-			{
-				std::string chunk = response.substr(0, 1023);
-				response = response.substr(1023);
-				pack_instant_message(
-					gMessageSystem,
-					gAgent.getID(),
-					FALSE,
-					gAgent.getSessionID(),
-					from_id,
-					my_name.c_str(),
-					chunk.c_str(),
-					IM_ONLINE,
-					IM_DO_NOT_DISTURB_AUTO_RESPONSE,
-					session_id);
-				gAgent.sendReliableMessage();
-			}
+            // The message may be very long, so we might need to chop in chunks of 1023 characters 
+            // and send several IMs in a row or else it will be truncated by the server.
+            while (response.length() > 1023)
+            {
+                std::string chunk = response.substr(0, 1023);
+                response = response.substr(1023);
+                pack_instant_message(
+                    gMessageSystem,
+                    gAgent.getID(),
+                    FALSE,
+                    gAgent.getSessionID(),
+                    from_id,
+                    my_name.c_str(),
+                    chunk.c_str(),
+                    IM_ONLINE,
+                    IM_DO_NOT_DISTURB_AUTO_RESPONSE,
+                    session_id);
+                gAgent.sendReliableMessage();
+            }
 
-			pack_instant_message(
-				gMessageSystem,
-				gAgent.getID(),
-				FALSE,
-				gAgent.getSessionID(),
-				from_id,
-				my_name.c_str(),
-				response.c_str(),
-				IM_ONLINE,
-				IM_DO_NOT_DISTURB_AUTO_RESPONSE,
-				session_id);
-			gAgent.sendReliableMessage();
+            pack_instant_message(
+                gMessageSystem,
+                gAgent.getID(),
+                FALSE,
+                gAgent.getSessionID(),
+                from_id,
+                my_name.c_str(),
+                response.c_str(),
+                IM_ONLINE,
+                IM_DO_NOT_DISTURB_AUTO_RESPONSE,
+                session_id);
+            gAgent.sendReliableMessage();
 
-			// remove the "XXX is typing..." label from the IM window
-			gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
-		}
-		else if (!is_muted && gRRenabled && message == "@stopim")
-		{
-			// close this IM session if we are under @startim (globally or for this person)
-			bool close_session = false;
-			std::string response = "*** The other party is not under a @startim restriction.";
+            // remove the "XXX is typing..." label from the IM window
+            gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
+        }
+        else if (!is_muted && gRRenabled && message == "@stopim")
+        {
+            // close this IM session if we are under @startim (globally or for this person)
+            bool close_session = false;
+            std::string response = "*** The other party is not under a @startim restriction.";
 
-			if (gAgent.mRRInterface.containsWithoutException("startim", from_id.asString())
-				|| gAgent.mRRInterface.contains("startimto:" + from_id.asString()))
-			{
-				close_session = true;
-				response = "*** Session has been ended for the other party.";
-			}
+            if (gAgent.mRRInterface.containsWithoutException("startim", from_id.asString())
+                || gAgent.mRRInterface.contains("startimto:" + from_id.asString()))
+            {
+                close_session = true;
+                response = "*** Session has been ended for the other party.";
+            }
 
-			// We need to send feedback to the other party
-			std::string my_name;
-			LLAgentUI::buildFullname(my_name);
-			pack_instant_message(
-				gMessageSystem,
-				gAgent.getID(),
-				FALSE,
-				gAgent.getSessionID(),
-				from_id,
-				my_name.c_str(),
-				response.c_str(),
-				IM_ONLINE,
-				IM_DO_NOT_DISTURB_AUTO_RESPONSE,
-				session_id);
-			gAgent.sendReliableMessage();
+            // We need to send feedback to the other party
+            std::string my_name;
+            LLAgentUI::buildFullname(my_name);
+            pack_instant_message(
+                gMessageSystem,
+                gAgent.getID(),
+                FALSE,
+                gAgent.getSessionID(),
+                from_id,
+                my_name.c_str(),
+                response.c_str(),
+                IM_ONLINE,
+                IM_DO_NOT_DISTURB_AUTO_RESPONSE,
+                session_id);
+            gAgent.sendReliableMessage();
 
 
-			if (close_session)
-			{
-				//gIMMgr->leaveSession(session_id);
+            if (close_session)
+            {
+                //gIMMgr->leaveSession(session_id);
 
-				LLFloaterIMSession* floater = LLFloaterIMSession::findInstance(session_id);
-				if (floater)
-				{
-					gAgent.mRRInterface.printOnChat("*** IM session with " + name + " has been ended remotely.");
-					floater->closeFloater(false);
-				}
-			}
+                LLFloaterIMSession* floater = LLFloaterIMSession::findInstance(session_id);
+                if (floater)
+                {
+                    gAgent.mRRInterface.printOnChat("*** IM session with " + name + " has been ended remotely.");
+                    floater->closeFloater(false);
+                }
+            }
 
-			// remove the "XXX is typing..." label from the IM window
-			gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
-		}
+            // remove the "XXX is typing..." label from the IM window
+            gIMMgr->processIMTypingStop(from_id,IM_DO_NOT_DISTURB_AUTO_RESPONSE);
+        }
 //mk
-		else if (from_id.isNull())
-		{
-			LLSD args;
+        else if (from_id.isNull())
+        {
+            LLSD args;
 //MK
-			if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
-			{
-				// hide every occurrence of the Parcel name if the location restriction is active
-				message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
-				// hide every occurrence of the Region name if the location restriction is active
-				if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
-			}
+            if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
+            {
+                // hide every occurrence of the Parcel name if the location restriction is active
+                message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
+                // hide every occurrence of the Region name if the location restriction is active
+                if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
+            }
 
-			if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
-			{
-				// censor object IMs but not avatar IMs
-				message = gAgent.mRRInterface.getCensoredMessage(message);
-			}
+            if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
+            {
+                // censor object IMs but not avatar IMs
+                message = gAgent.mRRInterface.getCensoredMessage(message);
+            }
 
-			// Don't display any notification containing the name of a muted Resident
-			if (LLMuteList::getInstance()->containsMutedName(message))
-			{
-				LL_INFOS("Messaging") << "process_improved_im: Notification received containing the name of a Blocked Resident." << LL_ENDL;
-				break;
-			}
+            // Don't display any notification containing the name of a muted Resident
+            if (LLMuteList::getInstance()->containsMutedName(message))
+            {
+                LL_INFOS("Messaging") << "process_improved_im: Notification received containing the name of a Blocked Resident." << LL_ENDL;
+                break;
+            }
 //mk
-			args["MESSAGE"] = message;
-			LLNotificationsUtil::add("SystemMessage", args);
-		}
-		else if (to_id.isNull())
-		{
-			// Message to everyone from GOD, look up the fullname since
-			// server always slams name to legacy names
-			LLAvatarNameCache::get(from_id, boost::bind(god_message_name_cb, _2, chat, message));
-		}
-		else
-		{
-			// standard message, not from system
-			std::string saved;
-			if (offline == IM_OFFLINE)
-			{
-				LLStringUtil::format_map_t args;
-				args["[LONG_TIMESTAMP]"] = formatted_time(timestamp);
-				saved = LLTrans::getString("Saved_message", args);
-			}
-			buffer = saved + message;
+            args["MESSAGE"] = message;
+            LLNotificationsUtil::add("SystemMessage", args);
+        }
+        else if (to_id.isNull())
+        {
+            // Message to everyone from GOD, look up the fullname since
+            // server always slams name to legacy names
+            LLAvatarNameCache::get(from_id, boost::bind(god_message_name_cb, _2, chat, message));
+        }
+        else
+        {
+            // standard message, not from system
+            std::string saved;
+            if (offline == IM_OFFLINE)
+            {
+                LLStringUtil::format_map_t args;
+                args["[LONG_TIMESTAMP]"] = formatted_time(timestamp);
+                saved = LLTrans::getString("Saved_message", args);
+            }
+            buffer = saved + message;
 
 //MK
-			if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
-			{
-				// agent is forbidden to receive IMs and the sender is no exception
-				buffer = separator_string + saved + "...";
+            if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
+            {
+                // agent is forbidden to receive IMs and the sender is no exception
+                buffer = separator_string + saved + "...";
 
-				// tell the sender the avatar could not read them
-				std::string my_name;
-				LLAgentUI::buildFullname(my_name);
-				my_name = my_name + " using viewer " + gAgent.mRRInterface.getVersion();
-				std::string response = RRInterface::sRecvimMessage;
-				pack_instant_message(
-					gMessageSystem,
-					gAgent.getID(),
-					FALSE,
-					gAgent.getSessionID(),
-					from_id,
-					my_name.c_str(),
-					response.c_str(),
-					IM_ONLINE,
-					IM_DO_NOT_DISTURB_AUTO_RESPONSE,
-					session_id);
-				gAgent.sendReliableMessage();
-			}
+                // tell the sender the avatar could not read them
+                std::string my_name;
+                LLAgentUI::buildFullname(my_name);
+                my_name = my_name + " using viewer " + gAgent.mRRInterface.getVersion();
+                std::string response = RRInterface::sRecvimMessage;
+                pack_instant_message(
+                    gMessageSystem,
+                    gAgent.getID(),
+                    FALSE,
+                    gAgent.getSessionID(),
+                    from_id,
+                    my_name.c_str(),
+                    response.c_str(),
+                    IM_ONLINE,
+                    IM_DO_NOT_DISTURB_AUTO_RESPONSE,
+                    session_id);
+                gAgent.sendReliableMessage();
+            }
 //mk
 
-			LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+            LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
-			bool mute_im = is_muted;
-			if (accept_im_from_only_friend && !is_friend && !is_linden)
-			{
-				if (!gIMMgr->isNonFriendSessionNotified(session_id))
-				{
-					std::string message = LLTrans::getString("IM_unblock_only_groups_friends");
-					gIMMgr->addMessage(session_id, from_id, name, message, IM_OFFLINE == offline);
-					gIMMgr->addNotifiedNonFriendSessionID(session_id);
-				}
+            bool mute_im = is_muted;
+            if (accept_im_from_only_friend && !is_friend && !is_linden)
+            {
+                if (!gIMMgr->isNonFriendSessionNotified(session_id))
+                {
+                    std::string message = LLTrans::getString("IM_unblock_only_groups_friends");
+                    gIMMgr->addMessage(session_id, from_id, name, message, IM_OFFLINE == offline);
+                    gIMMgr->addNotifiedNonFriendSessionID(session_id);
+                }
 
-				mute_im = true;
-			}
-			if (!mute_im)
-			{
+                mute_im = true;
+            }
+            if (!mute_im)
+            {
                     // <FS:PP> FIRE-10178: Keyword Alerts in group IM do not work unless the group is in the foreground (notification on receipt of IM)
                     chat.mText = message;
                     bool keyword_alert_performed = false;
@@ -886,309 +886,309 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                     // </FS:PP>
 
                     //KKA-674 - this got pulled across in the keywords port but isn't needed here (and reinstates squashed incoming IMs)
-					//buffer = saved + message;
+                    //buffer = saved + message;
 
-				gIMMgr->addMessage(
-					session_id,
-					from_id,
-					name,
-					buffer,
-					IM_OFFLINE == offline,
-					LLStringUtil::null,
-					dialog,
-					parent_estate_id,
-					region_id,
-					position,
+                gIMMgr->addMessage(
+                    session_id,
+                    from_id,
+                    name,
+                    buffer,
+                    IM_OFFLINE == offline,
+                    LLStringUtil::null,
+                    dialog,
+                    parent_estate_id,
+                    region_id,
+                    position,
                         true,
                         false,
                         keyword_alert_performed);
-			}
-			else
-			{
-				/*
-				EXT-5099
-				*/
-			}
-		}
-		break;
+            }
+            else
+            {
+                /*
+                EXT-5099
+                */
+            }
+        }
+        break;
 
-	case IM_TYPING_START:
-	{
-		gIMMgr->processIMTypingStart(from_id, dialog);
-	}
-	break;
+    case IM_TYPING_START:
+    {
+        gIMMgr->processIMTypingStart(from_id, dialog);
+    }
+    break;
 
-	case IM_TYPING_STOP:
-	{
-		gIMMgr->processIMTypingStop(from_id, dialog);
-	}
-	break;
+    case IM_TYPING_STOP:
+    {
+        gIMMgr->processIMTypingStop(from_id, dialog);
+    }
+    break;
 
-	case IM_MESSAGEBOX:
-	{
-		// This is a block, modeless dialog.
+    case IM_MESSAGEBOX:
+    {
+        // This is a block, modeless dialog.
 //MK
-		if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
-		{
-			// hide every occurrence of the Parcel name if the location restriction is active
-			message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
-			// hide every occurrence of the Region name if the location restriction is active
-			if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
-		}
+        if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
+        {
+            // hide every occurrence of the Parcel name if the location restriction is active
+            message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
+            // hide every occurrence of the Region name if the location restriction is active
+            if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
+        }
 
-		if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
-		{
-			message = gAgent.mRRInterface.getCensoredMessage(message);
-		}
+        if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
+        {
+            message = gAgent.mRRInterface.getCensoredMessage(message);
+        }
 //mk
-		args["MESSAGE"] = message;
-		LLNotificationsUtil::add("SystemMessageTip", args);
-	}
-	break;
-	case IM_GROUP_NOTICE:
-	case IM_GROUP_NOTICE_REQUESTED:
-	{
-		LL_INFOS("Messaging") << "Received IM_GROUP_NOTICE message." << LL_ENDL;
+        args["MESSAGE"] = message;
+        LLNotificationsUtil::add("SystemMessageTip", args);
+    }
+    break;
+    case IM_GROUP_NOTICE:
+    case IM_GROUP_NOTICE_REQUESTED:
+    {
+        LL_INFOS("Messaging") << "Received IM_GROUP_NOTICE message." << LL_ENDL;
 
-		LLUUID agent_id;
-		U8 has_inventory;
-		U8 asset_type = 0;
-		LLUUID group_id;
-		std::string item_name;
+        LLUUID agent_id;
+        U8 has_inventory;
+        U8 asset_type = 0;
+        LLUUID group_id;
+        std::string item_name;
 
-		if (aux_id.notNull())
-		{
-			// aux_id contains group id, binary bucket contains name and asset type
-			group_id = aux_id;
-			has_inventory = binary_bucket_size > 1 ? TRUE : FALSE;
-			from_group = TRUE; // inaccurate value correction
-			if (has_inventory)
-			{
-				std::string str_bucket = ll_safe_string((char*)binary_bucket, binary_bucket_size);
+        if (aux_id.notNull())
+        {
+            // aux_id contains group id, binary bucket contains name and asset type
+            group_id = aux_id;
+            has_inventory = binary_bucket_size > 1 ? TRUE : FALSE;
+            from_group = TRUE; // inaccurate value correction
+            if (has_inventory)
+            {
+                std::string str_bucket = ll_safe_string((char*)binary_bucket, binary_bucket_size);
 
-				typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-				boost::char_separator<char> sep("|", "", boost::keep_empty_tokens);
-				tokenizer tokens(str_bucket, sep);
-				tokenizer::iterator iter = tokens.begin();
+                typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+                boost::char_separator<char> sep("|", "", boost::keep_empty_tokens);
+                tokenizer tokens(str_bucket, sep);
+                tokenizer::iterator iter = tokens.begin();
 
-				asset_type = (LLAssetType::EType)(atoi((*(iter++)).c_str()));
-				iter++; // wearable type if applicable, otherwise asset type
-				item_name = std::string((*(iter++)).c_str());
-				// Note There is more elements in 'tokens' ...
+                asset_type = (LLAssetType::EType)(atoi((*(iter++)).c_str()));
+                iter++; // wearable type if applicable, otherwise asset type
+                item_name = std::string((*(iter++)).c_str());
+                // Note There is more elements in 'tokens' ...
 
 
-				for (int i = 0; i < 6; i++)
-				{
-					LL_WARNS() << *(iter++) << LL_ENDL;
-					iter++;
-				}
-			}
-		}
-		else
-		{
-			// All info is in binary bucket, read it for more information.
-			struct notice_bucket_header_t
-			{
-				U8 has_inventory;
-				U8 asset_type;
-				LLUUID group_id;
-			};
-			struct notice_bucket_full_t
-			{
-				struct notice_bucket_header_t header;
-				U8 item_name[DB_INV_ITEM_NAME_BUF_SIZE];
-			}*notice_bin_bucket;
+                for (int i = 0; i < 6; i++)
+                {
+                    LL_WARNS() << *(iter++) << LL_ENDL;
+                    iter++;
+                }
+            }
+        }
+        else
+        {
+            // All info is in binary bucket, read it for more information.
+            struct notice_bucket_header_t
+            {
+                U8 has_inventory;
+                U8 asset_type;
+                LLUUID group_id;
+            };
+            struct notice_bucket_full_t
+            {
+                struct notice_bucket_header_t header;
+                U8 item_name[DB_INV_ITEM_NAME_BUF_SIZE];
+            }*notice_bin_bucket;
 
-			// Make sure the binary bucket is big enough to hold the header 
-			// and a null terminated item name.
-			if ((binary_bucket_size < (S32)((sizeof(notice_bucket_header_t) + sizeof(U8))))
-				|| (binary_bucket[binary_bucket_size - 1] != '\0'))
-			{
-				LL_WARNS("Messaging") << "Malformed group notice binary bucket" << LL_ENDL;
-				break;
-			}
+            // Make sure the binary bucket is big enough to hold the header 
+            // and a null terminated item name.
+            if ((binary_bucket_size < (S32)((sizeof(notice_bucket_header_t) + sizeof(U8))))
+                || (binary_bucket[binary_bucket_size - 1] != '\0'))
+            {
+                LL_WARNS("Messaging") << "Malformed group notice binary bucket" << LL_ENDL;
+                break;
+            }
 
-			notice_bin_bucket = (struct notice_bucket_full_t*) &binary_bucket[0];
-			has_inventory = notice_bin_bucket->header.has_inventory;
-			asset_type = notice_bin_bucket->header.asset_type;
-			group_id = notice_bin_bucket->header.group_id;
-			item_name = ll_safe_string((const char*)notice_bin_bucket->item_name);
-		}
+            notice_bin_bucket = (struct notice_bucket_full_t*) &binary_bucket[0];
+            has_inventory = notice_bin_bucket->header.has_inventory;
+            asset_type = notice_bin_bucket->header.asset_type;
+            group_id = notice_bin_bucket->header.group_id;
+            item_name = ll_safe_string((const char*)notice_bin_bucket->item_name);
+        }
 
-		if (group_id != from_id)
-		{
-			agent_id = from_id;
-		}
-		else
-		{
-			S32 index = original_name.find(" Resident");
-			if (index != std::string::npos)
-			{
-				original_name = original_name.substr(0, index);
-			}
+        if (group_id != from_id)
+        {
+            agent_id = from_id;
+        }
+        else
+        {
+            S32 index = original_name.find(" Resident");
+            if (index != std::string::npos)
+            {
+                original_name = original_name.substr(0, index);
+            }
 
-			// The group notice packet does not have an AgentID.  Obtain one from the name cache.
-			// If last name is "Resident" strip it out so the cache name lookup works.
-			std::string legacy_name = gCacheName->buildLegacyName(original_name);
+            // The group notice packet does not have an AgentID.  Obtain one from the name cache.
+            // If last name is "Resident" strip it out so the cache name lookup works.
+            std::string legacy_name = gCacheName->buildLegacyName(original_name);
                 agent_id = LLAvatarNameCache::getInstance()->findIdByName(legacy_name);
 
-			if (agent_id.isNull())
-			{
-				LL_WARNS("Messaging") << "buildLegacyName returned null while processing " << original_name << LL_ENDL;
-			}
-		}
+            if (agent_id.isNull())
+            {
+                LL_WARNS("Messaging") << "buildLegacyName returned null while processing " << original_name << LL_ENDL;
+            }
+        }
 
-		if (agent_id.notNull() && LLMuteList::getInstance()->isMuted(agent_id))
-		{
-			break;
-		}
+        if (agent_id.notNull() && LLMuteList::getInstance()->isMuted(agent_id))
+        {
+            break;
+        }
 
-		// If there is inventory, give the user the inventory offer.
-		LLOfferInfo* info = NULL;
+        // If there is inventory, give the user the inventory offer.
+        LLOfferInfo* info = NULL;
 
-		if (has_inventory)
-		{
-			info = new LLOfferInfo();
+        if (has_inventory)
+        {
+            info = new LLOfferInfo();
 
                 info->mIM = dialog;
-			info->mFromID = from_id;
-			info->mFromGroup = from_group;
-			info->mTransactionID = session_id;
-			info->mType = (LLAssetType::EType) asset_type;
-			info->mFolderID = gInventory.findCategoryUUIDForType(LLFolderType::assetTypeToFolderType(info->mType));
-			std::string from_name;
+            info->mFromID = from_id;
+            info->mFromGroup = from_group;
+            info->mTransactionID = session_id;
+            info->mType = (LLAssetType::EType) asset_type;
+            info->mFolderID = gInventory.findCategoryUUIDForType(LLFolderType::assetTypeToFolderType(info->mType));
+            std::string from_name;
 
-			from_name += "A group member named ";
-			from_name += name;
+            from_name += "A group member named ";
+            from_name += name;
 
-			info->mFromName = from_name;
-			info->mDesc = item_name;
-			info->mHost = sender;
-		}
+            info->mFromName = from_name;
+            info->mDesc = item_name;
+            info->mHost = sender;
+        }
 
-		std::string str(message);
+        std::string str(message);
 
-		// Tokenize the string.
-		// TODO: Support escaped tokens ("||" -> "|")
-		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-		boost::char_separator<char> sep("|", "", boost::keep_empty_tokens);
-		tokenizer tokens(str, sep);
-		tokenizer::iterator iter = tokens.begin();
+        // Tokenize the string.
+        // TODO: Support escaped tokens ("||" -> "|")
+        typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+        boost::char_separator<char> sep("|", "", boost::keep_empty_tokens);
+        tokenizer tokens(str, sep);
+        tokenizer::iterator iter = tokens.begin();
 
-		std::string subj(*iter++);
-		std::string mes(*iter++);
+        std::string subj(*iter++);
+        std::string mes(*iter++);
 
-		// Send the notification down the new path.
-		// For requested notices, we don't want to send the popups.
-		if (dialog != IM_GROUP_NOTICE_REQUESTED)
-		{
-			payload["subject"] = subj;
-			payload["message"] = mes;
-			payload["sender_name"] = name;
-			payload["sender_id"] = agent_id;
-			payload["group_id"] = group_id;
-			payload["inventory_name"] = item_name;
-			payload["received_time"] = LLDate::now();
-			if (info && info->asLLSD())
-			{
-				payload["inventory_offer"] = info->asLLSD();
-			}
+        // Send the notification down the new path.
+        // For requested notices, we don't want to send the popups.
+        if (dialog != IM_GROUP_NOTICE_REQUESTED)
+        {
+            payload["subject"] = subj;
+            payload["message"] = mes;
+            payload["sender_name"] = name;
+            payload["sender_id"] = agent_id;
+            payload["group_id"] = group_id;
+            payload["inventory_name"] = item_name;
+            payload["received_time"] = LLDate::now();
+            if (info && info->asLLSD())
+            {
+                payload["inventory_offer"] = info->asLLSD();
+            }
 
-			LLSD args;
-			args["SUBJECT"] = subj;
-			args["MESSAGE"] = mes;
-			LLDate notice_date = LLDate(timestamp).notNull() ? LLDate(timestamp) : LLDate::now();
-			LLNotifications::instance().add(LLNotification::Params("GroupNotice").substitutions(args).payload(payload).time_stamp(notice_date));
-		}
+            LLSD args;
+            args["SUBJECT"] = subj;
+            args["MESSAGE"] = mes;
+            LLDate notice_date = LLDate(timestamp).notNull() ? LLDate(timestamp) : LLDate::now();
+            LLNotifications::instance().add(LLNotification::Params("GroupNotice").substitutions(args).payload(payload).time_stamp(notice_date));
+        }
 
-		// Also send down the old path for now.
-		if (IM_GROUP_NOTICE_REQUESTED == dialog)
-		{
+        // Also send down the old path for now.
+        if (IM_GROUP_NOTICE_REQUESTED == dialog)
+        {
 
-			LLPanelGroup::showNotice(subj, mes, group_id, has_inventory, item_name, info);
-		}
-		else
-		{
-			delete info;
-		}
-	}
-	break;
-	case IM_GROUP_INVITATION:
-	{
-		if (!is_muted)
-		{
-			// group is not blocked, but we still need to check agent that sent the invitation
-			// and we have no agent's id
-			// Note: server sends username "first.last".
-			is_muted |= LLMuteList::getInstance()->isMuted(name);
-		}
-		if (is_do_not_disturb || is_muted)
-		{
-			send_do_not_disturb_message(gMessageSystem, from_id);
-		}
+            LLPanelGroup::showNotice(subj, mes, group_id, has_inventory, item_name, info);
+        }
+        else
+        {
+            delete info;
+        }
+    }
+    break;
+    case IM_GROUP_INVITATION:
+    {
+        if (!is_muted)
+        {
+            // group is not blocked, but we still need to check agent that sent the invitation
+            // and we have no agent's id
+            // Note: server sends username "first.last".
+            is_muted |= LLMuteList::getInstance()->isMuted(name);
+        }
+        if (is_do_not_disturb || is_muted)
+        {
+            send_do_not_disturb_message(gMessageSystem, from_id);
+        }
 
-		if (!is_muted)
-		{
-			LL_INFOS("Messaging") << "Received IM_GROUP_INVITATION message." << LL_ENDL;
-			// Read the binary bucket for more information.
-			struct invite_bucket_t
-			{
-				S32 membership_fee;
-				LLUUID role_id;
-			}*invite_bucket;
+        if (!is_muted)
+        {
+            LL_INFOS("Messaging") << "Received IM_GROUP_INVITATION message." << LL_ENDL;
+            // Read the binary bucket for more information.
+            struct invite_bucket_t
+            {
+                S32 membership_fee;
+                LLUUID role_id;
+            }*invite_bucket;
 
-			// Make sure the binary bucket is the correct size.
-			if (binary_bucket_size != sizeof(invite_bucket_t))
-			{
-				LL_WARNS("Messaging") << "Malformed group invite binary bucket" << LL_ENDL;
-				break;
-			}
+            // Make sure the binary bucket is the correct size.
+            if (binary_bucket_size != sizeof(invite_bucket_t))
+            {
+                LL_WARNS("Messaging") << "Malformed group invite binary bucket" << LL_ENDL;
+                break;
+            }
 
-			invite_bucket = (struct invite_bucket_t*) &binary_bucket[0];
-			S32 membership_fee = ntohl(invite_bucket->membership_fee);
+            invite_bucket = (struct invite_bucket_t*) &binary_bucket[0];
+            S32 membership_fee = ntohl(invite_bucket->membership_fee);
 
-			LLSD payload;
-			payload["transaction_id"] = session_id;
+            LLSD payload;
+            payload["transaction_id"] = session_id;
                 payload["group_id"] = from_group ? from_id : aux_id;
-			payload["name"] = name;
-			payload["message"] = message;
-			payload["fee"] = membership_fee;
+            payload["name"] = name;
+            payload["message"] = message;
+            payload["fee"] = membership_fee;
                 payload["use_offline_cap"] = session_id.isNull() && (offline == IM_OFFLINE);
 
-			LLSD args;
-			args["MESSAGE"] = message;
-			// we shouldn't pass callback functor since it is registered in LLFunctorRegistration
-			LLNotificationsUtil::add("JoinGroup", args, payload);
-		}
-	}
-	break;
+            LLSD args;
+            args["MESSAGE"] = message;
+            // we shouldn't pass callback functor since it is registered in LLFunctorRegistration
+            LLNotificationsUtil::add("JoinGroup", args, payload);
+        }
+    }
+    break;
 
-	case IM_INVENTORY_OFFERED:
-	case IM_TASK_INVENTORY_OFFERED:
-		// Someone has offered us some inventory.
-	{
-		LLOfferInfo* info = new LLOfferInfo;
-		if (IM_INVENTORY_OFFERED == dialog)
-		{
-			struct offer_agent_bucket_t
-			{
-				S8		asset_type;
-				LLUUID	object_id;
-			}*bucketp;
+    case IM_INVENTORY_OFFERED:
+    case IM_TASK_INVENTORY_OFFERED:
+        // Someone has offered us some inventory.
+    {
+        LLOfferInfo* info = new LLOfferInfo;
+        if (IM_INVENTORY_OFFERED == dialog)
+        {
+            struct offer_agent_bucket_t
+            {
+                S8      asset_type;
+                LLUUID  object_id;
+            }*bucketp;
 
-			if (sizeof(offer_agent_bucket_t) != binary_bucket_size)
-			{
-				LL_WARNS("Messaging") << "Malformed inventory offer from agent" << LL_ENDL;
-				delete info;
-				break;
-			}
-			bucketp = (struct offer_agent_bucket_t*) &binary_bucket[0];
-			info->mType = (LLAssetType::EType) bucketp->asset_type;
-			info->mObjectID = bucketp->object_id;
-			info->mFromObject = FALSE;
-		}
-		else // IM_TASK_INVENTORY_OFFERED
-		{
+            if (sizeof(offer_agent_bucket_t) != binary_bucket_size)
+            {
+                LL_WARNS("Messaging") << "Malformed inventory offer from agent" << LL_ENDL;
+                delete info;
+                break;
+            }
+            bucketp = (struct offer_agent_bucket_t*) &binary_bucket[0];
+            info->mType = (LLAssetType::EType) bucketp->asset_type;
+            info->mObjectID = bucketp->object_id;
+            info->mFromObject = FALSE;
+        }
+        else // IM_TASK_INVENTORY_OFFERED
+        {
                 if (sizeof(S8) == binary_bucket_size)
                 {
                     info->mType = (LLAssetType::EType) binary_bucket[0];
@@ -1217,42 +1217,42 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                 info->mFromObject = TRUE;
             }
 
-		info->mIM = dialog;
-		info->mFromID = from_id;
-		info->mFromGroup = from_group;
+        info->mIM = dialog;
+        info->mFromID = from_id;
+        info->mFromGroup = from_group;
 //MK
-		std::string folder_name(message);
-		if (gRRenabled && !gSavedSettings.getBOOL("RestrainedLoveForbidGiveToRLV") &&
-			info->mType == LLAssetType::AT_CATEGORY &&
-			gAgent.mRRInterface.getRlvShare() &&
-			(folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 0 || folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 1))
-		{
-			info->mFolderID = gAgent.mRRInterface.getRlvShare()->getUUID();
-		}
-		else
-		{
+        std::string folder_name(message);
+        if (gRRenabled && !gSavedSettings.getBOOL("RestrainedLoveForbidGiveToRLV") &&
+            info->mType == LLAssetType::AT_CATEGORY &&
+            gAgent.mRRInterface.getRlvShare() &&
+            (folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 0 || folder_name.find(RR_RLV_REDIR_FOLDER_PREFIX) == 1))
+        {
+            info->mFolderID = gAgent.mRRInterface.getRlvShare()->getUUID();
+        }
+        else
+        {
 //mk
-			info->mFolderID = gInventory.findCategoryUUIDForType(LLFolderType::assetTypeToFolderType(info->mType));
+            info->mFolderID = gInventory.findCategoryUUIDForType(LLFolderType::assetTypeToFolderType(info->mType));
 //MK
-		}
+        }
 //mk
-		info->mTransactionID = session_id.notNull() ? session_id : aux_id;
-		info->mFromName = name;
+        info->mTransactionID = session_id.notNull() ? session_id : aux_id;
+        info->mFromName = name;
 //MK
-		if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
-		{
-			// hide every occurrence of the Parcel name if the location restriction is active
-			message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
-			// hide every occurrence of the Region name if the location restriction is active
-			if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
-		}
+        if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
+        {
+            // hide every occurrence of the Parcel name if the location restriction is active
+            message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
+            // hide every occurrence of the Region name if the location restriction is active
+            if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
+        }
 //mk
-		info->mDesc = message;
-		info->mHost = sender;
-		//if (((is_do_not_disturb && !is_owned_by_me) || is_muted))
-		if (is_muted)
-		{
-			// Prefetch the offered item so that it can be discarded by the appropriate observer. (EXT-4331)
+        info->mDesc = message;
+        info->mHost = sender;
+        //if (((is_do_not_disturb && !is_owned_by_me) || is_muted))
+        if (is_muted)
+        {
+            // Prefetch the offered item so that it can be discarded by the appropriate observer. (EXT-4331)
                 if (IM_INVENTORY_OFFERED == dialog)
                 {
                 LLInventoryFetchItemsObserver* fetch_item = new LLInventoryFetchItemsObserver(info->mObjectID);
@@ -1265,144 +1265,144 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                 {
                     info->forceResponse(IOR_MUTE);
                 }
-		}
+        }
 //MK
-		// MK : Comment this piece of code below, because auto-declining inventory offers from objects while in Busy mode
-		// confuses the user, thinking the object does not work. It certainly confuses me every time !
+        // MK : Comment this piece of code below, because auto-declining inventory offers from objects while in Busy mode
+        // confuses the user, thinking the object does not work. It certainly confuses me every time !
 
-		////// old logic: busy mode must not affect interaction with objects (STORM-565)
-		////// new logic: inventory offers from in-world objects should be auto-declined (CHUI-519)
-		////else if (is_do_not_disturb && dialog == IM_TASK_INVENTORY_OFFERED)
-		////{
-		////	// Until throttling is implemented, do not disturb mode should reject inventory instead of silently
-		////	// accepting it.  SEE SL-39554
-		////	info->forceResponse(IOR_DECLINE);
-		////}
+        ////// old logic: busy mode must not affect interaction with objects (STORM-565)
+        ////// new logic: inventory offers from in-world objects should be auto-declined (CHUI-519)
+        ////else if (is_do_not_disturb && dialog == IM_TASK_INVENTORY_OFFERED)
+        ////{
+        ////    // Until throttling is implemented, do not disturb mode should reject inventory instead of silently
+        ////    // accepting it.  SEE SL-39554
+        ////    info->forceResponse(IOR_DECLINE);
+        ////}
 //mk
-		else
-		{
-			inventory_offer_handler(info);
-		}
-	}
-	break;
+        else
+        {
+            inventory_offer_handler(info);
+        }
+    }
+    break;
 
-	case IM_INVENTORY_ACCEPTED:
-	{
-		args["NAME"] = LLSLURL("agent", from_id, "completename").getSLURLString();;
-		args["ORIGINAL_NAME"] = original_name;
-		LLSD payload;
-		payload["from_id"] = from_id;
-		// Passing the "SESSION_NAME" to use it for IM notification logging
-		// in LLTipHandler::processNotification(). See STORM-941.
-		payload["SESSION_NAME"] = name;
-		LLNotificationsUtil::add("InventoryAccepted", args, payload);
-		break;
-	}
-	case IM_INVENTORY_DECLINED:
-	{
-		args["NAME"] = LLSLURL("agent", from_id, "completename").getSLURLString();;
-		LLSD payload;
-		payload["from_id"] = from_id;
-		LLNotificationsUtil::add("InventoryDeclined", args, payload);
-		break;
-	}
-	// TODO: _DEPRECATED suffix as part of vote removal - DEV-24856
-	case IM_GROUP_VOTE:
-	{
-		LL_WARNS("Messaging") << "Received IM: IM_GROUP_VOTE_DEPRECATED" << LL_ENDL;
-	}
-	break;
+    case IM_INVENTORY_ACCEPTED:
+    {
+        args["NAME"] = LLSLURL("agent", from_id, "completename").getSLURLString();;
+        args["ORIGINAL_NAME"] = original_name;
+        LLSD payload;
+        payload["from_id"] = from_id;
+        // Passing the "SESSION_NAME" to use it for IM notification logging
+        // in LLTipHandler::processNotification(). See STORM-941.
+        payload["SESSION_NAME"] = name;
+        LLNotificationsUtil::add("InventoryAccepted", args, payload);
+        break;
+    }
+    case IM_INVENTORY_DECLINED:
+    {
+        args["NAME"] = LLSLURL("agent", from_id, "completename").getSLURLString();;
+        LLSD payload;
+        payload["from_id"] = from_id;
+        LLNotificationsUtil::add("InventoryDeclined", args, payload);
+        break;
+    }
+    // TODO: _DEPRECATED suffix as part of vote removal - DEV-24856
+    case IM_GROUP_VOTE:
+    {
+        LL_WARNS("Messaging") << "Received IM: IM_GROUP_VOTE_DEPRECATED" << LL_ENDL;
+    }
+    break;
 
-	case IM_GROUP_ELECTION_DEPRECATED:
-	{
-		LL_WARNS("Messaging") << "Received IM: IM_GROUP_ELECTION_DEPRECATED" << LL_ENDL;
-	}
-	break;
-
-//MK
-	if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
-	{
-		// agent is forbidden to receive IMs
-		return;
-	}
-//mk
-	case IM_FROM_TASK:
-	{
+    case IM_GROUP_ELECTION_DEPRECATED:
+    {
+        LL_WARNS("Messaging") << "Received IM: IM_GROUP_ELECTION_DEPRECATED" << LL_ENDL;
+    }
+    break;
 
 //MK
-		// There are cases when the user is Busy and still wants to receive IMs from tasks that do not belong to them.
-		// Busy mode should have only one purpose : to notify other users that you are unavailable by sending an
-		// automated message. That's why it doesn't make sense to cut task IMs, since by definition you can't IM a
-		// task back to notify it of your status. Hence the IM is lost, and neither the user nor the task knows it.
-		// Besides, even muted task IMs can still show in the history, there is no reason why IMs received when being
-		// in Busy mode shouldn't. Busy is not supposed to protect more than Mute.
-		// That's why I'm commenting this code out for now.
-		////			if (is_do_not_disturb && !is_owned_by_me)
-		////			{
-		////				return;
-		////			}
+    if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
+    {
+        // agent is forbidden to receive IMs
+        return;
+    }
 //mk
+    case IM_FROM_TASK:
+    {
 
-		// Build a link to open the object IM info window.
-		std::string location = ll_safe_string((char*)binary_bucket, binary_bucket_size - 1);
-
-		if (session_id.notNull())
-		{
-			chat.mFromID = session_id;
-		}
-		else
-		{
-			// This message originated on a region without the updated code for task id and slurl information.
-			// We just need a unique ID for this object that isn't the owner ID.
-			// If it is the owner ID it will overwrite the style that contains the link to that owner's profile.
-			// This isn't ideal - it will make 1 style for all objects owned by the the same person/group.
-			// This works because the only thing we can really do in this case is show the owner name and link to their profile.
-			chat.mFromID = from_id ^ gAgent.getSessionID();
-		}
-
-		chat.mSourceType = CHAT_SOURCE_OBJECT;
-
-		// To conclude that the source type of message is CHAT_SOURCE_SYSTEM it's not
-		// enough to check only from name (i.e. fromName = "Second Life"). For example
-		// source type of messages from objects called "Second Life" should not be CHAT_SOURCE_SYSTEM.
-		bool chat_from_system = (SYSTEM_FROM == name) && region_id.isNull() && position.isNull();
-		if (chat_from_system)
-		{
-			// System's UUID is NULL (fixes EXT-4766)
-			chat.mFromID = LLUUID::null;
-			chat.mSourceType = CHAT_SOURCE_SYSTEM;
-		}
-
-		// IDEVO Some messages have embedded resident names
-		message = clean_name_from_task_im(message, from_group);
-
-		LLSD query_string;
-		query_string["owner"] = from_id;
-		query_string["slurl"] = location;
-		query_string["name"] = name;
-		if (from_group)
-		{
-			query_string["groupowned"] = "true";
-		}
-
-		chat.mURL = LLSLURL("objectim", session_id, "").getSLURLString();
 //MK
-		if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
-		{
-			// hide the url
-			chat.mURL = "";
-			// hide every occurrence of the Parcel name if the location restriction is active
-			message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
-			// hide every occurrence of the Region name if the location restriction is active
-			if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
-		}
-
-		if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
-		{
-			message = gAgent.mRRInterface.getCensoredMessage(message);
-		}
+        // There are cases when the user is Busy and still wants to receive IMs from tasks that do not belong to them.
+        // Busy mode should have only one purpose : to notify other users that you are unavailable by sending an
+        // automated message. That's why it doesn't make sense to cut task IMs, since by definition you can't IM a
+        // task back to notify it of your status. Hence the IM is lost, and neither the user nor the task knows it.
+        // Besides, even muted task IMs can still show in the history, there is no reason why IMs received when being
+        // in Busy mode shouldn't. Busy is not supposed to protect more than Mute.
+        // That's why I'm commenting this code out for now.
+        ////            if (is_do_not_disturb && !is_owned_by_me)
+        ////            {
+        ////                return;
+        ////            }
 //mk
-		chat.mText = message;
+
+        // Build a link to open the object IM info window.
+        std::string location = ll_safe_string((char*)binary_bucket, binary_bucket_size - 1);
+
+        if (session_id.notNull())
+        {
+            chat.mFromID = session_id;
+        }
+        else
+        {
+            // This message originated on a region without the updated code for task id and slurl information.
+            // We just need a unique ID for this object that isn't the owner ID.
+            // If it is the owner ID it will overwrite the style that contains the link to that owner's profile.
+            // This isn't ideal - it will make 1 style for all objects owned by the the same person/group.
+            // This works because the only thing we can really do in this case is show the owner name and link to their profile.
+            chat.mFromID = from_id ^ gAgent.getSessionID();
+        }
+
+        chat.mSourceType = CHAT_SOURCE_OBJECT;
+
+        // To conclude that the source type of message is CHAT_SOURCE_SYSTEM it's not
+        // enough to check only from name (i.e. fromName = "Second Life"). For example
+        // source type of messages from objects called "Second Life" should not be CHAT_SOURCE_SYSTEM.
+        bool chat_from_system = (SYSTEM_FROM == name) && region_id.isNull() && position.isNull();
+        if (chat_from_system)
+        {
+            // System's UUID is NULL (fixes EXT-4766)
+            chat.mFromID = LLUUID::null;
+            chat.mSourceType = CHAT_SOURCE_SYSTEM;
+        }
+
+        // IDEVO Some messages have embedded resident names
+        message = clean_name_from_task_im(message, from_group);
+
+        LLSD query_string;
+        query_string["owner"] = from_id;
+        query_string["slurl"] = location;
+        query_string["name"] = name;
+        if (from_group)
+        {
+            query_string["groupowned"] = "true";
+        }
+
+        chat.mURL = LLSLURL("objectim", session_id, "").getSLURLString();
+//MK
+        if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
+        {
+            // hide the url
+            chat.mURL = "";
+            // hide every occurrence of the Parcel name if the location restriction is active
+            message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
+            // hide every occurrence of the Region name if the location restriction is active
+            if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
+        }
+
+        if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
+        {
+            message = gAgent.mRRInterface.getCensoredMessage(message);
+        }
+//mk
+        chat.mText = message;
 
             // <FS:PP> FIRE-10178: Keyword Alerts in group IM do not work unless the group is in the foreground (notification on receipt of Task IM)
             if (FSKeywords::getInstance()->chatContainsKeyword(chat, true))
@@ -1411,23 +1411,23 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
             }
             // </FS:PP>
 
-		// Note: lie to Nearby Chat, pretending that this is NOT an IM, because
-		// IMs from obejcts don't open IM sessions.
-		LLFloaterIMNearbyChat* nearby_chat = LLFloaterReg::getTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
-		if (!chat_from_system && nearby_chat)
-		{
-			chat.mOwnerID = from_id;
-			LLSD args;
-			args["slurl"] = location;
+        // Note: lie to Nearby Chat, pretending that this is NOT an IM, because
+        // IMs from obejcts don't open IM sessions.
+        LLFloaterIMNearbyChat* nearby_chat = LLFloaterReg::getTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
+        if (!chat_from_system && nearby_chat)
+        {
+            chat.mOwnerID = from_id;
+            LLSD args;
+            args["slurl"] = location;
 
-			// Look for IRC-style emotes here so object name formatting is correct
-			std::string prefix = message.substr(0, 4);
-			if (prefix == "/me " || prefix == "/me'")
-			{
-				chat.mChatStyle = CHAT_STYLE_IRC;
-			}
+            // Look for IRC-style emotes here so object name formatting is correct
+            std::string prefix = message.substr(0, 4);
+            if (prefix == "/me " || prefix == "/me'")
+            {
+                chat.mChatStyle = CHAT_STYLE_IRC;
+            }
 
-			LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+            LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
                 if (message != "")
                 {
                     LLSD msg_notify;
@@ -1436,88 +1436,88 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                     msg_notify["source_type"] = chat.mSourceType;
                     on_new_message(msg_notify);
                 }
-		}
+        }
 
-		//Object IMs send with from name: 'Second Life' need to be displayed also in notification toasts (EXT-1590)
-		if (!chat_from_system) break;
+        //Object IMs send with from name: 'Second Life' need to be displayed also in notification toasts (EXT-1590)
+        if (!chat_from_system) break;
 
-		LLSD substitutions;
-		substitutions["NAME"] = name;
-		substitutions["MSG"] = message;
+        LLSD substitutions;
+        substitutions["NAME"] = name;
+        substitutions["MSG"] = message;
 
-		LLSD payload;
-		payload["object_id"] = session_id;
-		payload["owner_id"] = from_id;
-		payload["from_id"] = from_id;
-		payload["slurl"] = location;
-		payload["name"] = name;
+        LLSD payload;
+        payload["object_id"] = session_id;
+        payload["owner_id"] = from_id;
+        payload["from_id"] = from_id;
+        payload["slurl"] = location;
+        payload["name"] = name;
 
-		if (from_group)
-		{
-			payload["group_owned"] = "true";
-		}
+        if (from_group)
+        {
+            payload["group_owned"] = "true";
+        }
 
-		LLNotificationsUtil::add("ServerObjectMessage", substitutions, payload);
-	}
-	break;
+        LLNotificationsUtil::add("ServerObjectMessage", substitutions, payload);
+    }
+    break;
 
-	case IM_SESSION_SEND:		// ad-hoc or group IMs
+    case IM_SESSION_SEND:       // ad-hoc or group IMs
 
-		// Only show messages if we have a session open (which
-		// should happen after you get an "invitation"
+        // Only show messages if we have a session open (which
+        // should happen after you get an "invitation"
 // Reawaken muted group chats if they were deferred at login
             //if ( !gIMMgr->hasSession(session_id) )
             if (!gIMMgr->hasSession(session_id) &&
                  (!gAgent.isInGroup(session_id) || LLAvatarActions::isBlocked(from_id) || !exoGroupMuteList::instance().restoreDeferredGroupChat(session_id) ))
-		{
-			return;
-		}
+        {
+            return;
+        }
 
-		else if (offline == IM_ONLINE && is_do_not_disturb)
-		{
+        else if (offline == IM_ONLINE && is_do_not_disturb)
+        {
 
-			// return a standard "do not disturb" message, but only do it to online IM 
-			// (i.e. not other auto responses and not store-and-forward IM)
-			if (!gIMMgr->hasSession(session_id))
-			{
-				// if there is not a panel for this conversation (i.e. it is a new IM conversation
-				// initiated by the other party) then...
-				send_do_not_disturb_message(gMessageSystem, from_id, session_id);
-			}
+            // return a standard "do not disturb" message, but only do it to online IM 
+            // (i.e. not other auto responses and not store-and-forward IM)
+            if (!gIMMgr->hasSession(session_id))
+            {
+                // if there is not a panel for this conversation (i.e. it is a new IM conversation
+                // initiated by the other party) then...
+                send_do_not_disturb_message(gMessageSystem, from_id, session_id);
+            }
 
-			// now store incoming IM in chat history
+            // now store incoming IM in chat history
 
-			buffer = message;
+            buffer = message;
 
 //MK (by CA)
-			if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
-			{
-				// agent is forbidden to receive IMs and the sender is no exception
-				buffer = "...";
-				
-				// this is a group IM, do not send the sender a personal reply about the restriction since otherwise
-				// the sender will get spammed with as many replies as recipients who are under @recvim at the time
-			}
+            if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
+            {
+                // agent is forbidden to receive IMs and the sender is no exception
+                buffer = "...";
+                
+                // this is a group IM, do not send the sender a personal reply about the restriction since otherwise
+                // the sender will get spammed with as many replies as recipients who are under @recvim at the time
+            }
 //mk (by CA)
 
-			LL_DEBUGS("Messaging") << "message in dnd; session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+            LL_DEBUGS("Messaging") << "message in dnd; session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
-			// add to IM panel, but do not bother the user
-			gIMMgr->addMessage(
-				session_id,
-				from_id,
-				name,
-				buffer,
-				IM_OFFLINE == offline,
-				ll_safe_string((char*)binary_bucket),
-				IM_SESSION_INVITE,
-				parent_estate_id,
-				region_id,
-				position,
-				true);
-		}
-		else
-		{
+            // add to IM panel, but do not bother the user
+            gIMMgr->addMessage(
+                session_id,
+                from_id,
+                name,
+                buffer,
+                IM_OFFLINE == offline,
+                ll_safe_string((char*)binary_bucket),
+                IM_SESSION_INVITE,
+                parent_estate_id,
+                region_id,
+                position,
+                true);
+        }
+        else
+        {
 
                 // <FS:PP> FIRE-10178: Keyword Alerts in group IM do not work unless the group is in the foreground (notification on receipt of IM)
                 chat.mText = message;
@@ -1529,516 +1529,516 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                 }
                 // </FS:PP>
 
-			// standard message, not from system
-			std::string saved;
-			if (offline == IM_OFFLINE)
-			{
-				saved = llformat("(Saved %s) ", formatted_time(timestamp).c_str());
-			}
+            // standard message, not from system
+            std::string saved;
+            if (offline == IM_OFFLINE)
+            {
+                saved = llformat("(Saved %s) ", formatted_time(timestamp).c_str());
+            }
 
-			buffer = saved + message;
+            buffer = saved + message;
 
 //MK (by CA)
-			if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
-			{
-				{
-					// agent is forbidden to receive IMs and the receiver (avatar or group) is no exception
-					buffer = saved + "...";
+            if (KokuaRLVExtras::cannotRecvIM(session_id, from_id.asString()))
+            {
+                {
+                    // agent is forbidden to receive IMs and the receiver (avatar or group) is no exception
+                    buffer = saved + "...";
 
-					// this is a group IM, do not send the sender a personal reply about the restriction since otherwise
-					// the sender will get spammed with as many replies as recipients who are under @recvim at the time
-				}
-			}
+                    // this is a group IM, do not send the sender a personal reply about the restriction since otherwise
+                    // the sender will get spammed with as many replies as recipients who are under @recvim at the time
+                }
+            }
 //mk (by CA)
 
-			LL_DEBUGS("Messaging") << "standard message session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+            LL_DEBUGS("Messaging") << "standard message session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
-			gIMMgr->addMessage(
-				session_id,
-				from_id,
-				name,
-				buffer,
-				IM_OFFLINE == offline,
-				ll_safe_string((char*)binary_bucket),
-				IM_SESSION_INVITE,
-				parent_estate_id,
-				region_id,
-				position,
+            gIMMgr->addMessage(
+                session_id,
+                from_id,
+                name,
+                buffer,
+                IM_OFFLINE == offline,
+                ll_safe_string((char*)binary_bucket),
+                IM_SESSION_INVITE,
+                parent_estate_id,
+                region_id,
+                position,
                     true,
                     false,
                     keyword_alert_performed);
-		}
-		break;
+        }
+        break;
 
-	case IM_FROM_TASK_AS_ALERT:
-		if (is_do_not_disturb && !is_owned_by_me)
-		{
-			return;
-		}
-			{
-				// Construct a viewer alert for this message.
+    case IM_FROM_TASK_AS_ALERT:
+        if (is_do_not_disturb && !is_owned_by_me)
+        {
+            return;
+        }
+            {
+                // Construct a viewer alert for this message.
 //MK
-				if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
-				{
-					// hide every occurrence of the Parcel name if the location restriction is active
-					message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
-					// hide every occurrence of the Region name if the location restriction is active
-					if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
-				}
+                if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
+                {
+                    // hide every occurrence of the Parcel name if the location restriction is active
+                    message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.mRRInterface.mParcelName, "(Parcel hidden)");
+                    // hide every occurrence of the Region name if the location restriction is active
+                    if (gAgent.getRegion()) message = gAgent.mRRInterface.stringReplaceWholeWord(message, gAgent.getRegion()->getName(), "(Region hidden)");
+                }
 
-				if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
-				{
-					// censor object IMs but not avatar IMs
-					message = gAgent.mRRInterface.getCensoredMessage(message);
-				}
+                if (gRRenabled && gAgent.mRRInterface.mContainsShownames)
+                {
+                    // censor object IMs but not avatar IMs
+                    message = gAgent.mRRInterface.getCensoredMessage(message);
+                }
 //mk
-				args["NAME"] = name;
-				args["MESSAGE"] = message;
-				LLNotificationsUtil::add("ObjectMessage", args);
-			}
-			break;
-	case IM_DO_NOT_DISTURB_AUTO_RESPONSE:
-		if (is_muted)
-		{
-			LL_DEBUGS("Messaging") << "Ignoring do-not-disturb response from " << from_id << LL_ENDL;
-			return;
-		}
-		else
-		{
-			gIMMgr->addMessage(session_id, from_id, name, message);
-		}
-		break;
+                args["NAME"] = name;
+                args["MESSAGE"] = message;
+                LLNotificationsUtil::add("ObjectMessage", args);
+            }
+            break;
+    case IM_DO_NOT_DISTURB_AUTO_RESPONSE:
+        if (is_muted)
+        {
+            LL_DEBUGS("Messaging") << "Ignoring do-not-disturb response from " << from_id << LL_ENDL;
+            return;
+        }
+        else
+        {
+            gIMMgr->addMessage(session_id, from_id, name, message);
+        }
+        break;
 
-	case IM_LURE_USER:
-	case IM_TELEPORT_REQUEST:
-	{
-		if (is_muted)
-		{
-			return;
-		}
+    case IM_LURE_USER:
+    case IM_TELEPORT_REQUEST:
+    {
+        if (is_muted)
+        {
+            return;
+        }
 //MK
-		bool auto_accept = gRRenabled;
-		if (dialog == IM_LURE_USER)
-		{
-			auto_accept &= (gAgent.mRRInterface.contains("accepttp:" + from_id.asString()) || gAgent.mRRInterface.contains("accepttp"));
-		}
-		else if (dialog == IM_TELEPORT_REQUEST)
-		{
-			auto_accept &= (gAgent.mRRInterface.contains("accepttprequest:" + from_id.asString()) || gAgent.mRRInterface.contains("accepttprequest"));
-		}
-		////			else if (is_do_not_disturb) 
-		// Accept the TP or TP request if we are forced to accept it from this avatar or from everyone,
-		// even in busy mode
-		if (is_do_not_disturb && !auto_accept)
+        bool auto_accept = gRRenabled;
+        if (dialog == IM_LURE_USER)
+        {
+            auto_accept &= (gAgent.mRRInterface.contains("accepttp:" + from_id.asString()) || gAgent.mRRInterface.contains("accepttp"));
+        }
+        else if (dialog == IM_TELEPORT_REQUEST)
+        {
+            auto_accept &= (gAgent.mRRInterface.contains("accepttprequest:" + from_id.asString()) || gAgent.mRRInterface.contains("accepttprequest"));
+        }
+        ////            else if (is_do_not_disturb) 
+        // Accept the TP or TP request if we are forced to accept it from this avatar or from everyone,
+        // even in busy mode
+        if (is_do_not_disturb && !auto_accept)
 //mk
-		{
-			send_do_not_disturb_message(gMessageSystem, from_id);
-		}
+        {
+            send_do_not_disturb_message(gMessageSystem, from_id);
+        }
             else if (gSavedPerAccountSettings.getBOOL("VoiceCallsFriendsOnly") && (LLAvatarTracker::instance().getBuddyInfo(from_id) == NULL))
-		{
-			return;
-		}
-		else
-		{
-			if (is_do_not_disturb)
-			{
-				send_do_not_disturb_message(gMessageSystem, from_id);
-			}
+        {
+            return;
+        }
+        else
+        {
+            if (is_do_not_disturb)
+            {
+                send_do_not_disturb_message(gMessageSystem, from_id);
+            }
 
-			LLVector3 pos, look_at;
-			U64 region_handle(0);
-			U8 region_access(SIM_ACCESS_MIN);
-			std::string region_info = ll_safe_string((char*)binary_bucket, binary_bucket_size);
-			std::string region_access_str = LLStringUtil::null;
-			std::string region_access_icn = LLStringUtil::null;
-			std::string region_access_lc = LLStringUtil::null;
+            LLVector3 pos, look_at;
+            U64 region_handle(0);
+            U8 region_access(SIM_ACCESS_MIN);
+            std::string region_info = ll_safe_string((char*)binary_bucket, binary_bucket_size);
+            std::string region_access_str = LLStringUtil::null;
+            std::string region_access_icn = LLStringUtil::null;
+            std::string region_access_lc = LLStringUtil::null;
 
-			bool canUserAccessDstRegion = true;
-			bool doesUserRequireMaturityIncrease = false;
+            bool canUserAccessDstRegion = true;
+            bool doesUserRequireMaturityIncrease = false;
 
-			// Do not parse the (empty) lure bucket for TELEPORT_REQUEST
-			if (IM_TELEPORT_REQUEST != dialog && parse_lure_bucket(region_info, region_handle, pos, look_at, region_access))
-			{
-				region_access_str = LLViewerRegion::accessToString(region_access);
-				region_access_icn = LLViewerRegion::getAccessIcon(region_access);
-				region_access_lc = region_access_str;
-				LLStringUtil::toLower(region_access_lc);
+            // Do not parse the (empty) lure bucket for TELEPORT_REQUEST
+            if (IM_TELEPORT_REQUEST != dialog && parse_lure_bucket(region_info, region_handle, pos, look_at, region_access))
+            {
+                region_access_str = LLViewerRegion::accessToString(region_access);
+                region_access_icn = LLViewerRegion::getAccessIcon(region_access);
+                region_access_lc = region_access_str;
+                LLStringUtil::toLower(region_access_lc);
 
-				if (!gAgent.isGodlike())
-				{
-					switch (region_access)
-					{
-					case SIM_ACCESS_MIN:
-					case SIM_ACCESS_PG:
-						break;
-					case SIM_ACCESS_MATURE:
-						if (gAgent.isTeen())
-						{
-							canUserAccessDstRegion = false;
-						}
-						else if (gAgent.prefersPG())
-						{
-							doesUserRequireMaturityIncrease = true;
-						}
-						break;
-					case SIM_ACCESS_ADULT:
-						if (!gAgent.isAdult())
-						{
-							canUserAccessDstRegion = false;
-						}
-						else if (!gAgent.prefersAdult())
-						{
-							doesUserRequireMaturityIncrease = true;
-						}
-						break;
-					default:
-						llassert(0);
-						break;
-					}
-				}
-			}
+                if (!gAgent.isGodlike())
+                {
+                    switch (region_access)
+                    {
+                    case SIM_ACCESS_MIN:
+                    case SIM_ACCESS_PG:
+                        break;
+                    case SIM_ACCESS_MATURE:
+                        if (gAgent.isTeen())
+                        {
+                            canUserAccessDstRegion = false;
+                        }
+                        else if (gAgent.prefersPG())
+                        {
+                            doesUserRequireMaturityIncrease = true;
+                        }
+                        break;
+                    case SIM_ACCESS_ADULT:
+                        if (!gAgent.isAdult())
+                        {
+                            canUserAccessDstRegion = false;
+                        }
+                        else if (!gAgent.prefersAdult())
+                        {
+                            doesUserRequireMaturityIncrease = true;
+                        }
+                        break;
+                    default:
+                        llassert(0);
+                        break;
+                    }
+                }
+            }
 //MK
-			if (gRRenabled && dialog == IM_LURE_USER
-				&& (gAgent.mRRInterface.containsWithoutException("tplure", from_id.asString())
-				|| (gAgent.mRRInterface.mContainsUnsit && gAgentAvatarp && gAgentAvatarp->mIsSitting)))
-			{
-				std::string response = "The Resident you invited is prevented from accepting teleport offers. Please try again later.";
-				pack_instant_message(
-					gMessageSystem,
-					gAgent.getID(),
-					FALSE,
-					gAgent.getSessionID(),
-					from_id,
-					SYSTEM_FROM,
-					response.c_str(),
-					IM_ONLINE,
-					IM_DO_NOT_DISTURB_AUTO_RESPONSE);
-				gAgent.sendReliableMessage();
-				return;
-			}
+            if (gRRenabled && dialog == IM_LURE_USER
+                && (gAgent.mRRInterface.containsWithoutException("tplure", from_id.asString())
+                || (gAgent.mRRInterface.mContainsUnsit && gAgentAvatarp && gAgentAvatarp->mIsSitting)))
+            {
+                std::string response = "The Resident you invited is prevented from accepting teleport offers. Please try again later.";
+                pack_instant_message(
+                    gMessageSystem,
+                    gAgent.getID(),
+                    FALSE,
+                    gAgent.getSessionID(),
+                    from_id,
+                    SYSTEM_FROM,
+                    response.c_str(),
+                    IM_ONLINE,
+                    IM_DO_NOT_DISTURB_AUTO_RESPONSE);
+                gAgent.sendReliableMessage();
+                return;
+            }
 
-			if (gRRenabled && dialog == IM_TELEPORT_REQUEST
-				&& (gAgent.mRRInterface.containsWithoutException("tprequest", from_id.asString())))
-			{
-				std::string response = "The Resident you invited is prevented from accepting teleport requests. Please try again later.";
-				pack_instant_message(
-					gMessageSystem,
-					gAgent.getID(),
-					FALSE,
-					gAgent.getSessionID(),
-					from_id,
-					SYSTEM_FROM,
-					response.c_str(),
-					IM_ONLINE,
-					IM_DO_NOT_DISTURB_AUTO_RESPONSE);
-				gAgent.sendReliableMessage();
-				return;
-			}
+            if (gRRenabled && dialog == IM_TELEPORT_REQUEST
+                && (gAgent.mRRInterface.containsWithoutException("tprequest", from_id.asString())))
+            {
+                std::string response = "The Resident you invited is prevented from accepting teleport requests. Please try again later.";
+                pack_instant_message(
+                    gMessageSystem,
+                    gAgent.getID(),
+                    FALSE,
+                    gAgent.getSessionID(),
+                    from_id,
+                    SYSTEM_FROM,
+                    response.c_str(),
+                    IM_ONLINE,
+                    IM_DO_NOT_DISTURB_AUTO_RESPONSE);
+                gAgent.sendReliableMessage();
+                return;
+            }
 
-			if (gRRenabled && (gAgent.mRRInterface.containsWithoutException("recvim", from_id.asString())
-				|| gAgent.mRRInterface.contains("recvimfrom:" + from_id.asString())))
-			{
-				message = "(Hidden)";
-			}
+            if (gRRenabled && (gAgent.mRRInterface.containsWithoutException("recvim", from_id.asString())
+                || gAgent.mRRInterface.contains("recvimfrom:" + from_id.asString())))
+            {
+                message = "(Hidden)";
+            }
 
-			if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
-			{
-				message = "(Hidden)";
-			}
+            if (gRRenabled && gAgent.mRRInterface.mContainsShowloc)
+            {
+                message = "(Hidden)";
+            }
 
-			if (gRRenabled && dialog == IM_LURE_USER && auto_accept)
-			{
-				// accepttp => the viewer acts like it was teleported by a god
-				gAgent.mRRInterface.setAllowCancelTp(FALSE);
-				LLSD payload;
-				payload["from_id"] = from_id;
-				payload["lure_id"] = session_id;
-				payload["godlike"] = TRUE;
-				// do not show a message box, because you're about to be teleported.
-				LLNotifications::instance().forceResponse(LLNotification::Params("TeleportOffered").payload(payload), 0);
-			}
-			else if (gRRenabled && dialog == IM_TELEPORT_REQUEST && auto_accept)
-			{
-				// accepttprequest => the viewer automaticallys ends the TP (code copied from teleport_request_callback())
-				LLSD dummy_notification;
-				dummy_notification["payload"]["ids"][0] = from_id;
+            if (gRRenabled && dialog == IM_LURE_USER && auto_accept)
+            {
+                // accepttp => the viewer acts like it was teleported by a god
+                gAgent.mRRInterface.setAllowCancelTp(FALSE);
+                LLSD payload;
+                payload["from_id"] = from_id;
+                payload["lure_id"] = session_id;
+                payload["godlike"] = TRUE;
+                // do not show a message box, because you're about to be teleported.
+                LLNotifications::instance().forceResponse(LLNotification::Params("TeleportOffered").payload(payload), 0);
+            }
+            else if (gRRenabled && dialog == IM_TELEPORT_REQUEST && auto_accept)
+            {
+                // accepttprequest => the viewer automaticallys ends the TP (code copied from teleport_request_callback())
+                LLSD dummy_notification;
+                dummy_notification["payload"]["ids"][0] = from_id;
 
-				LLSD dummy_response;
-				dummy_response["message"] = "Automatic teleport offer";
+                LLSD dummy_response;
+                dummy_response["message"] = "Automatic teleport offer";
 
-				send_lures(dummy_notification, dummy_response);
-			}
-			else
-			{
+                send_lures(dummy_notification, dummy_response);
+            }
+            else
+            {
 //mk
-				LLSD args;
-				// *TODO: Translate -> [FIRST] [LAST] (maybe)
-				args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
-				args["MESSAGE"] = message;
-				args["MATURITY_STR"] = region_access_str;
-				args["MATURITY_ICON"] = region_access_icn;
-				args["REGION_CONTENT_MATURITY"] = region_access_lc;
-				LLSD payload;
-				payload["from_id"] = from_id;
-				payload["lure_id"] = session_id;
-				payload["godlike"] = FALSE;
-				payload["region_maturity"] = region_access;
+                LLSD args;
+                // *TODO: Translate -> [FIRST] [LAST] (maybe)
+                args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+                args["MESSAGE"] = message;
+                args["MATURITY_STR"] = region_access_str;
+                args["MATURITY_ICON"] = region_access_icn;
+                args["REGION_CONTENT_MATURITY"] = region_access_lc;
+                LLSD payload;
+                payload["from_id"] = from_id;
+                payload["lure_id"] = session_id;
+                payload["godlike"] = FALSE;
+                payload["region_maturity"] = region_access;
 
-				if (!canUserAccessDstRegion)
-				{
-					LLNotification::Params params("TeleportOffered_MaturityBlocked");
-					params.substitutions = args;
-					params.payload = payload;
-					LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
-					send_simple_im(from_id, LLTrans::getString("TeleportMaturityExceeded"), IM_NOTHING_SPECIAL, session_id);
-					send_simple_im(from_id, LLStringUtil::null, IM_LURE_DECLINED, session_id);
-				}
-				else if (doesUserRequireMaturityIncrease)
-				{
-					LLNotification::Params params("TeleportOffered_MaturityExceeded");
-					params.substitutions = args;
-					params.payload = payload;
-					LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
-				}
-				else
-				{
-					LLNotification::Params params;
-					if (IM_LURE_USER == dialog)
-					{
-						params.name = "TeleportOffered";
-						params.functor.name = "TeleportOffered";
-					}
-					else if (IM_TELEPORT_REQUEST == dialog)
-					{
-						params.name = "TeleportRequest";
-						params.functor.name = "TeleportRequest";
-					}
+                if (!canUserAccessDstRegion)
+                {
+                    LLNotification::Params params("TeleportOffered_MaturityBlocked");
+                    params.substitutions = args;
+                    params.payload = payload;
+                    LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
+                    send_simple_im(from_id, LLTrans::getString("TeleportMaturityExceeded"), IM_NOTHING_SPECIAL, session_id);
+                    send_simple_im(from_id, LLStringUtil::null, IM_LURE_DECLINED, session_id);
+                }
+                else if (doesUserRequireMaturityIncrease)
+                {
+                    LLNotification::Params params("TeleportOffered_MaturityExceeded");
+                    params.substitutions = args;
+                    params.payload = payload;
+                    LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
+                }
+                else
+                {
+                    LLNotification::Params params;
+                    if (IM_LURE_USER == dialog)
+                    {
+                        params.name = "TeleportOffered";
+                        params.functor.name = "TeleportOffered";
+                    }
+                    else if (IM_TELEPORT_REQUEST == dialog)
+                    {
+                        params.name = "TeleportRequest";
+                        params.functor.name = "TeleportRequest";
+                    }
 
-					params.substitutions = args;
-					params.payload = payload;
-					LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
-				}
+                    params.substitutions = args;
+                    params.payload = payload;
+                    LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
+                }
 //MK
-			}
+            }
 //mk
-		}
-	}
-	break;
+        }
+    }
+    break;
 
-	case IM_GODLIKE_LURE_USER:
-	{
-		LLVector3 pos, look_at;
-		U64 region_handle(0);
-		U8 region_access(SIM_ACCESS_MIN);
-		std::string region_info = ll_safe_string((char*)binary_bucket, binary_bucket_size);
-		std::string region_access_str = LLStringUtil::null;
-		std::string region_access_icn = LLStringUtil::null;
-		std::string region_access_lc = LLStringUtil::null;
+    case IM_GODLIKE_LURE_USER:
+    {
+        LLVector3 pos, look_at;
+        U64 region_handle(0);
+        U8 region_access(SIM_ACCESS_MIN);
+        std::string region_info = ll_safe_string((char*)binary_bucket, binary_bucket_size);
+        std::string region_access_str = LLStringUtil::null;
+        std::string region_access_icn = LLStringUtil::null;
+        std::string region_access_lc = LLStringUtil::null;
 
-		bool canUserAccessDstRegion = true;
-		bool doesUserRequireMaturityIncrease = false;
+        bool canUserAccessDstRegion = true;
+        bool doesUserRequireMaturityIncrease = false;
 
-		if (parse_lure_bucket(region_info, region_handle, pos, look_at, region_access))
-		{
-			region_access_str = LLViewerRegion::accessToString(region_access);
-			region_access_icn = LLViewerRegion::getAccessIcon(region_access);
-			region_access_lc = region_access_str;
-			LLStringUtil::toLower(region_access_lc);
+        if (parse_lure_bucket(region_info, region_handle, pos, look_at, region_access))
+        {
+            region_access_str = LLViewerRegion::accessToString(region_access);
+            region_access_icn = LLViewerRegion::getAccessIcon(region_access);
+            region_access_lc = region_access_str;
+            LLStringUtil::toLower(region_access_lc);
 
-			if (!gAgent.isGodlike())
-			{
-				switch (region_access)
-				{
-				case SIM_ACCESS_MIN:
-				case SIM_ACCESS_PG:
-					break;
-				case SIM_ACCESS_MATURE:
-					if (gAgent.isTeen())
-					{
-						canUserAccessDstRegion = false;
-					}
-					else if (gAgent.prefersPG())
-					{
-						doesUserRequireMaturityIncrease = true;
-					}
-					break;
-				case SIM_ACCESS_ADULT:
-					if (!gAgent.isAdult())
-					{
-						canUserAccessDstRegion = false;
-					}
-					else if (!gAgent.prefersAdult())
-					{
-						doesUserRequireMaturityIncrease = true;
-					}
-					break;
-				default:
-					llassert(0);
-					break;
-				}
-			}
-		}
+            if (!gAgent.isGodlike())
+            {
+                switch (region_access)
+                {
+                case SIM_ACCESS_MIN:
+                case SIM_ACCESS_PG:
+                    break;
+                case SIM_ACCESS_MATURE:
+                    if (gAgent.isTeen())
+                    {
+                        canUserAccessDstRegion = false;
+                    }
+                    else if (gAgent.prefersPG())
+                    {
+                        doesUserRequireMaturityIncrease = true;
+                    }
+                    break;
+                case SIM_ACCESS_ADULT:
+                    if (!gAgent.isAdult())
+                    {
+                        canUserAccessDstRegion = false;
+                    }
+                    else if (!gAgent.prefersAdult())
+                    {
+                        doesUserRequireMaturityIncrease = true;
+                    }
+                    break;
+                default:
+                    llassert(0);
+                    break;
+                }
+            }
+        }
 
-		LLSD args;
-		// *TODO: Translate -> [FIRST] [LAST] (maybe)
-		args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
-		args["MESSAGE"] = message;
-		args["MATURITY_STR"] = region_access_str;
-		args["MATURITY_ICON"] = region_access_icn;
-		args["REGION_CONTENT_MATURITY"] = region_access_lc;
-		LLSD payload;
-		payload["from_id"] = from_id;
-		payload["lure_id"] = session_id;
-		payload["godlike"] = TRUE;
-		payload["region_maturity"] = region_access;
+        LLSD args;
+        // *TODO: Translate -> [FIRST] [LAST] (maybe)
+        args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+        args["MESSAGE"] = message;
+        args["MATURITY_STR"] = region_access_str;
+        args["MATURITY_ICON"] = region_access_icn;
+        args["REGION_CONTENT_MATURITY"] = region_access_lc;
+        LLSD payload;
+        payload["from_id"] = from_id;
+        payload["lure_id"] = session_id;
+        payload["godlike"] = TRUE;
+        payload["region_maturity"] = region_access;
 
-		if (!canUserAccessDstRegion)
-		{
-			LLNotification::Params params("TeleportOffered_MaturityBlocked");
-			params.substitutions = args;
-			params.payload = payload;
-			LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
-			send_simple_im(from_id, LLTrans::getString("TeleportMaturityExceeded"), IM_NOTHING_SPECIAL, session_id);
-			send_simple_im(from_id, LLStringUtil::null, IM_LURE_DECLINED, session_id);
-		}
-		else if (doesUserRequireMaturityIncrease)
-		{
-			LLNotification::Params params("TeleportOffered_MaturityExceeded");
-			params.substitutions = args;
-			params.payload = payload;
-			LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
-		}
-		else
-		{
-			// do not show a message box, because you're about to be
-			// teleported.
-			LLNotifications::instance().forceResponse(LLNotification::Params("TeleportOffered").payload(payload), 0);
-		}
-	}
-	break;
+        if (!canUserAccessDstRegion)
+        {
+            LLNotification::Params params("TeleportOffered_MaturityBlocked");
+            params.substitutions = args;
+            params.payload = payload;
+            LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
+            send_simple_im(from_id, LLTrans::getString("TeleportMaturityExceeded"), IM_NOTHING_SPECIAL, session_id);
+            send_simple_im(from_id, LLStringUtil::null, IM_LURE_DECLINED, session_id);
+        }
+        else if (doesUserRequireMaturityIncrease)
+        {
+            LLNotification::Params params("TeleportOffered_MaturityExceeded");
+            params.substitutions = args;
+            params.payload = payload;
+            LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
+        }
+        else
+        {
+            // do not show a message box, because you're about to be
+            // teleported.
+            LLNotifications::instance().forceResponse(LLNotification::Params("TeleportOffered").payload(payload), 0);
+        }
+    }
+    break;
 
-	case IM_GOTO_URL:
-	{
-		LLSD args;
-		// n.b. this is for URLs sent by the system, not for
-		// URLs sent by scripts (i.e. llLoadURL)
-		if (binary_bucket_size <= 0)
-		{
-			LL_WARNS("Messaging") << "bad binary_bucket_size: "
-				<< binary_bucket_size
-				<< " - aborting function." << LL_ENDL;
-			return;
-		}
+    case IM_GOTO_URL:
+    {
+        LLSD args;
+        // n.b. this is for URLs sent by the system, not for
+        // URLs sent by scripts (i.e. llLoadURL)
+        if (binary_bucket_size <= 0)
+        {
+            LL_WARNS("Messaging") << "bad binary_bucket_size: "
+                << binary_bucket_size
+                << " - aborting function." << LL_ENDL;
+            return;
+        }
 
-		std::string url;
+        std::string url;
 
-		url.assign((char*)binary_bucket, binary_bucket_size - 1);
-		args["MESSAGE"] = message;
-		args["URL"] = url;
-		LLSD payload;
-		payload["url"] = url;
-		LLNotificationsUtil::add("GotoURL", args, payload);
-	}
-	break;
+        url.assign((char*)binary_bucket, binary_bucket_size - 1);
+        args["MESSAGE"] = message;
+        args["URL"] = url;
+        LLSD payload;
+        payload["url"] = url;
+        LLNotificationsUtil::add("GotoURL", args, payload);
+    }
+    break;
 
-	case IM_FRIENDSHIP_OFFERED:
-	{
-		LLSD payload;
-		payload["from_id"] = from_id;
-		payload["session_id"] = session_id;;
-		payload["online"] = (offline == IM_ONLINE);
-		payload["sender"] = sender.getIPandPort();
+    case IM_FRIENDSHIP_OFFERED:
+    {
+        LLSD payload;
+        payload["from_id"] = from_id;
+        payload["session_id"] = session_id;;
+        payload["online"] = (offline == IM_ONLINE);
+        payload["sender"] = sender.getIPandPort();
 
-		bool add_notification = true;
+        bool add_notification = true;
             for (auto& panel : LLToastNotifyPanel::instance_snapshot())
-		{
-			const std::string& notification_name = panel.getNotificationName();
-			if (notification_name == "OfferFriendship" && panel.isControlPanelEnabled())
-			{
-				add_notification = false;
-				break;
-			}
-		}
+        {
+            const std::string& notification_name = panel.getNotificationName();
+            if (notification_name == "OfferFriendship" && panel.isControlPanelEnabled())
+            {
+                add_notification = false;
+                break;
+            }
+        }
 
-		if (is_muted && add_notification)
-		{
-			LLNotifications::instance().forceResponse(LLNotification::Params("OfferFriendship").payload(payload), 1);
-		}
-		else
-		{
-			if (is_do_not_disturb)
-			{
-				send_do_not_disturb_message(gMessageSystem, from_id);
-			}
-			args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+        if (is_muted && add_notification)
+        {
+            LLNotifications::instance().forceResponse(LLNotification::Params("OfferFriendship").payload(payload), 1);
+        }
+        else
+        {
+            if (is_do_not_disturb)
+            {
+                send_do_not_disturb_message(gMessageSystem, from_id);
+            }
+            args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
 
-			if (add_notification)
-			{
+            if (add_notification)
+            {
 //MK
-				if (gRRenabled && (gAgent.mRRInterface.containsWithoutException("recvim", from_id.asString())
-					|| gAgent.mRRInterface.contains("recvimfrom:" + from_id.asString())))
-				{
-					message = "(Hidden)";
-				}
+                if (gRRenabled && (gAgent.mRRInterface.containsWithoutException("recvim", from_id.asString())
+                    || gAgent.mRRInterface.contains("recvimfrom:" + from_id.asString())))
+                {
+                    message = "(Hidden)";
+                }
 //mk
-				if (message.empty())
-				{
-					//support for frienship offers from clients before July 2008
-					LLNotificationsUtil::add("OfferFriendshipNoMessage", args, payload);
-				}
-				else
-				{
-					args["[MESSAGE]"] = message;
-					LLNotification::Params params("OfferFriendship");
-					params.substitutions = args;
-					params.payload = payload;
-					LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
-				}
-			}
-		}
-	}
-	break;
+                if (message.empty())
+                {
+                    //support for frienship offers from clients before July 2008
+                    LLNotificationsUtil::add("OfferFriendshipNoMessage", args, payload);
+                }
+                else
+                {
+                    args["[MESSAGE]"] = message;
+                    LLNotification::Params params("OfferFriendship");
+                    params.substitutions = args;
+                    params.payload = payload;
+                    LLPostponedNotification::add<LLPostponedOfferNotification>(params, from_id, false);
+                }
+            }
+        }
+    }
+    break;
 
-	case IM_FRIENDSHIP_ACCEPTED:
-	{
-		// In the case of an offline IM, the formFriendship() may be extraneous
-		// as the database should already include the relationship.  But it
-		// doesn't hurt for dupes.
-		LLAvatarTracker::formFriendship(from_id);
+    case IM_FRIENDSHIP_ACCEPTED:
+    {
+        // In the case of an offline IM, the formFriendship() may be extraneous
+        // as the database should already include the relationship.  But it
+        // doesn't hurt for dupes.
+        LLAvatarTracker::formFriendship(from_id);
 
-		std::vector<std::string> strings;
-		strings.push_back(from_id.asString());
-		send_generic_message("requestonlinenotification", strings);
+        std::vector<std::string> strings;
+        strings.push_back(from_id.asString());
+        send_generic_message("requestonlinenotification", strings);
 
-		args["NAME"] = name;
-		LLSD payload;
-		payload["from_id"] = from_id;
-		LLAvatarNameCache::get(from_id, boost::bind(&notification_display_name_callback, _1, _2, "FriendshipAccepted", args, payload));
-	}
-	break;
+        args["NAME"] = name;
+        LLSD payload;
+        payload["from_id"] = from_id;
+        LLAvatarNameCache::get(from_id, boost::bind(&notification_display_name_callback, _1, _2, "FriendshipAccepted", args, payload));
+    }
+    break;
 
-	case IM_FRIENDSHIP_DECLINED_DEPRECATED:
-	default:
-		LL_WARNS("Messaging") << "Instant message calling for unknown dialog "
-			<< (S32)dialog << LL_ENDL;
-		break;
-	}
+    case IM_FRIENDSHIP_DECLINED_DEPRECATED:
+    default:
+        LL_WARNS("Messaging") << "Instant message calling for unknown dialog "
+            << (S32)dialog << LL_ENDL;
+        break;
+    }
 
-	LLWindow* viewer_window = gViewerWindow->getWindow();
-	if (viewer_window && viewer_window->getMinimized())
-	{
+    LLWindow* viewer_window = gViewerWindow->getWindow();
+    if (viewer_window && viewer_window->getMinimized())
+    {
 //MK
-		// No need to make the icon flash in the task bar if the other party is still typing.
-		// Some people literally take 10 minutes to type a long IM and if you're working
-		// you're not getting anything done because the flashing is so annoying.
-		if (dialog != IM_TYPING_START && dialog != IM_TYPING_STOP)
-		{
+        // No need to make the icon flash in the task bar if the other party is still typing.
+        // Some people literally take 10 minutes to type a long IM and if you're working
+        // you're not getting anything done because the flashing is so annoying.
+        if (dialog != IM_TYPING_START && dialog != IM_TYPING_STOP)
+        {
 //mk
-		viewer_window->flashIcon(5.f);
+        viewer_window->flashIcon(5.f);
 //MK
-		}
+        }
 //mk
-	}
+    }
 }
 
 void LLIMProcessing::requestOfflineMessages()

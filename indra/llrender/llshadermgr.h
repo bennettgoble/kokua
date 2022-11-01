@@ -33,8 +33,8 @@
 class LLShaderMgr
 {
 public:
-	LLShaderMgr();
-	virtual ~LLShaderMgr();
+    LLShaderMgr();
+    virtual ~LLShaderMgr();
 
     // clang-format off
     typedef enum
@@ -207,12 +207,12 @@ public:
 
         WL_CAMPOSLOCAL,                     //  "camPosLocal"
 // [RLVa:KB] - @setsphere
-		RLV_EFFECT_MODE,
-		RLV_EFFECT_PARAM1,
-		RLV_EFFECT_PARAM2,
-		RLV_EFFECT_PARAM3,
-		RLV_EFFECT_PARAM4,
-		RLV_EFFECT_PARAM5,
+        RLV_EFFECT_MODE,
+        RLV_EFFECT_PARAM1,
+        RLV_EFFECT_PARAM2,
+        RLV_EFFECT_PARAM3,
+        RLV_EFFECT_PARAM4,
+        RLV_EFFECT_PARAM5,
 // [/RLVa:KB]
 
         AVATAR_WIND,                        //  "gWindDir"
@@ -262,41 +262,41 @@ public:
     } eGLSLReservedUniforms;
     // clang-format on
 
-	// singleton pattern implementation
-	static LLShaderMgr * instance();
+    // singleton pattern implementation
+    static LLShaderMgr * instance();
 
-	virtual void initAttribsAndUniforms(void);
+    virtual void initAttribsAndUniforms(void);
 
-	BOOL attachShaderFeatures(LLGLSLShader * shader);
-	void dumpObjectLog(GLhandleARB ret, BOOL warns = TRUE, const std::string& filename = "");
+    BOOL attachShaderFeatures(LLGLSLShader * shader);
+    void dumpObjectLog(GLhandleARB ret, BOOL warns = TRUE, const std::string& filename = "");
     void dumpShaderSource(U32 shader_code_count, GLcharARB** shader_code_text);
-	BOOL	linkProgramObject(GLhandleARB obj, BOOL suppress_errors = FALSE);
-	BOOL	validateProgramObject(GLhandleARB obj);
-	GLhandleARB loadShaderFile(const std::string& filename, S32 & shader_level, GLenum type, std::unordered_map<std::string, std::string>* defines = NULL, S32 texture_index_channels = -1);
+    BOOL    linkProgramObject(GLhandleARB obj, BOOL suppress_errors = FALSE);
+    BOOL    validateProgramObject(GLhandleARB obj);
+    GLhandleARB loadShaderFile(const std::string& filename, S32 & shader_level, GLenum type, std::unordered_map<std::string, std::string>* defines = NULL, S32 texture_index_channels = -1);
 
-	// Implemented in the application to actually point to the shader directory.
-	virtual std::string getShaderDirPrefix(void) = 0; // Pure Virtual
+    // Implemented in the application to actually point to the shader directory.
+    virtual std::string getShaderDirPrefix(void) = 0; // Pure Virtual
 
-	// Implemented in the application to actually update out of date uniforms for a particular shader
-	virtual void updateShaderUniforms(LLGLSLShader * shader) = 0; // Pure Virtual
+    // Implemented in the application to actually update out of date uniforms for a particular shader
+    virtual void updateShaderUniforms(LLGLSLShader * shader) = 0; // Pure Virtual
 
 public:
-	// Map of shader names to compiled
+    // Map of shader names to compiled
     std::map<std::string, GLhandleARB> mVertexShaderObjects;
     std::map<std::string, GLhandleARB> mFragmentShaderObjects;
 
-	//global (reserved slot) shader parameters
-	std::vector<std::string> mReservedAttribs;
+    //global (reserved slot) shader parameters
+    std::vector<std::string> mReservedAttribs;
 
-	std::vector<std::string> mReservedUniforms;
+    std::vector<std::string> mReservedUniforms;
 
-	//preprocessor definitions (name/value)
-	std::map<std::string, std::string> mDefinitions;
+    //preprocessor definitions (name/value)
+    std::map<std::string, std::string> mDefinitions;
 
 protected:
 
-	// our parameter manager singleton instance
-	static LLShaderMgr * sInstance;
+    // our parameter manager singleton instance
+    static LLShaderMgr * sInstance;
 
 }; //LLShaderMgr
 

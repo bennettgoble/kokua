@@ -384,7 +384,7 @@ LLSingletonBase::vec_t LLSingletonBase::dep_sort()
     // uses vec_t's range constructor... but frankly this is more
     // straightforward, as long as we remember the above reserve() call!
 
-		//CA: Pacify Xcode 12
+        //CA: Pacify Xcode 12
     //for (const SingletonDeps::sorted_iterator::value_type& pair : sdeps.sort())
     for (const SingletonDeps::sorted_iterator::value_type pair : sdeps.sort())
     {

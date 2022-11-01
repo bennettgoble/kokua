@@ -59,63 +59,63 @@ class FSPanelProfileTab
 {
 public:
 
-	/**
-	 * Sets avatar ID, sets panel as observer of avatar related info replies from server.
-	 */
-	virtual void setAvatarId(const LLUUID& id);
+    /**
+     * Sets avatar ID, sets panel as observer of avatar related info replies from server.
+     */
+    virtual void setAvatarId(const LLUUID& id);
 
-	/**
-	 * Sends update data request to server.
-	 */
-	virtual void updateData() { }
+    /**
+     * Sends update data request to server.
+     */
+    virtual void updateData() { }
 
-	/**
-	 * Processes data received from server.
-	 */
-	virtual void processProperties(void* data, EAvatarProcessorType type) = 0;
+    /**
+     * Processes data received from server.
+     */
+    virtual void processProperties(void* data, EAvatarProcessorType type) = 0;
 
-	/**
-	 * Returns avatar ID.
-	 */
-	const LLUUID& getAvatarId() { return mAvatarId; }
+    /**
+     * Returns avatar ID.
+     */
+    const LLUUID& getAvatarId() { return mAvatarId; }
 
-	/**
-	 * Clears panel data if viewing avatar info for first time and sends update data request.
-	 */
-	virtual void onOpen(const LLSD& key);
+    /**
+     * Clears panel data if viewing avatar info for first time and sends update data request.
+     */
+    virtual void onOpen(const LLSD& key);
 
-	/*virtual*/ ~FSPanelProfileTab();
+    /*virtual*/ ~FSPanelProfileTab();
 
-	void setEmbedded(bool embedded) { mEmbedded = embedded; }
+    void setEmbedded(bool embedded) { mEmbedded = embedded; }
 
 protected:
 
-	FSPanelProfileTab();
+    FSPanelProfileTab();
 
-	virtual void enableControls();
+    virtual void enableControls();
 
-	// mLoading: false: Initial state, can request
-	//           true:  Data requested, skip duplicate requests (happens due to LLUI's habit of repeated callbacks)
-	// mLoaded:  false: Initial state, show loading indicator
-	//           true:  Data recieved, which comes in a single message, hide indicator
-	bool getIsLoading() { return mLoading; }
-	void setIsLoading() { mLoading = true; }
-	bool getIsLoaded() { return mLoaded; }
-	void resetLoading() { mLoading = false; mLoaded = false; }
-	
-	const bool getEmbedded() const { return mEmbedded; }
-	
-	const bool getSelfProfile() const { return mSelfProfile; }
+    // mLoading: false: Initial state, can request
+    //           true:  Data requested, skip duplicate requests (happens due to LLUI's habit of repeated callbacks)
+    // mLoaded:  false: Initial state, show loading indicator
+    //           true:  Data recieved, which comes in a single message, hide indicator
+    bool getIsLoading() { return mLoading; }
+    void setIsLoading() { mLoading = true; }
+    bool getIsLoaded() { return mLoaded; }
+    void resetLoading() { mLoading = false; mLoaded = false; }
+    
+    const bool getEmbedded() const { return mEmbedded; }
+    
+    const bool getSelfProfile() const { return mSelfProfile; }
 
-	void setApplyProgress(bool started);
+    void setApplyProgress(bool started);
 
 private:
 
-	LLUUID	mAvatarId;
-	bool	mLoading;
-	bool	mLoaded;
-	bool	mEmbedded;
-	bool	mSelfProfile;
+    LLUUID  mAvatarId;
+    bool    mLoading;
+    bool    mLoaded;
+    bool    mEmbedded;
+    bool    mSelfProfile;
 };
 
 
@@ -123,13 +123,13 @@ private:
 * Panel for displaying Avatar's second life related info.
 */
 class FSPanelProfileSecondLife
-	: public FSPanelProfileTab
-	, public LLFriendObserver
-	, public LLVoiceClientStatusObserver
+    : public FSPanelProfileTab
+    , public LLFriendObserver
+    , public LLVoiceClientStatusObserver
 {
 public:
-	FSPanelProfileSecondLife();
-	/*virtual*/ ~FSPanelProfileSecondLife();
+    FSPanelProfileSecondLife();
+    /*virtual*/ ~FSPanelProfileSecondLife();
 
     /*virtual*/ void onOpen(const LLSD& key);
 
@@ -151,14 +151,14 @@ public:
 
     /*virtual*/ BOOL postBuild();
 
-	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-	
-	void resetData();
+    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    
+    void resetData();
 
-	/**
-	 * Sends update data request to server.
-	 */
-	/*virtual*/ void updateData();
+    /**
+     * Sends update data request to server.
+     */
+    /*virtual*/ void updateData();
 
     void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name);
 
@@ -254,26 +254,26 @@ private:
     group_map_t             mGroups;
     void                    openGroupProfile();
 
-	LLTextBox*			mStatusText;
-	LLGroupList*		mGroupList;
-	LLCheckBoxCtrl*		mShowInSearchCheckbox;
-	LLTextureCtrl*		mSecondLifePic;
-	LLTextBase*			mDescriptionEdit;
-	LLButton*			mTeleportButton;
-	LLButton*			mShowOnMapButton;
-	LLButton*			mBlockButton;
-	LLButton*			mUnblockButton;
-	LLButton*			mDisplayNameButton;
-	LLButton*			mAddFriendButton;
-	LLButton*			mGroupInviteButton;
-	LLButton*			mPayButton;
-	LLButton*			mIMButton;
-	LLMenuButton*		mOverflowButton;
+    LLTextBox*          mStatusText;
+    LLGroupList*        mGroupList;
+    LLCheckBoxCtrl*     mShowInSearchCheckbox;
+    LLTextureCtrl*      mSecondLifePic;
+    LLTextBase*         mDescriptionEdit;
+    LLButton*           mTeleportButton;
+    LLButton*           mShowOnMapButton;
+    LLButton*           mBlockButton;
+    LLButton*           mUnblockButton;
+    LLButton*           mDisplayNameButton;
+    LLButton*           mAddFriendButton;
+    LLButton*           mGroupInviteButton;
+    LLButton*           mPayButton;
+    LLButton*           mIMButton;
+    LLMenuButton*       mOverflowButton;
 
-	bool				mVoiceStatus;
+    bool                mVoiceStatus;
 
-	boost::signals2::connection mRlvBehaviorCallbackConnection;
-	void updateRlvRestrictions(std::string behavior);
+    boost::signals2::connection mRlvBehaviorCallbackConnection;
+    void updateRlvRestrictions(std::string behavior);
 };
 
 
@@ -292,21 +292,21 @@ public:
 
     /*virtual*/ BOOL postBuild();
 
-	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-	
-	void resetData();
+    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    
+    void resetData();
 
     /**
      * Saves changes.
      */
     void apply(LLAvatarData* data);
 
-	/**
-	 * Loads web profile.
-	 */
-	/*virtual*/ void updateData();
+    /**
+     * Loads web profile.
+     */
+    /*virtual*/ void updateData();
 
-	/*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
+    /*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
 
     void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name);
 
@@ -317,15 +317,15 @@ protected:
     void onCommitWebProfile(LLUICtrl* ctrl);
 
 private:
-	std::string			mURLHome;
-	std::string			mURLWebProfile;
-	LLMediaCtrl*		mWebBrowser;
-	LLUICtrl*			mWebProfileButton;
-	LLUICtrl*			mLoadButton;
-	LLLineEditor*		mUrlEdit;
+    std::string         mURLHome;
+    std::string         mURLWebProfile;
+    LLMediaCtrl*        mWebBrowser;
+    LLUICtrl*           mWebProfileButton;
+    LLUICtrl*           mLoadButton;
+    LLLineEditor*       mUrlEdit;
 
-	LLFrameTimer		mPerformanceTimer;
-	bool				mFirstNavigate;
+    LLFrameTimer        mPerformanceTimer;
+    bool                mFirstNavigate;
 };
 
 /**
@@ -342,9 +342,9 @@ public:
 
     /*virtual*/ BOOL postBuild();
 
-	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-	
-	void resetData();
+    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    
+    void resetData();
 
     /**
      * Saves changes.
@@ -355,11 +355,11 @@ protected:
     virtual void enableControls();
 
 private:
-	LLCheckBoxCtrl*	mWantChecks[8];
-	LLCheckBoxCtrl*	mSkillChecks[6];
-	LLLineEditor*	mWantToEditor;
-	LLLineEditor*	mSkillsEditor;
-	LLLineEditor*	mLanguagesEditor;
+    LLCheckBoxCtrl* mWantChecks[8];
+    LLCheckBoxCtrl* mSkillChecks[6];
+    LLLineEditor*   mWantToEditor;
+    LLLineEditor*   mSkillsEditor;
+    LLLineEditor*   mLanguagesEditor;
 };
 
 
@@ -395,12 +395,12 @@ public:
      */
     virtual void apply();
 
-	void updateTabLabel(const std::string& title);
+    void updateTabLabel(const std::string& title);
 
-	//This stuff we got from LLRemoteParcelObserver, in the last one we intentionally do nothing
-	/*virtual*/ void processParcelInfo(const LLParcelData& parcel_data);
-	/*virtual*/ void setParcelID(const LLUUID& parcel_id) { mParcelId = parcel_id; }
-	/*virtual*/ void setErrorStatus(S32 status, const std::string& reason) {};
+    //This stuff we got from LLRemoteParcelObserver, in the last one we intentionally do nothing
+    /*virtual*/ void processParcelInfo(const LLParcelData& parcel_data);
+    /*virtual*/ void setParcelID(const LLUUID& parcel_id) { mParcelId = parcel_id; }
+    /*virtual*/ void setErrorStatus(S32 status, const std::string& reason) {};
 
 protected:
 
@@ -445,10 +445,10 @@ protected:
      */
     void onClickTeleport();
 
-	/**
-	 * Enables/disables "Save" button
-	 */
-	void enableSaveButton(BOOL enable);
+    /**
+     * Enables/disables "Save" button
+     */
+    void enableSaveButton(BOOL enable);
 
     /**
      * Called when snapshot image changes.
@@ -489,24 +489,24 @@ protected:
 
 protected:
 
-	LLTextureCtrl*		mSnapshotCtrl;
-	LLLineEditor*		mPickName;
-	LLTextEditor*		mPickDescription;
-	LLButton*			mSetCurrentLocationButton;
-	LLButton*			mSaveButton;
+    LLTextureCtrl*      mSnapshotCtrl;
+    LLLineEditor*       mPickName;
+    LLTextEditor*       mPickDescription;
+    LLButton*           mSetCurrentLocationButton;
+    LLButton*           mSaveButton;
 
     LLVector3d mPosGlobal;
     LLUUID mParcelId;
     LLUUID mPickId;
     LLUUID mRequestedId;
 
-	bool				mLocationChanged;
-	bool				mNewPick;
-	bool				mIsEditing;
+    bool                mLocationChanged;
+    bool                mNewPick;
+    bool                mIsEditing;
 
-	std::string mCurrentPickDescription;
+    std::string mCurrentPickDescription;
 
-	void onDescriptionFocusReceived();
+    void onDescriptionFocusReceived();
 };
 
 class FSPanelProfilePicks
@@ -520,35 +520,35 @@ public:
 
     /*virtual*/ void onOpen(const LLSD& key);
 
-	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-	
-	void resetData();
+    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    
+    void resetData();
 
     /**
      * Saves changes.
      */
     virtual void apply();
 
-	/**
-	 * Sends update data request to server.
-	 */
-	/*virtual*/ void updateData();
+    /**
+     * Sends update data request to server.
+     */
+    /*virtual*/ void updateData();
 
 private:
-	void onClickNewBtn();
-	void onClickDelete();
-	void callbackDeletePick(const LLSD& notification, const LLSD& response);
+    void onClickNewBtn();
+    void onClickDelete();
+    void callbackDeletePick(const LLSD& notification, const LLSD& response);
 
-	boost::signals2::connection mRlvBehaviorCallbackConnection;
-	void updateRlvRestrictions(std::string behavior, bool added);
+    boost::signals2::connection mRlvBehaviorCallbackConnection;
+    void updateRlvRestrictions(std::string behavior, bool added);
 
-	bool canAddNewPick();
-	bool canDeletePick();
+    bool canAddNewPick();
+    bool canDeletePick();
 
-	LLTabContainer*	mTabContainer;
-	LLUICtrl*		mNoItemsLabel;
-	LLButton*		mNewButton;
-	LLButton*		mDeleteButton;
+    LLTabContainer* mTabContainer;
+    LLUICtrl*       mNoItemsLabel;
+    LLButton*       mNewButton;
+    LLButton*       mDeleteButton;
 };
 
 
@@ -565,11 +565,11 @@ public:
 
     /*virtual*/ void onOpen(const LLSD& key);
 
-	/*virtual*/ BOOL postBuild();
+    /*virtual*/ BOOL postBuild();
 
-	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-	
-	void resetData();
+    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    
+    void resetData();
 
     /**
      * Saves changes.
@@ -577,14 +577,14 @@ public:
     void apply(LLAvatarData* data);
 
 protected:
-	virtual void enableControls();
-	void onDescriptionFocusReceived();
+    virtual void enableControls();
+    void onDescriptionFocusReceived();
 
-	LLTextEditor*	mDescriptionEdit;
-	LLTextureCtrl*	mPicture;
+    LLTextEditor*   mDescriptionEdit;
+    LLTextureCtrl*  mPicture;
 
-	bool			mIsEditing;
-	std::string		mCurrentDescription;
+    bool            mIsEditing;
+    std::string     mCurrentDescription;
 };
 
 /**
@@ -609,9 +609,9 @@ public:
 
     /*virtual*/ BOOL postBuild();
 
-	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
-	
-	void resetData();
+    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    
+    void resetData();
 
     /*virtual*/ void updateData();
 
@@ -626,16 +626,16 @@ protected:
      */
     void fillRightsData();
 
-	void rightsConfirmationCallback(const LLSD& notification, const LLSD& response, S32 rights);
-	void confirmModifyRights(bool grant, S32 rights);
-	void onCommitRights();
-	void onCommitNotes();
-	void enableCheckboxes(bool enable);
+    void rightsConfirmationCallback(const LLSD& notification, const LLSD& response, S32 rights);
+    void confirmModifyRights(bool grant, S32 rights);
+    void onCommitRights();
+    void onCommitNotes();
+    void enableCheckboxes(bool enable);
 
-	LLCheckBoxCtrl*		mOnlineStatus;
-	LLCheckBoxCtrl*		mMapRights;
-	LLCheckBoxCtrl*		mEditObjectRights;
-	LLTextEditor*		mNotesEditor;
+    LLCheckBoxCtrl*     mOnlineStatus;
+    LLCheckBoxCtrl*     mMapRights;
+    LLCheckBoxCtrl*     mEditObjectRights;
+    LLTextEditor*       mNotesEditor;
 };
 
 
@@ -644,39 +644,39 @@ protected:
 * Container panel for the profile tabs
 */
 class FSPanelProfile
-	: public FSPanelProfileTab
+    : public FSPanelProfileTab
 {
 public:
-	FSPanelProfile();
-	/*virtual*/ ~FSPanelProfile();
+    FSPanelProfile();
+    /*virtual*/ ~FSPanelProfile();
 
-	/*virtual*/ BOOL postBuild();
+    /*virtual*/ BOOL postBuild();
 
-	/*virtual*/ void updateData();
+    /*virtual*/ void updateData();
 
-	/*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
 
-	/*virtual*/ void onOpen(const LLSD& key);
+    /*virtual*/ void onOpen(const LLSD& key);
 
-	/**
-	 * Saves changes.
-	 */
-	void apply();
+    /**
+     * Saves changes.
+     */
+    void apply();
 
 private:
-	void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name);
-	void onTabChange();
-	
-	FSPanelProfileSecondLife*	mPanelSecondlife;
-	FSPanelProfileWeb*			mPanelWeb;
-	FSPanelProfileInterests*	mPanelInterests;
-	FSPanelProfilePicks*		mPanelPicks;
-	FSPanelClassifieds*			mPanelClassifieds;
-	FSPanelProfileFirstLife*	mPanelFirstlife;
-	FSPanelAvatarNotes*			mPanelNotes;
-	LLTabContainer*				mTabContainer;
+    void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name);
+    void onTabChange();
+    
+    FSPanelProfileSecondLife*   mPanelSecondlife;
+    FSPanelProfileWeb*          mPanelWeb;
+    FSPanelProfileInterests*    mPanelInterests;
+    FSPanelProfilePicks*        mPanelPicks;
+    FSPanelClassifieds*         mPanelClassifieds;
+    FSPanelProfileFirstLife*    mPanelFirstlife;
+    FSPanelAvatarNotes*         mPanelNotes;
+    LLTabContainer*             mTabContainer;
 
-	boost::signals2::connection	mAvatarNameCacheConnection;
+    boost::signals2::connection mAvatarNameCacheConnection;
 };
 
 #endif // FS_PANELPROFILE_H

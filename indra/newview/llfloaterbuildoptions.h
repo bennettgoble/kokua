@@ -41,24 +41,24 @@ class LLObjectSelection;
 typedef LLSafeHandle<LLObjectSelection> LLObjectSelectionHandle;
 
 class LLFloaterBuildOptions
-	:	public LLFloater
+    :   public LLFloater
 {
 public:
-	virtual BOOL postBuild();
+    virtual BOOL postBuild();
 
-	/*virtual*/ void onOpen(const LLSD& key);
-	/*virtual*/	void onClose(bool app_quitting);
+    /*virtual*/ void onOpen(const LLSD& key);
+    /*virtual*/ void onClose(bool app_quitting);
 
-	void setGridMode(EGridMode mode);
-	void updateGridMode();
+    void setGridMode(EGridMode mode);
+    void updateGridMode();
 
 private:
-	friend class LLFloaterReg;
+    friend class LLFloaterReg;
 
-	LLFloaterBuildOptions(const LLSD& key);
-	~LLFloaterBuildOptions();
+    LLFloaterBuildOptions(const LLSD& key);
+    ~LLFloaterBuildOptions();
 
-	LLComboBox*	mComboGridMode;
-	LLObjectSelectionHandle	mObjectSelection;
+    LLComboBox* mComboGridMode;
+    LLObjectSelectionHandle mObjectSelection;
 };
 #endif

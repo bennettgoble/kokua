@@ -34,44 +34,44 @@
 #include <boost/signals2.hpp>
 
 class AOTimerCollection
-:	public LLEventTimer
+:   public LLEventTimer
 {
-	public:
-		AOTimerCollection();
-		~AOTimerCollection();
+    public:
+        AOTimerCollection();
+        ~AOTimerCollection();
 
-		virtual BOOL tick();
+        virtual BOOL tick();
 
-		void enableInventoryTimer(BOOL yes);
-		void enableSettingsTimer(BOOL yes);
-		void enableReloadTimer(BOOL yes);
-		void enableImportTimer(BOOL yes);
+        void enableInventoryTimer(BOOL yes);
+        void enableSettingsTimer(BOOL yes);
+        void enableReloadTimer(BOOL yes);
+        void enableImportTimer(BOOL yes);
 
-	protected:
-		void updateTimers();
+    protected:
+        void updateTimers();
 
-		BOOL mInventoryTimer;
-		BOOL mSettingsTimer;
-		BOOL mReloadTimer;
-		BOOL mImportTimer;
+        BOOL mInventoryTimer;
+        BOOL mSettingsTimer;
+        BOOL mReloadTimer;
+        BOOL mImportTimer;
 };
 
 // ----------------------------------------------------
 
 class AOSitCancelTimer
-:	 public LLEventTimer
+:    public LLEventTimer
 {
-	public:
-		AOSitCancelTimer();
-		~AOSitCancelTimer();
+    public:
+        AOSitCancelTimer();
+        ~AOSitCancelTimer();
 
-		void oneShot();
-		void stop();
+        void oneShot();
+        void stop();
 
-		virtual BOOL tick();
+        virtual BOOL tick();
 
-	protected:
-		S32 mTickCount;
+    protected:
+        S32 mTickCount;
 };
 
 // ----------------------------------------------------
@@ -81,142 +81,142 @@ class LLInventoryItem;
 class LLVFS;
 
 class AOEngine
-:	public LLSingleton<AOEngine>
+:   public LLSingleton<AOEngine>
 {
-	LLSINGLETON(AOEngine);
-	~AOEngine();
+    LLSINGLETON(AOEngine);
+    ~AOEngine();
 
-	public:
-		enum eCycleMode
-		{
-			CycleAny,
-			CycleNext,
-			CyclePrevious
-		};
-		void enable(BOOL yes);
-		void enable_stands(BOOL yes);
-		const LLUUID override(const LLUUID& motion, BOOL start);
-		void tick();
-		void update(bool);
-		void reload(bool);
-		void reloadStateAnimations(AOSet::AOState* state);
-		void clear( bool );
+    public:
+        enum eCycleMode
+        {
+            CycleAny,
+            CycleNext,
+            CyclePrevious
+        };
+        void enable(BOOL yes);
+        void enable_stands(BOOL yes);
+        const LLUUID override(const LLUUID& motion, BOOL start);
+        void tick();
+        void update(bool);
+        void reload(bool);
+        void reloadStateAnimations(AOSet::AOState* state);
+        void clear( bool );
 
-		const LLUUID& getAOFolder() const;
+        const LLUUID& getAOFolder() const;
 
-		LLUUID addSet(const std::string& name, BOOL reload = TRUE);
-		BOOL removeSet(AOSet* set);
+        LLUUID addSet(const std::string& name, BOOL reload = TRUE);
+        BOOL removeSet(AOSet* set);
 
-		BOOL addAnimation(const AOSet* set, AOSet::AOState* state, const LLInventoryItem* item, BOOL reload = TRUE);
-		BOOL removeAnimation(const AOSet* set, AOSet::AOState* state, S32 index);
-		void checkSitCancel();
-		void checkBelowWater(BOOL yes);
+        BOOL addAnimation(const AOSet* set, AOSet::AOState* state, const LLInventoryItem* item, BOOL reload = TRUE);
+        BOOL removeAnimation(const AOSet* set, AOSet::AOState* state, S32 index);
+        void checkSitCancel();
+        void checkBelowWater(BOOL yes);
 
-		BOOL importNotecard(const LLInventoryItem* item);
-		void processImport(bool);
+        BOOL importNotecard(const LLInventoryItem* item);
+        void processImport(bool);
 
-		BOOL swapWithPrevious(AOSet::AOState* state, S32 index);
-		BOOL swapWithNext(AOSet::AOState* state, S32 index);
+        BOOL swapWithPrevious(AOSet::AOState* state, S32 index);
+        BOOL swapWithNext(AOSet::AOState* state, S32 index);
 
-		void cycleTimeout(const AOSet* set);
-		void cycle(eCycleMode cycleMode);
+        void cycleTimeout(const AOSet* set);
+        void cycle(eCycleMode cycleMode);
 
-		void inMouselook(BOOL yes);
-		void selectSet(AOSet* set);
-		AOSet* selectSetByName(const std::string& name);
-		AOSet* getSetByName(const std::string& name) const;
+        void inMouselook(BOOL yes);
+        void selectSet(AOSet* set);
+        AOSet* selectSetByName(const std::string& name);
+        AOSet* getSetByName(const std::string& name) const;
 
-		// callback from LLAppViewer
-		static void onLoginComplete();
+        // callback from LLAppViewer
+        static void onLoginComplete();
 
-		const std::vector<AOSet*> getSetList() const;
-		const std::string getCurrentSetName() const;
-		const AOSet* getDefaultSet() const;
-		BOOL renameSet(AOSet* set, const std::string& name);
+        const std::vector<AOSet*> getSetList() const;
+        const std::string getCurrentSetName() const;
+        const AOSet* getDefaultSet() const;
+        BOOL renameSet(AOSet* set, const std::string& name);
 
-		void setDefaultSet(AOSet* set);
-		void setOverrideSits(AOSet* set, BOOL yes);
-		void setSmart(AOSet* set, BOOL yes);
-		void setDisableStands(AOSet* set, BOOL yes);
-		void setCycle(AOSet::AOState* set, BOOL yes);
-		void setRandomize(AOSet::AOState* state, BOOL yes);
-		void setCycleTime(AOSet::AOState* state, F32 time);
+        void setDefaultSet(AOSet* set);
+        void setOverrideSits(AOSet* set, BOOL yes);
+        void setSmart(AOSet* set, BOOL yes);
+        void setDisableStands(AOSet* set, BOOL yes);
+        void setCycle(AOSet::AOState* set, BOOL yes);
+        void setRandomize(AOSet::AOState* state, BOOL yes);
+        void setCycleTime(AOSet::AOState* state, F32 time);
 
-		void saveSettings();
+        void saveSettings();
 
-		typedef boost::signals2::signal<void ()> updated_signal_t;
-		boost::signals2::connection setReloadCallback(const updated_signal_t::slot_type& cb)
-		{
-			return mUpdatedSignal.connect(cb);
-		};
+        typedef boost::signals2::signal<void ()> updated_signal_t;
+        boost::signals2::connection setReloadCallback(const updated_signal_t::slot_type& cb)
+        {
+            return mUpdatedSignal.connect(cb);
+        };
 
-		typedef boost::signals2::signal<void (const LLUUID&, const std::string, const std::string)> animation_changed_signal_t;
-		boost::signals2::connection setAnimationChangedCallback(const animation_changed_signal_t::slot_type& cb)
-		{
-			return mAnimationChangedSignal.connect(cb);
-		};
+        typedef boost::signals2::signal<void (const LLUUID&, const std::string, const std::string)> animation_changed_signal_t;
+        boost::signals2::connection setAnimationChangedCallback(const animation_changed_signal_t::slot_type& cb)
+        {
+            return mAnimationChangedSignal.connect(cb);
+        };
 
-	protected:
-		void init();
+    protected:
+        void init();
 
-		void setLastMotion(const LLUUID& motion);
-		void setLastOverriddenMotion(const LLUUID& motion);
-		void setStateCycleTimer(const AOSet::AOState* state);
+        void setLastMotion(const LLUUID& motion);
+        void setLastOverriddenMotion(const LLUUID& motion);
+        void setStateCycleTimer(const AOSet::AOState* state);
 
-		void stopAllStandVariants();
-		void stopAllSitVariants();
+        void stopAllStandVariants();
+        void stopAllSitVariants();
 
-		BOOL foreignAnimations();
-		AOSet::AOState* mapSwimming(const LLUUID& motion) const;
-		AOSet::AOState* getStateForMotion(const LLUUID& motion) const;
+        BOOL foreignAnimations();
+        AOSet::AOState* mapSwimming(const LLUUID& motion) const;
+        AOSet::AOState* getStateForMotion(const LLUUID& motion) const;
 
-		void updateSortOrder(AOSet::AOState* state);
-		void saveSet(const AOSet* set);
-		void saveState(const AOSet::AOState* state);
+        void updateSortOrder(AOSet::AOState* state);
+        void saveSet(const AOSet* set);
+        void saveState(const AOSet::AOState* state);
 
-		BOOL createAnimationLink(const AOSet* set, AOSet::AOState* state, const LLInventoryItem* item);
-		BOOL findForeignItems(const LLUUID& uuid) const;
-		void purgeFolder(const LLUUID& uuid) const;
+        BOOL createAnimationLink(const AOSet* set, AOSet::AOState* state, const LLInventoryItem* item);
+        BOOL findForeignItems(const LLUUID& uuid) const;
+        void purgeFolder(const LLUUID& uuid) const;
 
-		void onRegionChange();
+        void onRegionChange();
 
-		void onToggleAOControl();
-		void onToggleAOStandsControl();
-		static void onNotecardLoadComplete(const LLUUID& assetUUID, LLAssetType::EType type,
-												void* userdata, S32 status, LLExtStat extStatus);
-		void parseNotecard(const char* buffer);
+        void onToggleAOControl();
+        void onToggleAOStandsControl();
+        static void onNotecardLoadComplete(const LLUUID& assetUUID, LLAssetType::EType type,
+                                                void* userdata, S32 status, LLExtStat extStatus);
+        void parseNotecard(const char* buffer);
 
-		updated_signal_t mUpdatedSignal;
-		animation_changed_signal_t mAnimationChangedSignal;
+        updated_signal_t mUpdatedSignal;
+        animation_changed_signal_t mAnimationChangedSignal;
 
-		AOTimerCollection mTimerCollection;
-		AOSitCancelTimer mSitCancelTimer;
+        AOTimerCollection mTimerCollection;
+        AOSitCancelTimer mSitCancelTimer;
 
-		BOOL mEnabled;
-		BOOL mEnabledStands;
-		BOOL mInMouselook;
-		BOOL mUnderWater;
+        BOOL mEnabled;
+        BOOL mEnabledStands;
+        BOOL mInMouselook;
+        BOOL mUnderWater;
 
-		LLUUID mAOFolder;
-		LLUUID mLastMotion;
-		LLUUID mLastOverriddenMotion;
-		LLUUID mTransitionId;
+        LLUUID mAOFolder;
+        LLUUID mLastMotion;
+        LLUUID mLastOverriddenMotion;
+        LLUUID mTransitionId;
 
-		// this motion will be ignored once in the overrider when stopping, fixes a case
-		// where the AO doesn't correctly start up on login or when getting enabled manually
-		LLUUID mIgnoreMotionStopOnce;
+        // this motion will be ignored once in the overrider when stopping, fixes a case
+        // where the AO doesn't correctly start up on login or when getting enabled manually
+        LLUUID mIgnoreMotionStopOnce;
 
-		std::vector<AOSet*> mSets;
-		std::vector<AOSet*> mOldSets;
-		AOSet* mCurrentSet;
-		AOSet* mDefaultSet;
+        std::vector<AOSet*> mSets;
+        std::vector<AOSet*> mOldSets;
+        AOSet* mCurrentSet;
+        AOSet* mDefaultSet;
 
-		AOSet* mImportSet;
-		std::vector<AOSet*> mOldImportSets;
-		LLUUID mImportCategory;
-		S32 mImportRetryCount;
+        AOSet* mImportSet;
+        std::vector<AOSet*> mOldImportSets;
+        LLUUID mImportCategory;
+        S32 mImportRetryCount;
 
-		boost::signals2::connection mRegionChangeConnection;
+        boost::signals2::connection mRegionChangeConnection;
 };
 
 #endif // AOENGINE_H

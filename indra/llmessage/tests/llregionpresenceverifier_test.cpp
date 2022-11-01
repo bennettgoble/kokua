@@ -37,72 +37,72 @@ class LLTestResponse : public LLRegionPresenceVerifier::Response
 {
 public:
 
-	virtual bool checkValidity(const LLSD& content) const
-	{
-		return true;
-	}
+    virtual bool checkValidity(const LLSD& content) const
+    {
+        return true;
+    }
 
-	virtual void onRegionVerified(const LLSD& region_details)
-	{
-	}
+    virtual void onRegionVerified(const LLSD& region_details)
+    {
+    }
 
-	virtual void onRegionVerificationFailed()
-	{
-	}
-	
-	virtual LLHTTPClientInterface& getHttpClient()
-	{
-		return mHttpInterface;
-	}
+    virtual void onRegionVerificationFailed()
+    {
+    }
+    
+    virtual LLHTTPClientInterface& getHttpClient()
+    {
+        return mHttpInterface;
+    }
 
-	LLTestHTTPClientAdapter mHttpInterface;
+    LLTestHTTPClientAdapter mHttpInterface;
 };
 
 namespace tut
 {
-	struct LLRegionPresenceVerifierData
-	{
-		LLRegionPresenceVerifierData() :
-			mResponse(new LLTestResponse()),
-			mResponder("", LLRegionPresenceVerifier::ResponsePtr(mResponse),
-					   LLSD(), 3)
-		{
-		}
-		
-		LLTestResponse* mResponse;
-		LLRegionPresenceVerifier::VerifiedDestinationResponder mResponder;
-	};
+    struct LLRegionPresenceVerifierData
+    {
+        LLRegionPresenceVerifierData() :
+            mResponse(new LLTestResponse()),
+            mResponder("", LLRegionPresenceVerifier::ResponsePtr(mResponse),
+                       LLSD(), 3)
+        {
+        }
+        
+        LLTestResponse* mResponse;
+        LLRegionPresenceVerifier::VerifiedDestinationResponder mResponder;
+    };
 
-	typedef test_group<LLRegionPresenceVerifierData> factory;
-	typedef factory::object object;
+    typedef test_group<LLRegionPresenceVerifierData> factory;
+    typedef factory::object object;
 }
 
 namespace
 {
-	tut::factory tf("LLRegionPresenceVerifier");
+    tut::factory tf("LLRegionPresenceVerifier");
 }
 
 namespace tut
 {
-	// Test that VerifiedDestinationResponder does retry
+    // Test that VerifiedDestinationResponder does retry
     // on error when shouldRetry returns true.
-	template<> template<>
-	void object::test<1>()
-	{
-		mResponder.error(500, "Internal server error");
-		ensure_equals(mResponse->mHttpInterface.mGetUrl.size(), 1);
-	}
+    template<> template<>
+    void object::test<1>()
+    {
+        mResponder.error(500, "Internal server error");
+        ensure_equals(mResponse->mHttpInterface.mGetUrl.size(), 1);
+    }
 
-	// Test that VerifiedDestinationResponder only retries
-	// on error until shouldRetry returns false.
-	template<> template<>
-	void object::test<2>()
-	{
-		mResponder.error(500, "Internal server error");
-		mResponder.error(500, "Internal server error");
-		mResponder.error(500, "Internal server error");
-		mResponder.error(500, "Internal server error");
-		ensure_equals(mResponse->mHttpInterface.mGetUrl.size(), 3);
-	}
+    // Test that VerifiedDestinationResponder only retries
+    // on error until shouldRetry returns false.
+    template<> template<>
+    void object::test<2>()
+    {
+        mResponder.error(500, "Internal server error");
+        mResponder.error(500, "Internal server error");
+        mResponder.error(500, "Internal server error");
+        mResponder.error(500, "Internal server error");
+        ensure_equals(mResponse->mHttpInterface.mGetUrl.size(), 3);
+    }
 }
 

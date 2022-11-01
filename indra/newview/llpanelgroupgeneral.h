@@ -43,66 +43,66 @@ class LLAvatarName;
 class LLPanelGroupGeneral : public LLPanelGroupTab
 {
 public:
-	LLPanelGroupGeneral();
-	virtual ~LLPanelGroupGeneral();
+    LLPanelGroupGeneral();
+    virtual ~LLPanelGroupGeneral();
 
-	// LLPanelGroupTab
-	virtual void activate();
-	virtual bool needsApply(std::string& mesg);
-	virtual bool apply(std::string& mesg);
-	virtual void cancel();
-	
-	virtual void update(LLGroupChange gc);
-	
-	virtual BOOL postBuild();
-	
-	virtual void draw();
+    // LLPanelGroupTab
+    virtual void activate();
+    virtual bool needsApply(std::string& mesg);
+    virtual bool apply(std::string& mesg);
+    virtual void cancel();
+    
+    virtual void update(LLGroupChange gc);
+    
+    virtual BOOL postBuild();
+    
+    virtual void draw();
 
-	virtual void setGroupID(const LLUUID& id);
+    virtual void setGroupID(const LLUUID& id);
 
-	virtual void setupCtrls	(LLPanel* parent);
+    virtual void setupCtrls (LLPanel* parent);
 private:
-	void	reset();
+    void    reset();
 
-	void	resetDirty();
+    void    resetDirty();
 
-	static void onFocusEdit(LLFocusableElement* ctrl, void* data);
-	static void onCommitAny(LLUICtrl* ctrl, void* data);
-	static void onCommitUserOnly(LLUICtrl* ctrl, void* data);
-	static void onCommitEnrollment(LLUICtrl* ctrl, void* data);
-	static void onClickInfo(void* userdata);
-	static void onReceiveNotices(LLUICtrl* ctrl, void* data);
-	static void onCopyGroupUUID(void *data);
-	static void onCopyGroupURI(void *data);
+    static void onFocusEdit(LLFocusableElement* ctrl, void* data);
+    static void onCommitAny(LLUICtrl* ctrl, void* data);
+    static void onCommitUserOnly(LLUICtrl* ctrl, void* data);
+    static void onCommitEnrollment(LLUICtrl* ctrl, void* data);
+    static void onClickInfo(void* userdata);
+    static void onReceiveNotices(LLUICtrl* ctrl, void* data);
+    static void onCopyGroupUUID(void *data);
+    static void onCopyGroupURI(void *data);
 
     static bool joinDlgCB(const LLSD& notification, const LLSD& response);
 
-	void updateChanged();
-	bool confirmMatureApply(const LLSD& notification, const LLSD& response);
+    void updateChanged();
+    bool confirmMatureApply(const LLSD& notification, const LLSD& response);
 
-	BOOL			mChanged;
-	BOOL			mFirstUse;
-	std::string		mIncompleteMemberDataStr;
+    BOOL            mChanged;
+    BOOL            mFirstUse;
+    std::string     mIncompleteMemberDataStr;
 
-	// Group information (include any updates in updateChanged)
-	LLLineEditor		*mGroupNameEditor;
-	LLTextBox			*mFounderName;
-	LLTextureCtrl		*mInsignia;
-	LLTextEditor		*mEditCharter;
-	LLLineEditor		*mGroupUUIDText;
-	LLButton		*mBtnGroupUUIDCopy;
-	LLButton		*mBtnGroupURICopy;
-	// Options (include any updates in updateChanged)
-	LLCheckBoxCtrl	*mCtrlShowInGroupList;
-	LLCheckBoxCtrl	*mCtrlOpenEnrollment;
-	LLCheckBoxCtrl	*mCtrlEnrollmentFee;
-	LLSpinCtrl      *mSpinEnrollmentFee;
-	LLCheckBoxCtrl	*mCtrlReceiveNotices;
-	LLCheckBoxCtrl  *mCtrlListGroup;
-	LLTextBox       *mActiveTitleLabel;
-	LLComboBox		*mComboActiveTitle;
-	LLComboBox		*mComboMature;
-	LLCheckBoxCtrl	*mCtrlReceiveGroupChat; // <exodus/>
+    // Group information (include any updates in updateChanged)
+    LLLineEditor        *mGroupNameEditor;
+    LLTextBox           *mFounderName;
+    LLTextureCtrl       *mInsignia;
+    LLTextEditor        *mEditCharter;
+    LLLineEditor        *mGroupUUIDText;
+    LLButton        *mBtnGroupUUIDCopy;
+    LLButton        *mBtnGroupURICopy;
+    // Options (include any updates in updateChanged)
+    LLCheckBoxCtrl  *mCtrlShowInGroupList;
+    LLCheckBoxCtrl  *mCtrlOpenEnrollment;
+    LLCheckBoxCtrl  *mCtrlEnrollmentFee;
+    LLSpinCtrl      *mSpinEnrollmentFee;
+    LLCheckBoxCtrl  *mCtrlReceiveNotices;
+    LLCheckBoxCtrl  *mCtrlListGroup;
+    LLTextBox       *mActiveTitleLabel;
+    LLComboBox      *mComboActiveTitle;
+    LLComboBox      *mComboMature;
+    LLCheckBoxCtrl  *mCtrlReceiveGroupChat; // <exodus/>
 };
 
 #endif

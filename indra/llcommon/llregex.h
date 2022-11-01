@@ -30,77 +30,77 @@
 template <typename S, typename M, typename R>
 LL_COMMON_API bool ll_regex_match(const S& string, M& match, const R& regex)
 {
-	try
-	{
-		return boost::regex_match(string, match, regex);
-	}
-	catch (const std::runtime_error& e)
-	{
-		LL_WARNS() << "error matching with '" << regex.str() << "': "
-			<< e.what() << ":\n'" << string << "'" << LL_ENDL;
-		return false;
-	}
+    try
+    {
+        return boost::regex_match(string, match, regex);
+    }
+    catch (const std::runtime_error& e)
+    {
+        LL_WARNS() << "error matching with '" << regex.str() << "': "
+            << e.what() << ":\n'" << string << "'" << LL_ENDL;
+        return false;
+    }
 }
 
 template <typename S, typename R>
 LL_COMMON_API bool ll_regex_match(const S& string, const R& regex)
 {
-	try
-	{
-		return boost::regex_match(string, regex);
-	}
-	catch (const std::runtime_error& e)
-	{
-		LL_WARNS() << "error matching with '" << regex.str() << "': "
-			<< e.what() << ":\n'" << string << "'" << LL_ENDL;
-		return false;
-	}
+    try
+    {
+        return boost::regex_match(string, regex);
+    }
+    catch (const std::runtime_error& e)
+    {
+        LL_WARNS() << "error matching with '" << regex.str() << "': "
+            << e.what() << ":\n'" << string << "'" << LL_ENDL;
+        return false;
+    }
 }
 
 template <typename S, typename M, typename R>
 bool ll_regex_search(const S& string, M& match, const R& regex)
 {
-	try
-	{
-		return boost::regex_search(string, match, regex);
-	}
-	catch (const std::runtime_error& e)
-	{
-		LL_WARNS() << "error searching with '" << regex.str() << "': "
-			<< e.what() << ":\n'" << string << "'" << LL_ENDL;
-		return false;
-	}
+    try
+    {
+        return boost::regex_search(string, match, regex);
+    }
+    catch (const std::runtime_error& e)
+    {
+        LL_WARNS() << "error searching with '" << regex.str() << "': "
+            << e.what() << ":\n'" << string << "'" << LL_ENDL;
+        return false;
+    }
 }
 
 template <typename S, typename R>
 bool ll_regex_search(const S& string, const R& regex)
 {
-	try
-	{
-		return boost::regex_search(string, regex);
-	}
-	catch (const std::runtime_error& e)
-	{
-		LL_WARNS() << "error searching with '" << regex.str() << "': "
-			<< e.what() << ":\n'" << string << "'" << LL_ENDL;
-		return false;
-	}
+    try
+    {
+        return boost::regex_search(string, regex);
+    }
+    catch (const std::runtime_error& e)
+    {
+        LL_WARNS() << "error searching with '" << regex.str() << "': "
+            << e.what() << ":\n'" << string << "'" << LL_ENDL;
+        return false;
+    }
 }
 
 // added for Kokua bulk rename KKA-782
 template <typename S, typename R, typename P>
 std::string  ll_regex_replace(const S& string, const R& regex, const P& replace)
 {
-	try
-	{
-		return boost::regex_replace(string, regex, replace);
-	}
-	catch (const std::runtime_error& e)
-	{
-		LL_WARNS() << "error replacing with '" << regex.str() << "': "
-			<< e.what() << ":\n'" << string << "'" << LL_ENDL;
-		return "regexfail";
-	}
+    try
+    {
+        return boost::regex_replace(string, regex, replace);
+    }
+    catch (const std::runtime_error& e)
+    {
+        LL_WARNS() << "error replacing with '" << regex.str() << "': "
+            << e.what() << ":\n'" << string << "'" << LL_ENDL;
+        return "regexfail";
+    }
 }
 
 #endif  // LLREGEX_H

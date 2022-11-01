@@ -34,25 +34,25 @@
 class LLStreamingAudioInterface
 {
  public:
-	virtual ~LLStreamingAudioInterface() {}
+    virtual ~LLStreamingAudioInterface() {}
 
-	virtual void start(const std::string& url) = 0;
-	virtual void stop() = 0;
-	virtual void pause(int pause) = 0;
-	virtual void update() = 0;
-	virtual int isPlaying() = 0;
-	// use a value from 0.0 to 1.0, inclusive
-	virtual void setGain(F32 vol) = 0;
-	virtual F32 getGain() = 0;
-	virtual std::string getURL() = 0;
-	virtual bool supportsAdjustableBufferSizes(){return false;}
-	virtual void setBufferSizes(U32 streambuffertime, U32 decodebuffertime){};
+    virtual void start(const std::string& url) = 0;
+    virtual void stop() = 0;
+    virtual void pause(int pause) = 0;
+    virtual void update() = 0;
+    virtual int isPlaying() = 0;
+    // use a value from 0.0 to 1.0, inclusive
+    virtual void setGain(F32 vol) = 0;
+    virtual F32 getGain() = 0;
+    virtual std::string getURL() = 0;
+    virtual bool supportsAdjustableBufferSizes(){return false;}
+    virtual void setBufferSizes(U32 streambuffertime, U32 decodebuffertime){};
 
-	virtual bool hasNewMetadata() { return false; }
-	virtual std::string getCurrentStreamName() { return ""; }
-	virtual std::string getCurrentStreamLocation() { return ""; }
-	virtual std::string getCurrentArtist() { return ""; }
-	virtual std::string getCurrentTitle() { return ""; }
+    virtual bool hasNewMetadata() { return false; }
+    virtual std::string getCurrentStreamName() { return ""; }
+    virtual std::string getCurrentStreamLocation() { return ""; }
+    virtual std::string getCurrentArtist() { return ""; }
+    virtual std::string getCurrentTitle() { return ""; }
 };
 
 #endif // LL_STREAMINGAUDIO_H

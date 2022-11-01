@@ -116,13 +116,13 @@ BOOL LLFloaterFixedEnvironment::postBuild()
 void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
 {
 //MK by CA
-	if (gRRenabled && gAgent.mRRInterface.mContainsSetenv)
-	{
-		closeFloater();
-		return;
-	}
+    if (gRRenabled && gAgent.mRRInterface.mContainsSetenv)
+    {
+        closeFloater();
+        return;
+    }
 //mk by CA
-	LLUUID invid;
+    LLUUID invid;
 
     if (key.has(KEY_INVENTORY_ID))
     {

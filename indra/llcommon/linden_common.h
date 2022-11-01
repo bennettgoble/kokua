@@ -51,7 +51,7 @@ void  tracy_aligned_free(void *memblock);
 // 1.48 has version 3 as the default.  Keep compatibility for now.
 // Fall back to boost 1.52 for linux 64 bit builds
 #if (LL_LINUX) && defined(__amd64__)
-#define BOOST_FILESYSTEM_VERSION		3
+#define BOOST_FILESYSTEM_VERSION        3
 #endif
 #include "llpreprocessor.h"
 

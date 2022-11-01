@@ -4,11 +4,11 @@
  *
  * Copyright (C) 2012 arminweatherwax (at) lavabit.com
  * floaterhop.h is partially a drivate work of:
- *	llfloaterwebcontent.h
- *	Copyright (C) 2010, Linden Research, Inc.
- *	licensed under GNU Lesser General Public License
- *	as published by the Free Software Foundation;
- *	version 2.1 of the License only.
+ *  llfloaterwebcontent.h
+ *  Copyright (C) 2010, Linden Research, Inc.
+ *  licensed under GNU Lesser General Public License
+ *  as published by the Free Software Foundation;
+ *  version 2.1 of the License only.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,62 +44,62 @@ class LLTextBox;
 class HopTimer;
 
 class FloaterHop :
-	public LLFloater,
-	public LLViewerMediaObserver,
-	public LLInstanceTracker<FloaterHop, std::string>
+    public LLFloater,
+    public LLViewerMediaObserver,
+    public LLInstanceTracker<FloaterHop, std::string>
 {
 public:
-	typedef LLInstanceTracker<FloaterHop, std::string> instance_tracker_t;
+    typedef LLInstanceTracker<FloaterHop, std::string> instance_tracker_t;
     LOG_CLASS(FloaterHop);
 
-	struct _Params : public LLInitParam::Block<_Params>
-	{
-		Optional<std::string>	url,
-								target,
-								window_class,
-								id;
-		Optional<bool>			show_chrome,
-								allow_address_entry,
-								trusted_content,
-								show_page_title;
-		Optional<LLRect>		preferred_media_size;
+    struct _Params : public LLInitParam::Block<_Params>
+    {
+        Optional<std::string>   url,
+                                target,
+                                window_class,
+                                id;
+        Optional<bool>          show_chrome,
+                                allow_address_entry,
+                                trusted_content,
+                                show_page_title;
+        Optional<LLRect>        preferred_media_size;
 
-		_Params();
-	};
+        _Params();
+    };
 
-	typedef LLSDParamAdapter<_Params> Params;
+    typedef LLSDParamAdapter<_Params> Params;
 
-	FloaterHop(const Params& params);
+    FloaterHop(const Params& params);
 
-	static void closeRequest(const std::string &uuid);
-	static void geometryChanged(const std::string &uuid, S32 x, S32 y, S32 width, S32 height);
-	void geometryChanged(S32 x, S32 y, S32 width, S32 height);
+    static void closeRequest(const std::string &uuid);
+    static void geometryChanged(const std::string &uuid, S32 x, S32 y, S32 width, S32 height);
+    void geometryChanged(S32 x, S32 y, S32 width, S32 height);
 
-	/* virtual */ BOOL postBuild();
-	/* virtual */ void onOpen(const LLSD& key);
-	/* virtual */ void onClose(bool app_quitting);
-	/* virtual */ void draw();
+    /* virtual */ BOOL postBuild();
+    /* virtual */ void onOpen(const LLSD& key);
+    /* virtual */ void onClose(bool app_quitting);
+    /* virtual */ void draw();
 
-	static void onHopFinished(void* userdata);
-	static void onHopFailed(void* userdata);
-	static void onClickHop(void* userdata);
-	static void onClickCancel(void* userdata);
+    static void onHopFinished(void* userdata);
+    static void onHopFailed(void* userdata);
+    static void onClickHop(void* userdata);
+    static void onClickCancel(void* userdata);
 
 
 protected:
-	// inherited from LLViewerMediaObserver
-	/*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
+    // inherited from LLViewerMediaObserver
+    /*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
 
-	void open_media(const Params& );
-	void set_current_url(const std::string& url);
+    void open_media(const Params& );
+    void set_current_url(const std::string& url);
 
-	LLMediaCtrl*	mWebBrowser;
+    LLMediaCtrl*    mWebBrowser;
 
-	LLSLURL mSLURL;
-	std::string		mCurrentURL;
-	std::string		mUUID;
-	bool			mShowPageTitle;
-	HopTimer* mHopTimer;
+    LLSLURL mSLURL;
+    std::string     mCurrentURL;
+    std::string     mUUID;
+    bool            mShowPageTitle;
+    HopTimer* mHopTimer;
 };
 
 #endif  // FLOATER_HOP_H

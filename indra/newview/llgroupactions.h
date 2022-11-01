@@ -36,115 +36,115 @@
 class LLGroupActions
 {
 public:
-	/**
-	 * Invokes group search floater.
-	 */
-	static void search();
+    /**
+     * Invokes group search floater.
+     */
+    static void search();
 
-	/// Join a group.  Assumes LLGroupMgr has data for that group already.
-	static void join(const LLUUID& group_id);
+    /// Join a group.  Assumes LLGroupMgr has data for that group already.
+    static void join(const LLUUID& group_id);
 
-	/**
-	 * Invokes "Leave Group" floater.
-	 */
-	static void leave(const LLUUID& group_id);
+    /**
+     * Invokes "Leave Group" floater.
+     */
+    static void leave(const LLUUID& group_id);
 
-	/**
-	 * Activate group.
-	 */
-	static void activate(const LLUUID& group_id);
+    /**
+     * Activate group.
+     */
+    static void activate(const LLUUID& group_id);
 
-	/**
-	 * Show group information panel.
-	 */
-	static void show(const LLUUID& group_id);
+    /**
+     * Show group information panel.
+     */
+    static void show(const LLUUID& group_id);
 
 // [SL:KB] - Patch: Notification-GroupCreateNotice | Checked: 2012-02-16 (Catznip-3.2)
-	/**
-	 * Show group information panel.
-	 */
-	static void showNotices(const LLUUID& group_id);
+    /**
+     * Show group information panel.
+     */
+    static void showNotices(const LLUUID& group_id);
 
-	/**
-	 * Show the group's chat history.
-	 */
-	static void viewChatHistory(const LLUUID& group_id);
+    /**
+     * Show the group's chat history.
+     */
+    static void viewChatHistory(const LLUUID& group_id);
 // [/SL:KB]
 
-	/**
-	 * Show group inspector floater.
-	 */
-	static void inspect(const LLUUID& group_id);
+    /**
+     * Show group inspector floater.
+     */
+    static void inspect(const LLUUID& group_id);
 
-	/**
-	 * Refresh group information panel.
-	 */
-	static void refresh(const LLUUID& group_id);
+    /**
+     * Refresh group information panel.
+     */
+    static void refresh(const LLUUID& group_id);
 
-	/**
-	 * Refresh group notices panel.
-	 */
+    /**
+     * Refresh group notices panel.
+     */
 // [SL:KB] - Patch: UI-GroupFloaters | Checked: 2011-01-23 (Catznip-2.5)
-	static void refresh_notices(const LLUUID& group_id);
+    static void refresh_notices(const LLUUID& group_id);
 // [/SL:KB]
-//	static void refresh_notices();
+//  static void refresh_notices();
 
-	/**
-	 * Refresh group information panel.
-	 */
-	static void createGroup();
+    /**
+     * Refresh group information panel.
+     */
+    static void createGroup();
 
-	/**
-	 * Close group information panel.
-	 */
-	static void closeGroup		(const LLUUID& group_id);
+    /**
+     * Close group information panel.
+     */
+    static void closeGroup      (const LLUUID& group_id);
 
-	/**
-	 * Start group instant messaging session.
-	 */
-	static LLUUID startIM(const LLUUID& group_id);
+    /**
+     * Start group instant messaging session.
+     */
+    static LLUUID startIM(const LLUUID& group_id);
 
-	/**
-	 * End group instant messaging session.
-	 */
-	static void endIM(const LLUUID& group_id);
+    /**
+     * End group instant messaging session.
+     */
+    static void endIM(const LLUUID& group_id);
 
-	/// Returns if the current user is a member of the group
-	static bool isInGroup(const LLUUID& group_id);
+    /// Returns if the current user is a member of the group
+    static bool isInGroup(const LLUUID& group_id);
 
 // [SL:KB] - Patch: Notification-GroupCreateNotice | Checked: 2012-02-16 (Catznip-3.2)
-	// Returns true if the current user has the specified power in the group
-	static bool hasPowerInGroup(const LLUUID& group_id, U64 power);
+    // Returns true if the current user has the specified power in the group
+    static bool hasPowerInGroup(const LLUUID& group_id, U64 power);
 
-	// Returns true if there is a chat transcript for the specified group
-	static bool hasChatHistory(const LLUUID& group_id);
+    // Returns true if there is a chat transcript for the specified group
+    static bool hasChatHistory(const LLUUID& group_id);
 // [/SL:KB]
 
-	/**
-	 * Start a group voice call.
-	 */
-	static void startCall(const LLUUID& group_id);
+    /**
+     * Start a group voice call.
+     */
+    static void startCall(const LLUUID& group_id);
 
-	/**
-	 * Returns true if avatar is in group.
-	 *
-	 * Note that data about group members is loaded from server.
-	 * If data has not been loaded yet, function will return inaccurate result.
-	 * See LLGroupMgr::sendGroupMembersRequest
-	 */
-	static bool isAvatarMemberOfGroup(const LLUUID& group_id, const LLUUID& avatar_id);
-	
+    /**
+     * Returns true if avatar is in group.
+     *
+     * Note that data about group members is loaded from server.
+     * If data has not been loaded yet, function will return inaccurate result.
+     * See LLGroupMgr::sendGroupMembersRequest
+     */
+    static bool isAvatarMemberOfGroup(const LLUUID& group_id, const LLUUID& avatar_id);
+    
 private:
-	static bool onJoinGroup(const LLSD& notification, const LLSD& response);
-	static bool onLeaveGroup(const LLSD& notification, const LLSD& response);
-	
-	/**
-	 * This function is called by LLFetchLeaveGroupData upon receiving a response to a group 
-	 * members data request.
-	 */
-	static void processLeaveGroupDataResponse(const LLUUID group_id);
+    static bool onJoinGroup(const LLSD& notification, const LLSD& response);
+    static bool onLeaveGroup(const LLSD& notification, const LLSD& response);
+    
+    /**
+     * This function is called by LLFetchLeaveGroupData upon receiving a response to a group 
+     * members data request.
+     */
+    static void processLeaveGroupDataResponse(const LLUUID group_id);
 
-	friend class LLFetchLeaveGroupData;
+    friend class LLFetchLeaveGroupData;
 };
 
 #endif // LL_LLGROUPACTIONS_H

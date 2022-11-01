@@ -34,35 +34,35 @@ class LLTextEditor;
 class LLFloaterGroupCreateNotice : public LLFloater
 {
 public:
-	LLFloaterGroupCreateNotice(const LLSD& sdKey);
+    LLFloaterGroupCreateNotice(const LLSD& sdKey);
 
-	/*
-	 * LLView overrides
-	 */
+    /*
+     * LLView overrides
+     */
 public:
-	/*virtual*/ BOOL postBuild();
-	/*virtual*/ S32  notifyParent(const LLSD& sdInfo);
-	/*virtual*/ void onOpen(const LLSD& sdKey);
+    /*virtual*/ BOOL postBuild();
+    /*virtual*/ S32  notifyParent(const LLSD& sdInfo);
+    /*virtual*/ void onOpen(const LLSD& sdKey);
 
-	/*
-	 * Event callbacks
-	 */
+    /*
+     * Event callbacks
+     */
 protected:
-	void onClickClearAttach();
-	void onClickSend();
-	void onClickCancel();
+    void onClickClearAttach();
+    void onClickSend();
+    void onClickCancel();
 
-	/*
-	 * Member variables
-	 */
+    /*
+     * Member variables
+     */
 protected:
-	LLUUID        m_idGroup;
-	LLLineEditor* m_pSubjectCtrl;
-	LLTextEditor* m_pMessageCtrl;
-	LLUUID        m_idAttachItem;
-	LLIconCtrl*   m_pAttachIconCtrl;
-	LLLineEditor* m_pAttachTextCtrl;
-	LLButton*     m_pAttachClearBtn;
+    LLUUID        m_idGroup;
+    LLLineEditor* m_pSubjectCtrl;
+    LLTextEditor* m_pMessageCtrl;
+    LLUUID        m_idAttachItem;
+    LLIconCtrl*   m_pAttachIconCtrl;
+    LLLineEditor* m_pAttachTextCtrl;
+    LLButton*     m_pAttachClearBtn;
 };
 
 // =========================================================================

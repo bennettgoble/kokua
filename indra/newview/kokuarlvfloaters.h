@@ -38,7 +38,7 @@ class LLTextEditor;
 class LLUUID;
 class LLInventoryObserver;
 
-static std::map<LLUUID, std::string> mKnownIDs;		// known list of names for object IDs
+static std::map<LLUUID, std::string> mKnownIDs;     // known list of names for object IDs
 static BOOL option_ignore_queries;
 static BOOL option_auto_open;
 static BOOL option_focus_on_latest;
@@ -48,9 +48,9 @@ static BOOL option_focus_on_latest;
 class KokuaRLVInventoryObserver : public LLInventoryObserver
 {
 public:
-	KokuaRLVInventoryObserver() {}
-	virtual ~KokuaRLVInventoryObserver() {}
-	virtual void changed(U32 mask);
+    KokuaRLVInventoryObserver() {}
+    virtual ~KokuaRLVInventoryObserver() {}
+    virtual void changed(U32 mask);
 };
 
 // ---- Support functions
@@ -58,99 +58,99 @@ public:
 class KokuaRLVFloaterSupport
 {
 public:
-	KokuaRLVFloaterSupport() {}
-	~KokuaRLVFloaterSupport() {}
-	static BOOL addNameToLocalCache(LLUUID &obj_id, std::string &from_name);
-	static std::string getNameFromUUID(const LLUUID& idObj, bool fIncludeAttachPt);
-	static std::string getModifierText(F32 value, F32 ceiling);
-	static void commandNotify(LLUUID& object_uuid, std::string& command);
+    KokuaRLVFloaterSupport() {}
+    ~KokuaRLVFloaterSupport() {}
+    static BOOL addNameToLocalCache(LLUUID &obj_id, std::string &from_name);
+    static std::string getNameFromUUID(const LLUUID& idObj, bool fIncludeAttachPt);
+    static std::string getModifierText(F32 value, F32 ceiling);
+    static void commandNotify(LLUUID& object_uuid, std::string& command);
 
 private:
-	static void checkForRefreshNeeded(LLUUID& object_uuid, std::string& command, bool* refresh_status, bool* refresh_worn);
+    static void checkForRefreshNeeded(LLUUID& object_uuid, std::string& command, bool* refresh_status, bool* refresh_worn);
 };
 
 // ---- Commands
 
 class KokuaFloaterRLVDebug : public LLMultiFloater
 {
-	friend class LLMultiFloater;
-	friend class LLFloaterReg;
+    friend class LLMultiFloater;
+    friend class LLFloaterReg;
 
 public:
-	KokuaFloaterRLVDebug(const LLSD& key);
-	~KokuaFloaterRLVDebug();
-	BOOL postBuild();
-	void setVisible(BOOL visible);
-	void show(const LLUUID& object_id);
+    KokuaFloaterRLVDebug(const LLSD& key);
+    ~KokuaFloaterRLVDebug();
+    BOOL postBuild();
+    void setVisible(BOOL visible);
+    void show(const LLUUID& object_id);
     static KokuaFloaterRLVDebug* getBase();
     /*virtual*/ void closeFloater(bool app_quitting = false);
-	static void addRLVLine(const std::string &utf8mesg, const LLColor4& color, LLUUID& source_id);
-	void refreshRLVDebug(LLUUID &obj_id);
+    static void addRLVLine(const std::string &utf8mesg, const LLColor4& color, LLUUID& source_id);
+    void refreshRLVDebug(LLUUID &obj_id);
 
 protected:
-	static LLFloater* addOutputWindow(const LLUUID& object_id);
+    static LLFloater* addOutputWindow(const LLUUID& object_id);
 };
 
 class KokuaFloaterRLVDebugOutput : public LLFloater
 {
 
 public:
-	KokuaFloaterRLVDebugOutput(const LLSD& object_id);
-	~KokuaFloaterRLVDebugOutput();
+    KokuaFloaterRLVDebugOutput(const LLSD& object_id);
+    ~KokuaFloaterRLVDebugOutput();
 
-	void addLine(const std::string &utf8mesg, const std::string &user_name, const LLColor4& color);
-	void updateName(const std::string &user_name, const LLUUID &id);
-	virtual BOOL postBuild();
+    void addLine(const std::string &utf8mesg, const std::string &user_name, const LLColor4& color);
+    void updateName(const std::string &user_name, const LLUUID &id);
+    virtual BOOL postBuild();
 
 protected:
-	LLTextEditor* mHistoryEditor;
-	LLUUID mObjectID;
+    LLTextEditor* mHistoryEditor;
+    LLUUID mObjectID;
 };
 
 // ---- RLV Console
 
 class KokuaFloaterRLVConsole : public LLFloater
 {
-	friend class LLFloaterReg;
+    friend class LLFloaterReg;
 
 public:
-	KokuaFloaterRLVConsole(const LLSD& sdKey);
-	~KokuaFloaterRLVConsole() override;
-	BOOL postBuild() override;
-	void onClose(bool fQuitting) override;
+    KokuaFloaterRLVConsole(const LLSD& sdKey);
+    ~KokuaFloaterRLVConsole() override;
+    BOOL postBuild() override;
+    void onClose(bool fQuitting) override;
     static KokuaFloaterRLVConsole* getBase();
-	void addCommandReply(const std::string& strReply);
+    void addCommandReply(const std::string& strReply);
 
 protected:
-	void onInput(LLUICtrl* ctrl, const LLSD& param);
+    void onInput(LLUICtrl* ctrl, const LLSD& param);
 
 protected:
-	LLTextEditor* m_pOutputText;
+    LLTextEditor* m_pOutputText;
 };
 
 // ---- RLV Status
 
 class KokuaFloaterRLVStatus : public LLFloater
 {
-	friend class LLFloaterReg;
+    friend class LLFloaterReg;
 
 public:
-	KokuaFloaterRLVStatus(const LLSD& sdKey);
-	~KokuaFloaterRLVStatus();
-	BOOL postBuild();
-	static KokuaFloaterRLVStatus* getBase();
-	void refreshRLVStatus();
-	static void callRefreshRLVStatus();
+    KokuaFloaterRLVStatus(const LLSD& sdKey);
+    ~KokuaFloaterRLVStatus();
+    BOOL postBuild();
+    static KokuaFloaterRLVStatus* getBase();
+    void refreshRLVStatus();
+    static void callRefreshRLVStatus();
 
 protected:
-	void onBtnCopyToClipboard();
-	void onCommitPauseUpdating();
-	void onAvatarNameLookup(const LLUUID& idAgent, const LLAvatarName& avName);
-	void onOpen(const LLSD& key);
-	LLCheckBoxCtrl*	mPauseUpdating;
-	
+    void onBtnCopyToClipboard();
+    void onCommitPauseUpdating();
+    void onAvatarNameLookup(const LLUUID& idAgent, const LLAvatarName& avName);
+    void onOpen(const LLSD& key);
+    LLCheckBoxCtrl* mPauseUpdating;
+    
 protected:
-	uuid_vec_t 					m_PendingLookup;
+    uuid_vec_t                  m_PendingLookup;
 
 };
 
@@ -158,22 +158,22 @@ protected:
 
 class KokuaFloaterRLVWorn : public LLFloater
 {
-	friend class LLFloaterReg;
+    friend class LLFloaterReg;
 
 public:
-	KokuaFloaterRLVWorn(const LLSD& sdKey);
-	~KokuaFloaterRLVWorn();
-	BOOL postBuild();
-	static KokuaFloaterRLVWorn* getBase();
-	void refreshWornStatus();
-	static void callRefreshWornStatus();
+    KokuaFloaterRLVWorn(const LLSD& sdKey);
+    ~KokuaFloaterRLVWorn();
+    BOOL postBuild();
+    static KokuaFloaterRLVWorn* getBase();
+    void refreshWornStatus();
+    static void callRefreshWornStatus();
 
 protected:
-	void onBtnRefresh();
+    void onBtnRefresh();
   void onOpen(const LLSD& key);
   void onClose(bool quitting);
-  	
+    
 protected:
-	LLInventoryObserver* mInventoryObserver;
+    LLInventoryObserver* mInventoryObserver;
 };
 #endif // KOKUARLVFLOATERS_H

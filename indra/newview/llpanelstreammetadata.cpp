@@ -28,21 +28,21 @@
 
 #include "llnotifications.h"
 #include "llpanelstreammetadata.h"
-#include "llviewercontrol.h"		// for gSavedSettings
+#include "llviewercontrol.h"        // for gSavedSettings
 
 LLPanelStreamMetadata::LLPanelStreamMetadata(const LLNotificationPtr &notification) :
-	LLPanelTipToast(notification)
+    LLPanelTipToast(notification)
 {
-	buildFromFile("panel_stream_metadata_toast.xml");
+    buildFromFile("panel_stream_metadata_toast.xml");
 
-	LLTextBox *message = getChild<LLTextBox>("message");
+    LLTextBox *message = getChild<LLTextBox>("message");
 
-	if (!message) {
-		return;
-	}
+    if (!message) {
+        return;
+    }
 
-	message->setValue(notification->getMessage() + "\n");
+    message->setValue(notification->getMessage() + "\n");
 
-	snapToMessageHeight(message, gSavedSettings.getS32("TipToastMessageLineCount"));
+    snapToMessageHeight(message, gSavedSettings.getS32("TipToastMessageLineCount"));
 
 }

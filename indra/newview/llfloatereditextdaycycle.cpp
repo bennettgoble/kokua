@@ -264,17 +264,17 @@ BOOL LLFloaterEditExtDayCycle::postBuild()
             panel->setOnDirtyFlagChanged([this](LLPanel *, bool val) { onPanelDirtyFlagChanged(val); });
     }
 
-	return TRUE;
+    return TRUE;
 }
 
 void LLFloaterEditExtDayCycle::onOpen(const LLSD& key)
 {
 //MK by CA
-	if (gRRenabled && gAgent.mRRInterface.mContainsSetenv)
-	{
-		closeFloater();
-		return;
-	}
+    if (gRRenabled && gAgent.mRRInterface.mContainsSetenv)
+    {
+        closeFloater();
+        return;
+    }
 //mk by CA
     if (!mEditDay)
     {

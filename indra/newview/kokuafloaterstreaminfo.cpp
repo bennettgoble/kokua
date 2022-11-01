@@ -34,40 +34,40 @@
 static std::string last_artist_title;
 
 KokuaFloaterStreamInfo::KokuaFloaterStreamInfo(const LLSD& seed)
-:	LLFloater(seed)
+:   LLFloater(seed)
 {
 }
 
 // static
 void KokuaFloaterStreamInfo::UpdateStreamInfo(const std::string artist_title) 
 {
-	last_artist_title = artist_title;
-	KokuaFloaterStreamInfo* stream_floater = LLFloaterReg::findTypedInstance<KokuaFloaterStreamInfo>("stream_info");
-	if (stream_floater)
-	{
-		if (last_artist_title.empty())
-		{
-			last_artist_title = stream_floater->getString("KFSI_NoStream");
-		}
-		LLTextBox* stream_status = stream_floater->getChild<LLTextBox>("stream_status");
-		if (stream_status)
-		{
-			stream_status->setText(last_artist_title);
-		}
-	}
+    last_artist_title = artist_title;
+    KokuaFloaterStreamInfo* stream_floater = LLFloaterReg::findTypedInstance<KokuaFloaterStreamInfo>("stream_info");
+    if (stream_floater)
+    {
+        if (last_artist_title.empty())
+        {
+            last_artist_title = stream_floater->getString("KFSI_NoStream");
+        }
+        LLTextBox* stream_status = stream_floater->getChild<LLTextBox>("stream_status");
+        if (stream_status)
+        {
+            stream_status->setText(last_artist_title);
+        }
+    }
 }
 
 BOOL KokuaFloaterStreamInfo::postBuild()
 {
-	LLTextBox* stream_status = getChild<LLTextBox>("stream_status");
-	if (stream_status)
-	{
-		if (last_artist_title.empty())
-		{
-			last_artist_title = getString("KFSI_NoStream");
-		}
-		stream_status->setText(last_artist_title);
-	}
-	
-	return TRUE;
+    LLTextBox* stream_status = getChild<LLTextBox>("stream_status");
+    if (stream_status)
+    {
+        if (last_artist_title.empty())
+        {
+            last_artist_title = getString("KFSI_NoStream");
+        }
+        stream_status->setText(last_artist_title);
+    }
+    
+    return TRUE;
 }

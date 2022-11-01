@@ -28,7 +28,7 @@
 #ifndef LLSCROLLLISTITEM_H
 #define LLSCROLLLISTITEM_H
 
-#include "llpointer.h"		// LLPointer<>
+#include "llpointer.h"      // LLPointer<>
 #include "llsd.h"
 #include "v4color.h"
 #include "llinitparam.h"
@@ -48,103 +48,103 @@ class LLUIImage;
 //---------------------------------------------------------------------------
 class LLScrollListItem
 {
-	friend class LLScrollListCtrl;
+    friend class LLScrollListCtrl;
 public:
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-	typedef boost::function<void(const LLSD& value, LLScrollListCell* cell)> commit_callback_t;
-	typedef boost::signals2::signal<void(const LLSD& value, LLScrollListCell* cell)> commit_signal_t;
+    typedef boost::function<void(const LLSD& value, LLScrollListCell* cell)> commit_callback_t;
+    typedef boost::signals2::signal<void(const LLSD& value, LLScrollListCell* cell)> commit_signal_t;
 // [/SL:KB]
 
-	struct Params : public LLInitParam::Block<Params>
-	{
-		Optional<bool>		enabled;
+    struct Params : public LLInitParam::Block<Params>
+    {
+        Optional<bool>      enabled;
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-5.2
-		Optional<commit_callback_t> commit_callback;
+        Optional<commit_callback_t> commit_callback;
 // [/SL:KB]
-		Optional<void*>		userdata;
-		Optional<LLSD>		value;
-		Optional<LLSD>		alt_value;
-		
-		Ignored				name; // use for localization tools
-		Ignored				type; 
-		Ignored				length; 
+        Optional<void*>     userdata;
+        Optional<LLSD>      value;
+        Optional<LLSD>      alt_value;
+        
+        Ignored             name; // use for localization tools
+        Ignored             type; 
+        Ignored             length; 
 
-		Multiple<LLScrollListCell::Params> columns;
+        Multiple<LLScrollListCell::Params> columns;
 
-		Params()
-		:	enabled("enabled", true),
-			value("value"),
-			alt_value("alt_value"),
-			name("name"),
-			type("type"),
-			length("length"),
-			columns("columns")
-		{
-			addSynonym(columns, "column");
-			addSynonym(value, "id");
-		}
-	};
+        Params()
+        :   enabled("enabled", true),
+            value("value"),
+            alt_value("alt_value"),
+            name("name"),
+            type("type"),
+            length("length"),
+            columns("columns")
+        {
+            addSynonym(columns, "column");
+            addSynonym(value, "id");
+        }
+    };
 
-	virtual ~LLScrollListItem();
+    virtual ~LLScrollListItem();
 
-	void	setSelected( BOOL b );
-	BOOL	getSelected() const				{ return mSelected; }
+    void    setSelected( BOOL b );
+    BOOL    getSelected() const             { return mSelected; }
 
-	void	setEnabled( BOOL b )			{ mEnabled = b; }
-	BOOL	getEnabled() const 				{ return mEnabled; }
+    void    setEnabled( BOOL b )            { mEnabled = b; }
+    BOOL    getEnabled() const              { return mEnabled; }
 
-	void	setHighlighted( BOOL b );
-	BOOL	getHighlighted() const			{ return mHighlighted; }
+    void    setHighlighted( BOOL b );
+    BOOL    getHighlighted() const          { return mHighlighted; }
 
-	void	setSelectedCell( S32 cell );
-	S32		getSelectedCell() const			{ return mSelectedIndex; }
+    void    setSelectedCell( S32 cell );
+    S32     getSelectedCell() const         { return mSelectedIndex; }
 
-	void	setHoverCell( S32 cell );
-	S32		getHoverCell() const			{ return mHoverIndex; }
+    void    setHoverCell( S32 cell );
+    S32     getHoverCell() const            { return mHoverIndex; }
 
-	void	setUserdata( void* userdata )	{ mUserdata = userdata; }
-	void*	getUserdata() const 			{ return mUserdata; }
+    void    setUserdata( void* userdata )   { mUserdata = userdata; }
+    void*   getUserdata() const             { return mUserdata; }
 
-	virtual LLUUID	getUUID() const			{ return mItemValue.asUUID(); }
-	LLSD	getValue() const				{ return mItemValue; }
-	LLSD	getAltValue() const				{ return mItemAltValue; }
-	
-	void	setRect(LLRect rect)			{ mRectangle = rect; }
-	LLRect	getRect() const					{ return mRectangle; }
+    virtual LLUUID  getUUID() const         { return mItemValue.asUUID(); }
+    LLSD    getValue() const                { return mItemValue; }
+    LLSD    getAltValue() const             { return mItemAltValue; }
+    
+    void    setRect(LLRect rect)            { mRectangle = rect; }
+    LLRect  getRect() const                 { return mRectangle; }
 
-	void	addColumn( const LLScrollListCell::Params& p );
+    void    addColumn( const LLScrollListCell::Params& p );
 
-	void	setNumColumns(S32 columns);
+    void    setNumColumns(S32 columns);
 
-	void	setColumn( S32 column, LLScrollListCell *cell );
-	
-	S32		getNumColumns() const;
+    void    setColumn( S32 column, LLScrollListCell *cell );
+    
+    S32     getNumColumns() const;
 
-	LLScrollListCell *getColumn(const S32 i) const;
+    LLScrollListCell *getColumn(const S32 i) const;
 
-	std::string getContentsCSV() const;
+    std::string getContentsCSV() const;
 
-	virtual void draw(const LLRect& rect,
-					  const LLColor4& fg_color,
-					  const LLColor4& hover_color, // highlight/hover selection of whole item or cell
-					  const LLColor4& select_color, // highlight/hover selection of whole item or cell
-					  const LLColor4& highlight_color, // highlights contents of cells (ex: text)
-					  S32 column_padding);
+    virtual void draw(const LLRect& rect,
+                      const LLColor4& fg_color,
+                      const LLColor4& hover_color, // highlight/hover selection of whole item or cell
+                      const LLColor4& select_color, // highlight/hover selection of whole item or cell
+                      const LLColor4& highlight_color, // highlights contents of cells (ex: text)
+                      S32 column_padding);
 
 protected:
-	LLScrollListItem( const Params& );
+    LLScrollListItem( const Params& );
 
 private:
-	BOOL	mSelected;
-    BOOL	mHighlighted;
-    S32		mHoverIndex;
-	S32		mSelectedIndex;
-	BOOL	mEnabled;
-	void*	mUserdata;
-	LLSD	mItemValue;
-	LLSD	mItemAltValue;
-	std::vector<LLScrollListCell *> mColumns;
-	LLRect  mRectangle;
+    BOOL    mSelected;
+    BOOL    mHighlighted;
+    S32     mHoverIndex;
+    S32     mSelectedIndex;
+    BOOL    mEnabled;
+    void*   mUserdata;
+    LLSD    mItemValue;
+    LLSD    mItemAltValue;
+    std::vector<LLScrollListCell *> mColumns;
+    LLRect  mRectangle;
 };
 
 #endif

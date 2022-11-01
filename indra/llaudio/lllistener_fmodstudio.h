@@ -33,30 +33,30 @@
 //Stubs
 namespace FMOD
 {
-	class System;
+    class System;
 }
 
 //Interfaces
 class LLListener_FMODSTUDIO : public LLListener
 {
  public:  
-	LLListener_FMODSTUDIO(FMOD::System *system);
-	virtual ~LLListener_FMODSTUDIO();
+    LLListener_FMODSTUDIO(FMOD::System *system);
+    virtual ~LLListener_FMODSTUDIO();
 
-	virtual void translate(LLVector3 offset);
-	virtual void setPosition(LLVector3 pos);
-	virtual void setVelocity(LLVector3 vel);
-	virtual void orient(LLVector3 up, LLVector3 at);
-	virtual void commitDeferredChanges();
+    virtual void translate(LLVector3 offset);
+    virtual void setPosition(LLVector3 pos);
+    virtual void setVelocity(LLVector3 vel);
+    virtual void orient(LLVector3 up, LLVector3 at);
+    virtual void commitDeferredChanges();
 
-	virtual void setDopplerFactor(F32 factor);
-	virtual F32 getDopplerFactor();
-	virtual void setRolloffFactor(F32 factor);
-	virtual F32 getRolloffFactor();
+    virtual void setDopplerFactor(F32 factor);
+    virtual F32 getDopplerFactor();
+    virtual void setRolloffFactor(F32 factor);
+    virtual F32 getRolloffFactor();
  protected:
-	 FMOD::System *mSystem;
-	 F32 mDopplerFactor;
-	 F32 mRolloffFactor;
+     FMOD::System *mSystem;
+     F32 mDopplerFactor;
+     F32 mRolloffFactor;
 };
 
 #endif

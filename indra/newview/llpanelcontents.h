@@ -43,18 +43,18 @@ class LLSpinCtrl;
 class LLPanelContents : public LLPanel
 {
 public:
-	virtual	BOOL postBuild();
-	LLPanelContents();
-	virtual ~LLPanelContents();
+    virtual BOOL postBuild();
+    LLPanelContents();
+    virtual ~LLPanelContents();
 
-	void			refresh();
-	void			clearContents();
+    void            refresh();
+    void            clearContents();
 
 
-	static void		onClickNewScript(void*);
-	static void		onClickPermissions(void*);
-	static void		onClickBulkRename(void*);
-	static void		onClickRefresh(void*);	
+    static void     onClickNewScript(void*);
+    static void     onClickPermissions(void*);
+    static void     onClickBulkRename(void*);
+    static void     onClickRefresh(void*);  
     // Key suffix for "tentative" fields
     static const char* TENTATIVE_SUFFIX;
 
@@ -67,10 +67,10 @@ public:
     static const char* PERMS_ANYONE_CONTROL_KEY;
 
 protected:
-	void				getState(LLViewerObject *object);
+    void                getState(LLViewerObject *object);
 
 public:
-	LLPanelObjectInventory* mPanelInventoryObject;
+    LLPanelObjectInventory* mPanelInventoryObject;
 };
 
 #endif // LL_LLPANELCONTENTS_H

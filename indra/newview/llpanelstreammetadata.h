@@ -31,13 +31,13 @@
 
 class LLPanelStreamMetadata : public LLPanelTipToast
 {
-	// disallow instantiation of this class
+    // disallow instantiation of this class
 private:
-	// grant privileges to instantiate this class to LLToastPanel
-	friend class LLToastPanel;
+    // grant privileges to instantiate this class to LLToastPanel
+    friend class LLToastPanel;
 
-	LLPanelStreamMetadata(const LLNotificationPtr &notification);
-	virtual ~LLPanelStreamMetadata() {}
+    LLPanelStreamMetadata(const LLNotificationPtr &notification);
+    virtual ~LLPanelStreamMetadata() {}
 };
 
 #endif /* LL_PANELSTREAMMETADATA_H */

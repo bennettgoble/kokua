@@ -28,33 +28,33 @@
 
 namespace ViewerInfo
 {
-	/// Returns the name of the viewer.
+    /// Returns the name of the viewer.
   const std::string& viewerName();
 
-	/// Returns the major (first) version number.
+    /// Returns the major (first) version number.
   S32 versionMajor();
 
-	/// Returns the minor (second) version number.
+    /// Returns the minor (second) version number.
   S32 versionMinor();
 
-	/// Returns the patch (third) version number.
+    /// Returns the patch (third) version number.
   S32 versionPatch();
 
-	/// Returns the build (fourth) version number
+    /// Returns the build (fourth) version number
   S32 versionBuild();
 
-	/// Returns the extra version string (e.g. "beta 1", "RC1").
-	/// May be empty, if no extra string was set.
+    /// Returns the extra version string (e.g. "beta 1", "RC1").
+    /// May be empty, if no extra string was set.
   const std::string& versionExtra();
 
-	/// Returns a dot-separated string with all three version numbers.
+    /// Returns a dot-separated string with all three version numbers.
   const std::string& versionNumber();
 
-	/// Returns a string with the version number and extra version
-	/// string (if not empty).
+    /// Returns a string with the version number and extra version
+    /// string (if not empty).
   const std::string& versionFull();
 
-	/// Returns a string with the viewer name and full version.
+    /// Returns a string with the viewer name and full version.
   const std::string& fullInfo();
 }
 

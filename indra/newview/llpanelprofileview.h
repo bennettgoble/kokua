@@ -46,80 +46,80 @@ class AvatarStatusObserver;
 */
 class LLPanelProfileView : public LLPanelProfile
 {
-	LOG_CLASS(LLPanelProfileView);
-	friend class LLUICtrlFactory;
-	friend class AvatarStatusObserver;
+    LOG_CLASS(LLPanelProfileView);
+    friend class LLUICtrlFactory;
+    friend class AvatarStatusObserver;
 
 public:
 
-	LLPanelProfileView();
+    LLPanelProfileView();
 
-	/*virtual*/ ~LLPanelProfileView();
+    /*virtual*/ ~LLPanelProfileView();
 
-	/*virtual*/ void onOpen(const LLSD& key);
-	
-	/*virtual*/ BOOL postBuild();
+    /*virtual*/ void onOpen(const LLSD& key);
+    
+    /*virtual*/ BOOL postBuild();
 
-	BOOL handleDragAndDrop(S32 x, S32 y, MASK mask,
-						   BOOL drop, EDragAndDropType cargo_type,
-						   void *cargo_data, EAcceptance *accept,
-						   std::string& tooltip_msg)
-	{
-		LLToolDragAndDrop::handleGiveDragAndDrop(getAvatarId(), gAgent.getSessionID(), drop,
-				 cargo_type, cargo_data, accept);
+    BOOL handleDragAndDrop(S32 x, S32 y, MASK mask,
+                           BOOL drop, EDragAndDropType cargo_type,
+                           void *cargo_data, EAcceptance *accept,
+                           std::string& tooltip_msg)
+    {
+        LLToolDragAndDrop::handleGiveDragAndDrop(getAvatarId(), gAgent.getSessionID(), drop,
+                 cargo_type, cargo_data, accept);
 
-		return TRUE;
-	}
+        return TRUE;
+    }
 
 
 protected:
 
-	void onBackBtnClick();
-	void onCopyToClipboard();
-	void onCopyURI();
-	bool isGrantedToSeeOnlineStatus();
+    void onBackBtnClick();
+    void onCopyToClipboard();
+    void onCopyURI();
+    bool isGrantedToSeeOnlineStatus();
 
-	/**
-	 * Displays avatar's online status if possible.
-	 *
-	 * Requirements from EXT-3880:
-	 * For friends:
-	 * - Online when online and privacy settings allow to show
-	 * - Offline when offline and privacy settings allow to show
-	 * - Else: nothing
-	 * For other avatars:
-	 *  - Online when online and was not set in Preferences/"Only Friends & Groups can see when I am online"
-	 *  - Else: Offline
-	 */
-	void updateOnlineStatus();
-	void processOnlineStatus(bool online);
+    /**
+     * Displays avatar's online status if possible.
+     *
+     * Requirements from EXT-3880:
+     * For friends:
+     * - Online when online and privacy settings allow to show
+     * - Offline when offline and privacy settings allow to show
+     * - Else: nothing
+     * For other avatars:
+     *  - Online when online and was not set in Preferences/"Only Friends & Groups can see when I am online"
+     *  - Else: Offline
+     */
+    void updateOnlineStatus();
+    void processOnlineStatus(bool online);
 
 private:
-	// LLCacheName will call this function when avatar name is loaded from server.
-	// This is required to display names that have not been cached yet.
-//	void onNameCache(
-//		const LLUUID& id, 
-//		const std::string& full_name,
-//		bool is_group);
-	void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name);
+    // LLCacheName will call this function when avatar name is loaded from server.
+    // This is required to display names that have not been cached yet.
+//  void onNameCache(
+//      const LLUUID& id, 
+//      const std::string& full_name,
+//      bool is_group);
+    void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name);
 
-	LLTextBox* mStatusText;
-	AvatarStatusObserver* mAvatarStatusObserver;
+    LLTextBox* mStatusText;
+    AvatarStatusObserver* mAvatarStatusObserver;
 };
 
 
 class LLFloaterProfileView : public LLFloater
 {
 public:
-	LLFloaterProfileView(const LLSD& seed) : LLFloater(seed) {}
-	~LLFloaterProfileView() {}
-	
-	void onOpen(const LLSD& key)
-	{
-		LLPanel* panel = findChild<LLPanel>("panel_profile_view");
-		if(panel)
-			panel->onOpen(key);
-	}
+    LLFloaterProfileView(const LLSD& seed) : LLFloater(seed) {}
+    ~LLFloaterProfileView() {}
+    
+    void onOpen(const LLSD& key)
+    {
+        LLPanel* panel = findChild<LLPanel>("panel_profile_view");
+        if(panel)
+            panel->onOpen(key);
+    }
 
 };
 

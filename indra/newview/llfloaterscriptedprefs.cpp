@@ -35,46 +35,46 @@
 #include "llpreviewscript.h"
 
 LLFloaterScriptEdPrefs::LLFloaterScriptEdPrefs(const LLSD& key)
-:	LLFloater(key)
-,	mEditor(NULL)
+:   LLFloater(key)
+,   mEditor(NULL)
 {
-	mCommitCallbackRegistrar.add("ScriptPref.applyUIColor",	boost::bind(&LLFloaterScriptEdPrefs::applyUIColor, this ,_1, _2));
-	mCommitCallbackRegistrar.add("ScriptPref.getUIColor",	boost::bind(&LLFloaterScriptEdPrefs::getUIColor, this ,_1, _2));
+    mCommitCallbackRegistrar.add("ScriptPref.applyUIColor", boost::bind(&LLFloaterScriptEdPrefs::applyUIColor, this ,_1, _2));
+    mCommitCallbackRegistrar.add("ScriptPref.getUIColor",   boost::bind(&LLFloaterScriptEdPrefs::getUIColor, this ,_1, _2));
 }
 
 BOOL LLFloaterScriptEdPrefs::postBuild()
 {
-	mEditor = getChild<LLScriptEditor>("Script Preview");
-	if (mEditor)
-	{
-		mEditor->initKeywords();
-		mEditor->loadKeywords();
-	}
-	return TRUE;
+    mEditor = getChild<LLScriptEditor>("Script Preview");
+    if (mEditor)
+    {
+        mEditor->initKeywords();
+        mEditor->loadKeywords();
+    }
+    return TRUE;
 }
 
 void LLFloaterScriptEdPrefs::applyUIColor(LLUICtrl* ctrl, const LLSD& param)
 {
-	LLUIColorTable::instance().setColor(param.asString(), LLColor4(ctrl->getValue()));
-	mEditor->initKeywords();
-	mEditor->loadKeywords();
+    LLUIColorTable::instance().setColor(param.asString(), LLColor4(ctrl->getValue()));
+    mEditor->initKeywords();
+    mEditor->loadKeywords();
 
-	// <FS:Ansariel> FIRE-16740: Color syntax highlighting changes don't immediately appear in script window
-	// This will return both LLPreviewLSL as well as LLLiveLSLEditor instances because they are grouped into "preview_script"!
-	LLFloaterReg::const_instance_list_t floaters = LLFloaterReg::getFloaterList("preview_script");
-	for (LLFloaterReg::const_instance_list_t::const_iterator it = floaters.begin(); it != floaters.end(); ++it)
-	{
-		LLScriptEdContainer* cont = dynamic_cast<LLScriptEdContainer*>(*it);
-		if (cont)
-		{
-			cont->updateStyle();
-		}
-	}
-	// </FS:Ansariel>
+    // <FS:Ansariel> FIRE-16740: Color syntax highlighting changes don't immediately appear in script window
+    // This will return both LLPreviewLSL as well as LLLiveLSLEditor instances because they are grouped into "preview_script"!
+    LLFloaterReg::const_instance_list_t floaters = LLFloaterReg::getFloaterList("preview_script");
+    for (LLFloaterReg::const_instance_list_t::const_iterator it = floaters.begin(); it != floaters.end(); ++it)
+    {
+        LLScriptEdContainer* cont = dynamic_cast<LLScriptEdContainer*>(*it);
+        if (cont)
+        {
+            cont->updateStyle();
+        }
+    }
+    // </FS:Ansariel>
 }
 
 void LLFloaterScriptEdPrefs::getUIColor(LLUICtrl* ctrl, const LLSD& param)
 {
-	LLColorSwatchCtrl* color_swatch = dynamic_cast<LLColorSwatchCtrl*>(ctrl);
-	color_swatch->setOriginal(LLUIColorTable::instance().getColor(param.asString()));
+    LLColorSwatchCtrl* color_swatch = dynamic_cast<LLColorSwatchCtrl*>(ctrl);
+    color_swatch->setOriginal(LLUIColorTable::instance().getColor(param.asString()));
 }

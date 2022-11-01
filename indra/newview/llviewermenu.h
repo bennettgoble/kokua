@@ -37,7 +37,7 @@ class LLView;
 class LLParcelSelection;
 class LLObjectSelection;
 class LLSelectNode;
-class PieMenu;			// ## Zi: Pie menu
+class PieMenu;          // ## Zi: Pie menu
 
 void initialize_edit_menu();
 void initialize_spellcheck_menu();
@@ -176,38 +176,38 @@ bool enable_object_export();
 class LLViewerMenuHolderGL : public LLMenuHolderGL
 {
 public:
-	struct Params : public LLInitParam::Block<Params, LLMenuHolderGL::Params>
-	{};
+    struct Params : public LLInitParam::Block<Params, LLMenuHolderGL::Params>
+    {};
 
-	LLViewerMenuHolderGL(const Params& p);
+    LLViewerMenuHolderGL(const Params& p);
 
-	virtual BOOL hideMenus();
-	
-	void setParcelSelection(LLSafeHandle<LLParcelSelection> selection);
-	void setObjectSelection(LLSafeHandle<LLObjectSelection> selection);
+    virtual BOOL hideMenus();
+    
+    void setParcelSelection(LLSafeHandle<LLParcelSelection> selection);
+    void setObjectSelection(LLSafeHandle<LLObjectSelection> selection);
 
-	virtual const LLRect getMenuRect() const;
+    virtual const LLRect getMenuRect() const;
 
 protected:
-	LLSafeHandle<LLParcelSelection> mParcelSelection;
-	LLSafeHandle<LLObjectSelection> mObjectSelection;
+    LLSafeHandle<LLParcelSelection> mParcelSelection;
+    LLSafeHandle<LLObjectSelection> mObjectSelection;
 };
 
-extern LLMenuBarGL*		gMenuBarView;
-//extern LLView*			gMenuBarHolder;
-extern LLMenuGL*		gEditMenu;
-extern LLMenuGL*		gPopupMenuView;
-extern LLViewerMenuHolderGL*	gMenuHolder;
-extern LLMenuBarGL*		gLoginMenuBarView;
+extern LLMenuBarGL*     gMenuBarView;
+//extern LLView*            gMenuBarHolder;
+extern LLMenuGL*        gEditMenu;
+extern LLMenuGL*        gPopupMenuView;
+extern LLViewerMenuHolderGL*    gMenuHolder;
+extern LLMenuBarGL*     gLoginMenuBarView;
 
 // Context menus in 3D scene
-extern LLContextMenu		*gMenuAvatarSelf;
-extern LLContextMenu		*gMenuAvatarOther;
-extern LLContextMenu		*gMenuObject;
-extern LLContextMenu		*gMenuAttachmentSelf;
-extern LLContextMenu		*gMenuAttachmentOther;
-extern LLContextMenu		*gMenuLand;
-extern LLContextMenu		*gMenuMuteParticle;
+extern LLContextMenu        *gMenuAvatarSelf;
+extern LLContextMenu        *gMenuAvatarOther;
+extern LLContextMenu        *gMenuObject;
+extern LLContextMenu        *gMenuAttachmentSelf;
+extern LLContextMenu        *gMenuAttachmentOther;
+extern LLContextMenu        *gMenuLand;
+extern LLContextMenu        *gMenuMuteParticle;
 
 // Needed to build menus when attachment site list available
 extern LLMenuGL* gAttachSubMenu;
@@ -225,12 +225,12 @@ extern LLContextMenu* gAttachBodyPartPieMenus[9];
 extern LLContextMenu* gDetachBodyPartPieMenus[9];
 
 // ## Zi: Pie menus in 3D scene
-extern PieMenu			*gPieMenuAvatarSelf;
-extern PieMenu			*gPieMenuAvatarOther;
-extern PieMenu			*gPieMenuObject;
-extern PieMenu			*gPieMenuAttachmentSelf;
-extern PieMenu			*gPieMenuAttachmentOther;
-extern PieMenu			*gPieMenuLand;
+extern PieMenu          *gPieMenuAvatarSelf;
+extern PieMenu          *gPieMenuAvatarOther;
+extern PieMenu          *gPieMenuObject;
+extern PieMenu          *gPieMenuAttachmentSelf;
+extern PieMenu          *gPieMenuAttachmentOther;
+extern PieMenu          *gPieMenuLand;
 // Needed to build pie menus when attachment site list available
 extern PieMenu* gPieAttachScreenMenu;
 extern PieMenu* gPieDetachScreenMenu;

@@ -31,15 +31,15 @@
 #include "llfloater.h"
 
 class LLFloaterAvatar:
-	public LLFloater
+    public LLFloater
 {
-	friend class LLFloaterReg;
+    friend class LLFloaterReg;
 private:
-	LLFloaterAvatar(const LLSD& key);
-	/*virtual*/	~LLFloaterAvatar();
-	/*virtual*/	BOOL postBuild();
+    LLFloaterAvatar(const LLSD& key);
+    /*virtual*/ ~LLFloaterAvatar();
+    /*virtual*/ BOOL postBuild();
 //MK
-	/*virtual*/ void draw();
+    /*virtual*/ void draw();
 //mk
 };
 

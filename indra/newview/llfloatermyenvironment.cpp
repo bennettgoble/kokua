@@ -143,11 +143,11 @@ void LLFloaterMyEnvironment::onOpen(const LLSD& key)
     LLFloater::onOpen(key);
 
 //MK by CA
-	if (gRRenabled && gAgent.mRRInterface.mContainsSetenv)
-	{
-		closeFloater();
-		return;
-	}
+    if (gRRenabled && gAgent.mRRInterface.mContainsSetenv)
+    {
+        closeFloater();
+        return;
+    }
 //mk by CA
 
     if (key.has("asset_id") && mInventoryList)

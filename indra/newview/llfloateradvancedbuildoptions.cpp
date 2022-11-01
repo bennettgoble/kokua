@@ -51,20 +51,20 @@ LLFloaterAdvancedBuildOptions::~LLFloaterAdvancedBuildOptions()
 
 BOOL LLFloaterAdvancedBuildOptions::postBuild()
 {
-	// <NP: disable build constraints>
-//		gFloaterTools->updateToolsSizeLimits();
-	// </NP: disable build constraints>
-	return TRUE;
+    // <NP: disable build constraints>
+//      gFloaterTools->updateToolsSizeLimits();
+    // </NP: disable build constraints>
+    return TRUE;
 }
 
 // virtual
 void LLFloaterAdvancedBuildOptions::onOpen(const LLSD& key)
 {
-	mObjectSelection = LLSelectMgr::getInstance()->getEditSelection();
+    mObjectSelection = LLSelectMgr::getInstance()->getEditSelection();
 }
 
 // virtual
 void LLFloaterAdvancedBuildOptions::onClose(bool app_quitting)
 {
-	mObjectSelection = NULL;
+    mObjectSelection = NULL;
 }

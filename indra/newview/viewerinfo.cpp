@@ -28,69 +28,69 @@
 namespace ViewerInfo
 {
 
-	// These are intentionally defined here instead of in the header,
-	// because they should NOT be read directly. Use the functions.
-	const std::string NAME  = "Kokua";
-	const S32         MAJOR = 3;
-	const S32         MINOR = 6;
-	const S32         PATCH = 4;
-	const S32         BUILD = 28144;
-	const std::string EXTRA = "";
+    // These are intentionally defined here instead of in the header,
+    // because they should NOT be read directly. Use the functions.
+    const std::string NAME  = "Kokua";
+    const S32         MAJOR = 3;
+    const S32         MINOR = 6;
+    const S32         PATCH = 4;
+    const S32         BUILD = 28144;
+    const std::string EXTRA = "";
 
 
-	const std::string& viewerName()
-	{
-		return NAME;
-	}
+    const std::string& viewerName()
+    {
+        return NAME;
+    }
 
-	S32 versionMajor()
-	{
-		return MAJOR;
-	}
+    S32 versionMajor()
+    {
+        return MAJOR;
+    }
 
-	S32 versionMinor()
-	{
-		return MINOR;
-	}
+    S32 versionMinor()
+    {
+        return MINOR;
+    }
 
-	S32 versionPatch()
-	{
-		return PATCH;
-	}
+    S32 versionPatch()
+    {
+        return PATCH;
+    }
 
-	const std::string& versionExtra()
-	{
-		return EXTRA;
-	}
+    const std::string& versionExtra()
+    {
+        return EXTRA;
+    }
 
-	const std::string& versionNumber()
-	{
-		static std::string s = llformat("%d.%d.%d.%d", MAJOR, MINOR, PATCH, BUILD);
-		return s;
-	}
+    const std::string& versionNumber()
+    {
+        static std::string s = llformat("%d.%d.%d.%d", MAJOR, MINOR, PATCH, BUILD);
+        return s;
+    }
 
-	const std::string& versionFull()
-	{
-		static std::string s;
-		if (s.length() > 0)
-		{
-			return s;
-		}
+    const std::string& versionFull()
+    {
+        static std::string s;
+        if (s.length() > 0)
+        {
+            return s;
+        }
 
-		s = versionNumber();
+        s = versionNumber();
 
-		if (EXTRA.length() > 0)
-		{
-			s += " " + EXTRA;
-		}
+        if (EXTRA.length() > 0)
+        {
+            s += " " + EXTRA;
+        }
 
-		return s;
-	}
+        return s;
+    }
 
-	const std::string& fullInfo()
-	{
-		static std::string s = NAME + " " + versionFull();
-		return s;
-	}
+    const std::string& fullInfo()
+    {
+        static std::string s = NAME + " " + versionFull();
+        return s;
+    }
 
 }

@@ -36,27 +36,27 @@ class LLChatEntry;
 class KokuaChatBar : public LLFloater
 {
 public:
-	KokuaChatBar(LLSD const & key);
-	virtual ~KokuaChatBar();
-	virtual BOOL handleKeyHere( KEY key, MASK mask );
-	static void startChat(const char* line);
-	void show();
-		
-	// virtual
-	BOOL postBuild();
+    KokuaChatBar(LLSD const & key);
+    virtual ~KokuaChatBar();
+    virtual BOOL handleKeyHere( KEY key, MASK mask );
+    static void startChat(const char* line);
+    void show();
+        
+    // virtual
+    BOOL postBuild();
 
 protected:
-	LLChatEntry* mInputEditor;
-	void sendChat( EChatType type );
-	void onChatBoxKeystroke();
-	void onChatBoxFocusLost();
-	void onChatBoxFocusReceived();
-	void onChatBoxCommit();
-	void onOpen(const LLSD& key);	
-	void onChatFontChange(LLFontGL* fontp);
-	void reshapeChatLayoutPanel();
-	S32 mInputEditorHeightPad;
-	S32 mInputEditorWidthPad;
+    LLChatEntry* mInputEditor;
+    void sendChat( EChatType type );
+    void onChatBoxKeystroke();
+    void onChatBoxFocusLost();
+    void onChatBoxFocusReceived();
+    void onChatBoxCommit();
+    void onOpen(const LLSD& key);   
+    void onChatFontChange(LLFontGL* fontp);
+    void reshapeChatLayoutPanel();
+    S32 mInputEditorHeightPad;
+    S32 mInputEditorWidthPad;
   void handleReshape(const LLRect& new_rect, bool by_user);
 private:
 };

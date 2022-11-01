@@ -35,8 +35,8 @@
 //-----------------------------------------------------------------------
 LLListener_FMODEX::LLListener_FMODEX(FMOD::System *system)
 {
-	mSystem = system;
-	init();
+    mSystem = system;
+    init();
 }
 
 //-----------------------------------------------------------------------
@@ -47,94 +47,94 @@ LLListener_FMODEX::~LLListener_FMODEX()
 //-----------------------------------------------------------------------
 void LLListener_FMODEX::init(void)
 {
-	// do inherited
-	LLListener::init();
-	mDopplerFactor = 1.0f;
-	mRolloffFactor = 1.0f;
+    // do inherited
+    LLListener::init();
+    mDopplerFactor = 1.0f;
+    mRolloffFactor = 1.0f;
 }
 
 //-----------------------------------------------------------------------
 void LLListener_FMODEX::translate(LLVector3 offset)
 {
-	LLListener::translate(offset);
+    LLListener::translate(offset);
 
-	mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)mPosition.mV, NULL, (FMOD_VECTOR*)mListenAt.mV, (FMOD_VECTOR*)mListenUp.mV);
+    mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)mPosition.mV, NULL, (FMOD_VECTOR*)mListenAt.mV, (FMOD_VECTOR*)mListenUp.mV);
 }
 
 //-----------------------------------------------------------------------
 void LLListener_FMODEX::setPosition(LLVector3 pos)
 {
-	LLListener::setPosition(pos);
+    LLListener::setPosition(pos);
 
-	mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)mPosition.mV, NULL, (FMOD_VECTOR*)mListenAt.mV, (FMOD_VECTOR*)mListenUp.mV);
+    mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)mPosition.mV, NULL, (FMOD_VECTOR*)mListenAt.mV, (FMOD_VECTOR*)mListenUp.mV);
 }
 
 //-----------------------------------------------------------------------
 void LLListener_FMODEX::setVelocity(LLVector3 vel)
 {
-	LLListener::setVelocity(vel);
+    LLListener::setVelocity(vel);
 
-	mSystem->set3DListenerAttributes(0, NULL, (FMOD_VECTOR*)mVelocity.mV, (FMOD_VECTOR*)mListenAt.mV, (FMOD_VECTOR*)mListenUp.mV);
+    mSystem->set3DListenerAttributes(0, NULL, (FMOD_VECTOR*)mVelocity.mV, (FMOD_VECTOR*)mListenAt.mV, (FMOD_VECTOR*)mListenUp.mV);
 }
 
 //-----------------------------------------------------------------------
 void LLListener_FMODEX::orient(LLVector3 up, LLVector3 at)
 {
-	LLListener::orient(up, at);
+    LLListener::orient(up, at);
 
-	// Welcome to the transition between right and left
-	// (coordinate systems, that is)
-	// Leaving the at vector alone results in a L/R reversal
-	// since DX is left-handed and we (LL, OpenGL, OpenAL) are right-handed
-	at = -at;
+    // Welcome to the transition between right and left
+    // (coordinate systems, that is)
+    // Leaving the at vector alone results in a L/R reversal
+    // since DX is left-handed and we (LL, OpenGL, OpenAL) are right-handed
+    at = -at;
 
-	mSystem->set3DListenerAttributes(0, NULL, NULL, (FMOD_VECTOR*)at.mV, (FMOD_VECTOR*)up.mV);
+    mSystem->set3DListenerAttributes(0, NULL, NULL, (FMOD_VECTOR*)at.mV, (FMOD_VECTOR*)up.mV);
 }
 
 //-----------------------------------------------------------------------
 void LLListener_FMODEX::commitDeferredChanges()
 {
-	if(!mSystem)
-	{
-		return;
-	}
+    if(!mSystem)
+    {
+        return;
+    }
 
-	mSystem->update();
+    mSystem->update();
 }
 
 
 void LLListener_FMODEX::setRolloffFactor(F32 factor)
 {
-	//An internal FMODEx optimization skips 3D updates if there have not been changes to the 3D sound environment.
-	//Sadly, a change in rolloff is not accounted for, thus we must touch the listener properties as well.
-	//In short: Changing the position ticks a dirtyflag inside fmodex, which makes it not skip 3D processing next update call.
-	if(mRolloffFactor != factor)
-	{
-		LLVector3 pos = mVelocity - LLVector3(0.f,0.f,.1f);
-		mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)pos.mV, NULL, NULL, NULL);
-		mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)mVelocity.mV, NULL, NULL, NULL);
-	}
-	mRolloffFactor = factor;
-	mSystem->set3DSettings(mDopplerFactor, 1.f, mRolloffFactor);
+    //An internal FMODEx optimization skips 3D updates if there have not been changes to the 3D sound environment.
+    //Sadly, a change in rolloff is not accounted for, thus we must touch the listener properties as well.
+    //In short: Changing the position ticks a dirtyflag inside fmodex, which makes it not skip 3D processing next update call.
+    if(mRolloffFactor != factor)
+    {
+        LLVector3 pos = mVelocity - LLVector3(0.f,0.f,.1f);
+        mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)pos.mV, NULL, NULL, NULL);
+        mSystem->set3DListenerAttributes(0, (FMOD_VECTOR*)mVelocity.mV, NULL, NULL, NULL);
+    }
+    mRolloffFactor = factor;
+    mSystem->set3DSettings(mDopplerFactor, 1.f, mRolloffFactor);
 }
 
 
 F32 LLListener_FMODEX::getRolloffFactor()
 {
-	return mRolloffFactor;
+    return mRolloffFactor;
 }
 
 
 void LLListener_FMODEX::setDopplerFactor(F32 factor)
 {
-	mDopplerFactor = factor;
-	mSystem->set3DSettings(mDopplerFactor, 1.f, mRolloffFactor);
+    mDopplerFactor = factor;
+    mSystem->set3DSettings(mDopplerFactor, 1.f, mRolloffFactor);
 }
 
 
 F32 LLListener_FMODEX::getDopplerFactor()
 {
-	return mDopplerFactor;
+    return mDopplerFactor;
 }
 
 

@@ -37,49 +37,49 @@
 class LLAudioStreamManagerFMODEX;
 namespace FMOD
 {
-	class System;
-	class Channel;
+    class System;
+    class Channel;
 }
 
 //Interfaces
 class LLStreamingAudio_FMODEX : public LLStreamingAudioInterface
 {
  public:
-	LLStreamingAudio_FMODEX(FMOD::System *system);
-	/*virtual*/ ~LLStreamingAudio_FMODEX();
+    LLStreamingAudio_FMODEX(FMOD::System *system);
+    /*virtual*/ ~LLStreamingAudio_FMODEX();
 
-	/*virtual*/ void start(const std::string& url);
-	/*virtual*/ void stop();
-	/*virtual*/ void pause(S32 pause);
-	/*virtual*/ void update();
-	/*virtual*/ S32 isPlaying();
-	/*virtual*/ void setGain(F32 vol);
-	/*virtual*/ F32 getGain();
-	/*virtual*/ std::string getURL();
+    /*virtual*/ void start(const std::string& url);
+    /*virtual*/ void stop();
+    /*virtual*/ void pause(S32 pause);
+    /*virtual*/ void update();
+    /*virtual*/ S32 isPlaying();
+    /*virtual*/ void setGain(F32 vol);
+    /*virtual*/ F32 getGain();
+    /*virtual*/ std::string getURL();
 
-	/*virtual*/ bool supportsAdjustableBufferSizes(){return true;}
-	/*virtual*/ void setBufferSizes(U32 streambuffertime, U32 decodebuffertime);
+    /*virtual*/ bool supportsAdjustableBufferSizes(){return true;}
+    /*virtual*/ void setBufferSizes(U32 streambuffertime, U32 decodebuffertime);
 
-	/* virtual */ bool hasNewMetadata();
-	/* virtual */ std::string getCurrentArtist();
-	/* virtual */ std::string getCurrentTitle();
-	/* virtual */ std::string getCurrentStreamName();
-	/* virtual */ std::string getCurrentStreamLocation();
+    /* virtual */ bool hasNewMetadata();
+    /* virtual */ std::string getCurrentArtist();
+    /* virtual */ std::string getCurrentTitle();
+    /* virtual */ std::string getCurrentStreamName();
+    /* virtual */ std::string getCurrentStreamLocation();
 
 private:
-	FMOD::System *mSystem;
+    FMOD::System *mSystem;
 
-	LLAudioStreamManagerFMODEX *mCurrentInternetStreamp;
-	FMOD::Channel *mFMODInternetStreamChannelp;
-	std::list<LLAudioStreamManagerFMODEX *> mDeadStreams;
+    LLAudioStreamManagerFMODEX *mCurrentInternetStreamp;
+    FMOD::Channel *mFMODInternetStreamChannelp;
+    std::list<LLAudioStreamManagerFMODEX *> mDeadStreams;
 
-	std::string mURL;
-	F32 mGain;
-	
-	// <FS:CR> Streamtitle display
-	bool mNewMetadata;
-	LLSD mMetadata;
-	// </FS:CR> Streamtitle display
+    std::string mURL;
+    F32 mGain;
+    
+    // <FS:CR> Streamtitle display
+    bool mNewMetadata;
+    LLSD mMetadata;
+    // </FS:CR> Streamtitle display
 };
 
 

@@ -28,40 +28,40 @@
 template<>
 float LLTweenableValueLerp<float>::get()
 {
-	if (!m_CurValue)
-	{
-		float curFactor = (LLTimer::getElapsedSeconds() - m_StartTime) / m_Duration;
-		if (curFactor < 1.0)
-			return lerp(m_StartValue, m_EndValue, curFactor);
-		m_CurValue = m_EndValue;
-	}
-	return m_CurValue.get();
+    if (!m_CurValue)
+    {
+        float curFactor = (LLTimer::getElapsedSeconds() - m_StartTime) / m_Duration;
+        if (curFactor < 1.0)
+            return lerp(m_StartValue, m_EndValue, curFactor);
+        m_CurValue = m_EndValue;
+    }
+    return m_CurValue.get();
 }
 
 template<>
 LLColor3 LLTweenableValueLerp<LLColor3>::get()
 {
-	if (!m_CurValue)
-	{
-		float curFactor = (LLTimer::getElapsedSeconds() - m_StartTime) / m_Duration;
-		if (curFactor < 1.0)
-			return lerp(m_StartValue, m_EndValue, curFactor);
-		m_CurValue = m_EndValue;
-	}
-	return m_CurValue.get();
+    if (!m_CurValue)
+    {
+        float curFactor = (LLTimer::getElapsedSeconds() - m_StartTime) / m_Duration;
+        if (curFactor < 1.0)
+            return lerp(m_StartValue, m_EndValue, curFactor);
+        m_CurValue = m_EndValue;
+    }
+    return m_CurValue.get();
 }
 
 template<>
 LLVector4 LLTweenableValueLerp<LLVector4>::get()
 {
-	if (!m_CurValue)
-	{
-		float curFactor = (LLTimer::getElapsedSeconds() - m_StartTime) / m_Duration;
-		if (curFactor < 1.0)
-			return lerp(m_StartValue, m_EndValue, curFactor);
-		m_CurValue = m_EndValue;
-	}
-	return m_CurValue.get();
+    if (!m_CurValue)
+    {
+        float curFactor = (LLTimer::getElapsedSeconds() - m_StartTime) / m_Duration;
+        if (curFactor < 1.0)
+            return lerp(m_StartValue, m_EndValue, curFactor);
+        m_CurValue = m_EndValue;
+    }
+    return m_CurValue.get();
 }
 
 // ============================================================================
@@ -75,85 +75,85 @@ LLVfxManager::LLVfxManager()
 
 bool LLVfxManager::addEffect(LLVisualEffect* pEffectInst)
 {
-	if (m_Effects.end() != m_Effects.find(pEffectInst))
-		return false;
+    if (m_Effects.end() != m_Effects.find(pEffectInst))
+        return false;
 
-	m_Effects.insert(pEffectInst);
+    m_Effects.insert(pEffectInst);
 
-	return true;
+    return true;
 }
 
 LLVisualEffect* LLVfxManager::getEffect(const LLUUID& idEffect) const
 {
-	auto itEffect = std::find_if(m_Effects.begin(), m_Effects.end(), [&idEffect](const LLVisualEffect* pEffect) { return pEffect->getId() == idEffect; });
-	return (m_Effects.end() != itEffect) ? *itEffect : nullptr;
+    auto itEffect = std::find_if(m_Effects.begin(), m_Effects.end(), [&idEffect](const LLVisualEffect* pEffect) { return pEffect->getId() == idEffect; });
+    return (m_Effects.end() != itEffect) ? *itEffect : nullptr;
 }
 
 LLVisualEffect* LLVfxManager::getEffect(EVisualEffect eCode) const
 {
-	// NOTE: returns the first found but there could be more
-	auto itEffect = std::find_if(m_Effects.begin(), m_Effects.end(), [eCode](const LLVisualEffect* pEffect) { return pEffect->getCode() == eCode; });
-	return (m_Effects.end() != itEffect) ? *itEffect : nullptr;
+    // NOTE: returns the first found but there could be more
+    auto itEffect = std::find_if(m_Effects.begin(), m_Effects.end(), [eCode](const LLVisualEffect* pEffect) { return pEffect->getCode() == eCode; });
+    return (m_Effects.end() != itEffect) ? *itEffect : nullptr;
 }
 
 bool LLVfxManager::removeEffect(const LLUUID& idEffect)
 {
-	auto itEffect = std::find_if(m_Effects.begin(), m_Effects.end(), [&idEffect](const LLVisualEffect* pEffect) { return pEffect->getId() == idEffect; });
-	if (m_Effects.end() == itEffect)
-		return false;
+    auto itEffect = std::find_if(m_Effects.begin(), m_Effects.end(), [&idEffect](const LLVisualEffect* pEffect) { return pEffect->getId() == idEffect; });
+    if (m_Effects.end() == itEffect)
+        return false;
 
-	delete *itEffect;
-	m_Effects.erase(itEffect);
-	return true;
+    delete *itEffect;
+    m_Effects.erase(itEffect);
+    return true;
 }
 
 //MK
 std::set<LLVisualEffect*> LLVfxManager::getEffects()
 {
-	return m_Effects;
+    return m_Effects;
 }
 
 void LLVfxManager::clearEffects()
 {
-	while (m_Effects.size() > 0)
-	{
-		auto itEffect = m_Effects.begin();
-		delete *itEffect;
-		m_Effects.erase(itEffect);
-	}
+    while (m_Effects.size() > 0)
+    {
+        auto itEffect = m_Effects.begin();
+        delete *itEffect;
+        m_Effects.erase(itEffect);
+    }
 }
 //mk
 
 void LLVfxManager::runEffect(EVisualEffect eCode, LLVisualEffectParams* pParams)
 {
-	// *TODO-Catz: once we're done, check whether iterating over the entire list still has negliable impact
-	auto pred = [eCode](const LLVisualEffect* pEffect) { return pEffect->getCode() == eCode; };
+    // *TODO-Catz: once we're done, check whether iterating over the entire list still has negliable impact
+    auto pred = [eCode](const LLVisualEffect* pEffect) { return pEffect->getCode() == eCode; };
 
-	auto itEffect = boost::make_filter_iterator(pred, m_Effects.begin(), m_Effects.end()),
-	     endEffect = boost::make_filter_iterator(pred, m_Effects.end(), m_Effects.end());
+    auto itEffect = boost::make_filter_iterator(pred, m_Effects.begin(), m_Effects.end()),
+         endEffect = boost::make_filter_iterator(pred, m_Effects.end(), m_Effects.end());
 
-	for (; itEffect != endEffect; ++itEffect)
-	{
-		if (pParams)
-			pParams->step(itEffect == endEffect);
-		(*itEffect)->run(pParams);
-	}
+    for (; itEffect != endEffect; ++itEffect)
+    {
+        if (pParams)
+            pParams->step(itEffect == endEffect);
+        (*itEffect)->run(pParams);
+    }
 }
 
 void LLVfxManager::runEffect(EVisualEffectType eType, LLVisualEffectParams* pParams)
 {
-	// *TODO-Catz: once we're done, check whether iterating over the entire list still has negliable impact
-	auto pred = [eType](const LLVisualEffect* pEffect) { return pEffect->getType() == eType;  };
+    // *TODO-Catz: once we're done, check whether iterating over the entire list still has negliable impact
+    auto pred = [eType](const LLVisualEffect* pEffect) { return pEffect->getType() == eType;  };
 
-	auto itEffect = boost::make_filter_iterator(pred, m_Effects.begin(), m_Effects.end()),
-		endEffect = boost::make_filter_iterator(pred, m_Effects.end(), m_Effects.end());
+    auto itEffect = boost::make_filter_iterator(pred, m_Effects.begin(), m_Effects.end()),
+        endEffect = boost::make_filter_iterator(pred, m_Effects.end(), m_Effects.end());
 
-	for (; itEffect != endEffect; ++itEffect)
-	{
-		if (pParams)
-			pParams->step(itEffect == endEffect);
-		(*itEffect)->run(pParams);
-	}
+    for (; itEffect != endEffect; ++itEffect)
+    {
+        if (pParams)
+            pParams->step(itEffect == endEffect);
+        (*itEffect)->run(pParams);
+    }
 }
 
 // ============================================================================

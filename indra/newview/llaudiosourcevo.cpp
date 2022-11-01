@@ -37,31 +37,31 @@
 #include "llvoavatarself.h"
 
 LLAudioSourceVO::LLAudioSourceVO(const LLUUID &sound_id, const LLUUID& owner_id, const F32 gain, LLViewerObject *objectp)
-	:	LLAudioSource(sound_id, owner_id, gain, LLAudioEngine::AUDIO_TYPE_SFX), 
-	mObjectp(objectp)
+    :   LLAudioSource(sound_id, owner_id, gain, LLAudioEngine::AUDIO_TYPE_SFX), 
+    mObjectp(objectp)
 {
-	LLUUID source_id = objectp->getID();
-	// CA: If it's a child, substitute the parent since muting works at root object level
-	if (objectp->getParent())
-	{
-		source_id = ((LLViewerObject *)objectp->getParent())->getID();
-	}
-	LLAudioSource::setSourceID(source_id);
-	update();
+    LLUUID source_id = objectp->getID();
+    // CA: If it's a child, substitute the parent since muting works at root object level
+    if (objectp->getParent())
+    {
+        source_id = ((LLViewerObject *)objectp->getParent())->getID();
+    }
+    LLAudioSource::setSourceID(source_id);
+    update();
 }
 
 LLAudioSourceVO::~LLAudioSourceVO()
 {
-	if (mObjectp)
-	{
-		mObjectp->clearAttachedSound();
-	}
-	mObjectp = NULL;
+    if (mObjectp)
+    {
+        mObjectp->clearAttachedSound();
+    }
+    mObjectp = NULL;
 }
 
 void LLAudioSourceVO::setGain(const F32 gain)
 {
-	mGain = llclamp(gain, 0.f, 1.f);
+    mGain = llclamp(gain, 0.f, 1.f);
 }
 
 void LLAudioSourceVO::checkCutOffRadius()
@@ -139,16 +139,16 @@ bool LLAudioSourceVO::isInCutOffRadius(const LLVector3d pos_global, const F32 cu
 
 void LLAudioSourceVO::updateMute()
 {
-	if (!mObjectp || mObjectp->isDead())
-	{
-	  	mSourceMuted = true;
-		return;
-	}
+    if (!mObjectp || mObjectp->isDead())
+    {
+        mSourceMuted = true;
+        return;
+    }
 
-	bool mute = false;
-	LLVector3d pos_global = getPosGlobal();
+    bool mute = false;
+    LLVector3d pos_global = getPosGlobal();
 
-	F32 cutoff = mObjectp->getSoundCutOffRadius();
+    F32 cutoff = mObjectp->getSoundCutOffRadius();
     // Object can specify radius at which it turns off
     // consider cutoff below 0.1m as 'cutoff off'
     if (cutoff > 0.1f && !isInCutOffRadius(pos_global, cutoff))
@@ -180,90 +180,90 @@ void LLAudioSourceVO::updateMute()
         }
     }
 
-	if (!mute)
-	{
-		if (LLMuteList::getInstance()->isMuted(mObjectp->getID()))
-		{
-			mute = true;
-		}
-		else if (LLMuteList::getInstance()->isMuted(mOwnerID, LLMute::flagObjectSounds))
-		{
-			mute = true;
-		}
-		else if (mObjectp->isAttachment())
-		{
-			LLViewerObject* parent = mObjectp;
-			while (parent && !parent->isAvatar())
-			{
-				parent = (LLViewerObject*)parent->getParent();
-			}
-			if (parent 
-				&& LLMuteList::getInstance()->isMuted(parent->getID()))
-			{
-				mute = true;
-			}
-		}
-	}
+    if (!mute)
+    {
+        if (LLMuteList::getInstance()->isMuted(mObjectp->getID()))
+        {
+            mute = true;
+        }
+        else if (LLMuteList::getInstance()->isMuted(mOwnerID, LLMute::flagObjectSounds))
+        {
+            mute = true;
+        }
+        else if (mObjectp->isAttachment())
+        {
+            LLViewerObject* parent = mObjectp;
+            while (parent && !parent->isAvatar())
+            {
+                parent = (LLViewerObject*)parent->getParent();
+            }
+            if (parent 
+                && LLMuteList::getInstance()->isMuted(parent->getID()))
+            {
+                mute = true;
+            }
+        }
+    }
 
-	if (mute != mSourceMuted)
-	{
-		mSourceMuted = mute;
-		if (mSourceMuted)
-		{
-		  	// Stop the sound.
-			this->play(LLUUID::null);
-		}
-		else
-		{
-		  	// Muted sounds keep there data at all times, because
-			// it's the place where the audio UUID is stored.
-			// However, it's possible that mCurrentDatap is
-			// NULL when this source did only preload sounds.
-			if (mCurrentDatap)
-			{
-		  		// Restart the sound.
-				this->play(mCurrentDatap->getID());
-			}
-		}
-	}
+    if (mute != mSourceMuted)
+    {
+        mSourceMuted = mute;
+        if (mSourceMuted)
+        {
+            // Stop the sound.
+            this->play(LLUUID::null);
+        }
+        else
+        {
+            // Muted sounds keep there data at all times, because
+            // it's the place where the audio UUID is stored.
+            // However, it's possible that mCurrentDatap is
+            // NULL when this source did only preload sounds.
+            if (mCurrentDatap)
+            {
+                // Restart the sound.
+                this->play(mCurrentDatap->getID());
+            }
+        }
+    }
 }
 
 void LLAudioSourceVO::update()
 {
-	updateMute();
+    updateMute();
 
-	if (!mObjectp)
-	{
-		return;
-	}
+    if (!mObjectp)
+    {
+        return;
+    }
 
-	if (mObjectp->isDead())
-	{
-		mObjectp = NULL;
-		return;
-	}
+    if (mObjectp->isDead())
+    {
+        mObjectp = NULL;
+        return;
+    }
 
-	if (mSourceMuted)
-	{
-	  	return;
-	}
+    if (mSourceMuted)
+    {
+        return;
+    }
 
-	if (mObjectp->isHUDAttachment())
-	{
-		mPositionGlobal = gAgentCamera.getCameraPositionGlobal();
-	}
-	else
-	{
-		mPositionGlobal = mObjectp->getPositionGlobal();
-	}
-	if (mObjectp->getSubParent())
-	{
-		mVelocity = mObjectp->getSubParent()->getVelocity();
-	}
-	else
-	{
-		mVelocity = mObjectp->getVelocity();
-	}
+    if (mObjectp->isHUDAttachment())
+    {
+        mPositionGlobal = gAgentCamera.getCameraPositionGlobal();
+    }
+    else
+    {
+        mPositionGlobal = mObjectp->getPositionGlobal();
+    }
+    if (mObjectp->getSubParent())
+    {
+        mVelocity = mObjectp->getSubParent()->getVelocity();
+    }
+    else
+    {
+        mVelocity = mObjectp->getVelocity();
+    }
 
-	LLAudioSource::update();
+    LLAudioSource::update();
 }

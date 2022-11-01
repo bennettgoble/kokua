@@ -32,13 +32,13 @@
 
 // simple separator item, does nothing
 PieSeparator::PieSeparator(const PieSeparator::Params& p) :
-	LLUICtrl(p)
+    LLUICtrl(p)
 {
-	LL_DEBUGS() << "PieSeparator::PieSeparator()" << LL_ENDL;
+    LL_DEBUGS() << "PieSeparator::PieSeparator()" << LL_ENDL;
 }
 
 // pick up parameters from the XUI definition
 PieSeparator::Params::Params()
 {
-	name="pie_separator";
+    name="pie_separator";
 }

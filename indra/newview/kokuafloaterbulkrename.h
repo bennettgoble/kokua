@@ -38,76 +38,76 @@
 
 class KokuaFloaterBulkRename : public LLFloater, public LLVOInventoryListener
 {
-	friend class LLFloaterReg;
+    friend class LLFloaterReg;
 public:
 
-	BOOL postBuild();
+    BOOL postBuild();
 
 private:
-	
-	KokuaFloaterBulkRename(const LLSD& seed);	
-	virtual ~KokuaFloaterBulkRename() {}
+    
+    KokuaFloaterBulkRename(const LLSD& seed);   
+    virtual ~KokuaFloaterBulkRename() {}
 
-	BOOL start(); // returns TRUE if the queue has started, otherwise FALSE.
-	BOOL nextObject();
-	BOOL popNext();
+    BOOL start(); // returns TRUE if the queue has started, otherwise FALSE.
+    BOOL nextObject();
+    BOOL popNext();
 
-	// This is the callback method for the viewer object currently
-	// being worked on.
-	/*virtual*/ void inventoryChanged(LLViewerObject* obj,
-								 LLInventoryObject::object_list_t* inv,
-								 S32 serial_num,
-								 void* queue);
-	
-	// This is called by inventoryChanged
-	void handleInventory(LLViewerObject* viewer_obj,
-								LLInventoryObject::object_list_t* inv);
+    // This is the callback method for the viewer object currently
+    // being worked on.
+    /*virtual*/ void inventoryChanged(LLViewerObject* obj,
+                                 LLInventoryObject::object_list_t* inv,
+                                 S32 serial_num,
+                                 void* queue);
+    
+    // This is called by inventoryChanged
+    void handleInventory(LLViewerObject* viewer_obj,
+                                LLInventoryObject::object_list_t* inv);
 
 
-	void updateInventory(LLViewerObject* object,
-								LLViewerInventoryItem* item,
-								U8 key,
-								bool is_new);
+    void updateInventory(LLViewerObject* object,
+                                LLViewerInventoryItem* item,
+                                U8 key,
+                                bool is_new);
 
-	void onCloseBtn();
-	void onOkBtn();
-	void onApplyBtn();
-	void onCheckAll() { doCheckUncheckAll(TRUE); }
-	void onUncheckAll() { doCheckUncheckAll(FALSE); }
-	
-	// returns true if this is done
-	BOOL isDone() const { return (mCurrentObjectID.isNull() || (mObjectIDs.size() == 0)); }
+    void onCloseBtn();
+    void onOkBtn();
+    void onApplyBtn();
+    void onCheckAll() { doCheckUncheckAll(TRUE); }
+    void onUncheckAll() { doCheckUncheckAll(FALSE); }
+    
+    // returns true if this is done
+    BOOL isDone() const { return (mCurrentObjectID.isNull() || (mObjectIDs.size() == 0)); }
 
-	//Read the settings and Apply the permissions
-	void doApply();
-	void doCheckUncheckAll(BOOL check);
+    //Read the settings and Apply the permissions
+    void doApply();
+    void doCheckUncheckAll(BOOL check);
 
 private:
-	// UI
-	LLScrollListCtrl* mMessages;
-	LLButton* mCloseBtn;
+    // UI
+    LLScrollListCtrl* mMessages;
+    LLButton* mCloseBtn;
 
-	// Object Queue
-	std::vector<LLUUID> mObjectIDs;
-	LLUUID mCurrentObjectID;
-	BOOL mDone;
+    // Object Queue
+    std::vector<LLUUID> mObjectIDs;
+    LLUUID mCurrentObjectID;
+    BOOL mDone;
 
-	bool mBulkChangeIncludeAnimations;
-	bool mBulkChangeIncludeBodyParts;
-	bool mBulkChangeIncludeClothing;
-	bool mBulkChangeIncludeGestures;
-	bool mBulkChangeIncludeNotecards;
-	bool mBulkChangeIncludeObjects;
-	bool mBulkChangeIncludeScripts;
-	bool mBulkChangeIncludeSounds;
-	bool mBulkChangeIncludeTextures;
-	bool mBulkChangeIncludeSettings;
+    bool mBulkChangeIncludeAnimations;
+    bool mBulkChangeIncludeBodyParts;
+    bool mBulkChangeIncludeClothing;
+    bool mBulkChangeIncludeGestures;
+    bool mBulkChangeIncludeNotecards;
+    bool mBulkChangeIncludeObjects;
+    bool mBulkChangeIncludeScripts;
+    bool mBulkChangeIncludeSounds;
+    bool mBulkChangeIncludeTextures;
+    bool mBulkChangeIncludeSettings;
 
-	LLUUID mID;
+    LLUUID mID;
 
-	const char* mStartString;
-	std::string mSearchRegExp;
-	std::string mReplaceWith;
+    const char* mStartString;
+    std::string mSearchRegExp;
+    std::string mReplaceWith;
 };
 
 #endif

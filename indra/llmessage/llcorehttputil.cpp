@@ -267,12 +267,12 @@ void HttpCoroHandler::onCompleted(LLCore::HttpHandle handle, LLCore::HttpRespons
     // parsing the error body (needed for the HB changes in 
     // newview/llappearancemgr
     
-  	if (!response)
-  	{
-  		LL_WARNS("CoreHTTP") << "NULL response pointer passed !" << LL_ENDL;
-  		return;
-  	}
-  	
+    if (!response)
+    {
+        LL_WARNS("CoreHTTP") << "NULL response pointer passed !" << LL_ENDL;
+        return;
+    }
+    
     LLSD result;
 
     LLCore::HttpStatus status = response->getStatus();
@@ -326,10 +326,10 @@ void HttpCoroHandler::onCompleted(LLCore::HttpHandle handle, LLCore::HttpRespons
         if (parseSuccess)
         {
           httpStatus["error_body"] = error_body;
-    			LL_DEBUGS("CoreHttp") << "Returned body (parsed):\n";
-    			std::stringstream str;
-    			LLSDSerialize::toPrettyXML(error_body, str);
-    			LL_CONT << str.str() << LL_ENDL;          
+                LL_DEBUGS("CoreHttp") << "Returned body (parsed):\n";
+                std::stringstream str;
+                LLSDSerialize::toPrettyXML(error_body, str);
+                LL_CONT << str.str() << LL_ENDL;          
         }
         else
         {
@@ -340,9 +340,9 @@ void HttpCoroHandler::onCompleted(LLCore::HttpHandle handle, LLCore::HttpRespons
           bas >> std::noskipws;
           bodyData.assign(std::istream_iterator<U8>(bas), std::istream_iterator<U8>());
           httpStatus["error_body"] = LLSD(bodyData);
-    			LL_DEBUGS("CoreHttp") << "Returned body (unparsed):" << std::endl
-								  << httpStatus["error_body"].asString()
-								  << LL_ENDL;
+                LL_DEBUGS("CoreHttp") << "Returned body (unparsed):" << std::endl
+                                  << httpStatus["error_body"].asString()
+                                  << LL_ENDL;
         }
         if (getBoolSetting(HTTP_LOGBODY_KEY))
         {

@@ -60,9 +60,9 @@ LLFloaterGotoLine::LLFloaterGotoLine(LLScriptEdCore* editor_core)
 
 BOOL LLFloaterGotoLine::postBuild()
 {
-	mGotoBox = getChild<LLLineEditor>("goto_line");
-	mGotoBox->setCommitCallback(boost::bind(&LLFloaterGotoLine::onGotoBoxCommit, this));
-	mGotoBox->setCommitOnFocusLost(FALSE);
+    mGotoBox = getChild<LLLineEditor>("goto_line");
+    mGotoBox->setCommitCallback(boost::bind(&LLFloaterGotoLine::onGotoBoxCommit, this));
+    mGotoBox->setCommitOnFocusLost(FALSE);
         getChild<LLLineEditor>("goto_line")->setPrevalidate(LLTextValidate::validateNonNegativeS32);
         childSetAction("goto_btn", onBtnGoto,this);
         setDefaultBtn("goto_btn");
@@ -107,12 +107,12 @@ void LLFloaterGotoLine::handleBtnGoto()
         row = getChild<LLUICtrl>("goto_line")->getValue().asInteger();
         if (row >= 0)
         {
-			if (mEditorCore && mEditorCore->mCurrentEditor)
-			{
-				mEditorCore->mCurrentEditor->deselect();
-				mEditorCore->mCurrentEditor->setCursor(row, column);
-				mEditorCore->mCurrentEditor->setFocus(TRUE);
-			}
+            if (mEditorCore && mEditorCore->mCurrentEditor)
+            {
+                mEditorCore->mCurrentEditor->deselect();
+                mEditorCore->mCurrentEditor->setCursor(row, column);
+                mEditorCore->mCurrentEditor->setFocus(TRUE);
+            }
 
         }
 }
@@ -145,17 +145,17 @@ void LLFloaterGotoLine::onGotoBoxCommit()
         {
                 if (mEditorCore && mEditorCore->mEditor)
                 {
-			mEditorCore->mEditor->setCursor(row, column);
+            mEditorCore->mEditor->setCursor(row, column);
 
-			S32 rownew = 0;
-			S32 columnnew = 0;
-			mEditorCore->mEditor->getCurrentLineAndColumn( &rownew, &columnnew, FALSE );  // don't include wordwrap
-			if (rownew == row && columnnew == column)
-			{
-			        mEditorCore->mEditor->deselect();
-			        mEditorCore->mEditor->setFocus(TRUE);
-			        sInstance->closeFloater();
-			} //else do nothing (if the cursor-position didn't change)
+            S32 rownew = 0;
+            S32 columnnew = 0;
+            mEditorCore->mEditor->getCurrentLineAndColumn( &rownew, &columnnew, FALSE );  // don't include wordwrap
+            if (rownew == row && columnnew == column)
+            {
+                    mEditorCore->mEditor->deselect();
+                    mEditorCore->mEditor->setFocus(TRUE);
+                    sInstance->closeFloater();
+            } //else do nothing (if the cursor-position didn't change)
                 }
         }
 }

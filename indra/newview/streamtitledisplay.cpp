@@ -78,110 +78,110 @@ StreamTitleDisplay::StreamTitleDisplay() : LLEventTimer(2.f) { }
 
 BOOL StreamTitleDisplay::tick()
 {
-	checkMetadata();
-	return FALSE;
+    checkMetadata();
+    return FALSE;
 }
 
 void StreamTitleDisplay::checkMetadata()
 {
-	static LLCachedControl<U32> show_stream_metadata(gSavedSettings, "ShowStreamMetadata", 2);
-	static LLCachedControl<bool> stream_metadata_announce(gSavedSettings, "StreamMetadataAnnounceToChat", false);
+    static LLCachedControl<U32> show_stream_metadata(gSavedSettings, "ShowStreamMetadata", 2);
+    static LLCachedControl<bool> stream_metadata_announce(gSavedSettings, "StreamMetadataAnnounceToChat", false);
 
-	if (!gAudiop) {
-		// KKA-932
-		KokuaFloaterStreamInfo::UpdateStreamInfo();		
-		return;
-	}
+    if (!gAudiop) {
+        // KKA-932
+        KokuaFloaterStreamInfo::UpdateStreamInfo();     
+        return;
+    }
 
-	// KKA-932 send a stopped playing signal but only once each time
-	LLViewerMedia* media_inst = LLViewerMedia::getInstance();
+    // KKA-932 send a stopped playing signal but only once each time
+    LLViewerMedia* media_inst = LLViewerMedia::getInstance();
 
-	bool is_playing_now = false;
-	
-	if (media_inst) {
-		is_playing_now = media_inst->isParcelAudioPlaying();
-	}
+    bool is_playing_now = false;
+    
+    if (media_inst) {
+        is_playing_now = media_inst->isParcelAudioPlaying();
+    }
 
-	LLStreamingAudioInterface *stream = gAudiop->getStreamingAudioImpl();
-	
-	if (!stream || (stream && !is_playing_now)) {
-		// KKA-932 - send a one-time indication when the stream just stopped
-		if (stream_is_playing) {
-			stream_is_playing = false;
-			KokuaFloaterStreamInfo::UpdateStreamInfo();
-		}
-		return;				
-	}
-	else if (stream && stream->hasNewMetadata()) {
-		std::string title = stream->getCurrentTitle();
-		std::string artist_title = stream->getCurrentArtist();
-			
-		stream_is_playing = true;
+    LLStreamingAudioInterface *stream = gAudiop->getStreamingAudioImpl();
+    
+    if (!stream || (stream && !is_playing_now)) {
+        // KKA-932 - send a one-time indication when the stream just stopped
+        if (stream_is_playing) {
+            stream_is_playing = false;
+            KokuaFloaterStreamInfo::UpdateStreamInfo();
+        }
+        return;             
+    }
+    else if (stream && stream->hasNewMetadata()) {
+        std::string title = stream->getCurrentTitle();
+        std::string artist_title = stream->getCurrentArtist();
+            
+        stream_is_playing = true;
 
-		if (!title.empty()) {
-			if (!artist_title.empty()) {
-				artist_title += " - ";
-			}
-			artist_title += title;
-		}
+        if (!title.empty()) {
+            if (!artist_title.empty()) {
+                artist_title += " - ";
+            }
+            artist_title += title;
+        }
 
-		if (artist_title.empty()) {
-			return;
-		}
-		
-		//KKA-932
-		KokuaFloaterStreamInfo::UpdateStreamInfo(artist_title);
+        if (artist_title.empty()) {
+            return;
+        }
+        
+        //KKA-932
+        KokuaFloaterStreamInfo::UpdateStreamInfo(artist_title);
 
-		std::string stream_name = stream->getCurrentStreamName();
+        std::string stream_name = stream->getCurrentStreamName();
 
-		if (show_stream_metadata == 1) {
-			//
-			//	stream metadata to a toast
-			//
-			LLSD args;
-			args["ARTIST_TITLE"] = artist_title;
-			args["STREAM_NAME"] = stream_name.empty() ? LLTrans::getString("Audio Stream") : stream_name;
+        if (show_stream_metadata == 1) {
+            //
+            //  stream metadata to a toast
+            //
+            LLSD args;
+            args["ARTIST_TITLE"] = artist_title;
+            args["STREAM_NAME"] = stream_name.empty() ? LLTrans::getString("Audio Stream") : stream_name;
 
-			LLNotificationsUtil::add("StreamMetadata", args);
-		}
-		else if (show_stream_metadata == 2) {
-			//
-			//	stream metadata to nearby chat
-			//
-			LLChat chat;
-			chat.mText = artist_title;
+            LLNotificationsUtil::add("StreamMetadata", args);
+        }
+        else if (show_stream_metadata == 2) {
+            //
+            //  stream metadata to nearby chat
+            //
+            LLChat chat;
+            chat.mText = artist_title;
 
-			chat.mSourceType = CHAT_SOURCE_AUDIO_STREAM;
-			chat.mFromID = AUDIO_STREAM_FROM;
-			chat.mFromName = LLTrans::getString("Audio Stream");
-			chat.mText = "<nolink>" + chat.mText + "</nolink>";
+            chat.mSourceType = CHAT_SOURCE_AUDIO_STREAM;
+            chat.mFromID = AUDIO_STREAM_FROM;
+            chat.mFromName = LLTrans::getString("Audio Stream");
+            chat.mText = "<nolink>" + chat.mText + "</nolink>";
 
-			if (!stream_name.empty()) {
-				chat.mFromName += " - " + stream_name;
-			}
+            if (!stream_name.empty()) {
+                chat.mFromName += " - " + stream_name;
+            }
 
-			LLSD args;
-			args["type"] = LLNotificationsUI::NT_NEARBYCHAT;
-			LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
-		}
+            LLSD args;
+            args["type"] = LLNotificationsUI::NT_NEARBYCHAT;
+            LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+        }
 
-		if (stream_metadata_announce) {
-			static LLCachedControl<S32> announce_channel(gSavedSettings, "StreamMetadataAnnounceChannel", 362394);
+        if (stream_metadata_announce) {
+            static LLCachedControl<S32> announce_channel(gSavedSettings, "StreamMetadataAnnounceChannel", 362394);
 
-			if (announce_channel != 0) {
-				LLMessageSystem *msg = gMessageSystem;
+            if (announce_channel != 0) {
+                LLMessageSystem *msg = gMessageSystem;
 
-				msg->newMessageFast(_PREHASH_ChatFromViewer);
-				msg->nextBlockFast(_PREHASH_AgentData);
-				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-				msg->nextBlockFast(_PREHASH_ChatData);
-				msg->addStringFast(_PREHASH_Message, artist_title);
-				msg->addU8Fast(_PREHASH_Type, CHAT_TYPE_WHISPER);
-				msg->addS32(_PREHASH_Channel, announce_channel);
+                msg->newMessageFast(_PREHASH_ChatFromViewer);
+                msg->nextBlockFast(_PREHASH_AgentData);
+                msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+                msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+                msg->nextBlockFast(_PREHASH_ChatData);
+                msg->addStringFast(_PREHASH_Message, artist_title);
+                msg->addU8Fast(_PREHASH_Type, CHAT_TYPE_WHISPER);
+                msg->addS32(_PREHASH_Channel, announce_channel);
 
-				gAgent.sendReliableMessage();
-			}
-		}
-	}
+                gAgent.sendReliableMessage();
+            }
+        }
+    }
 }

@@ -35,131 +35,131 @@
 class LLStatGraph : public LLView
 {
 public:
-	struct ThresholdParams : public LLInitParam::Block<ThresholdParams>
-	{
-		Mandatory<F32>	value;
-		Optional<LLUIColor>	color;
+    struct ThresholdParams : public LLInitParam::Block<ThresholdParams>
+    {
+        Mandatory<F32>  value;
+        Optional<LLUIColor> color;
 
-		ThresholdParams()
-		:	value("value"),
-			color("color", LLColor4::white)
-		{}
-	};
+        ThresholdParams()
+        :   value("value"),
+            color("color", LLColor4::white)
+        {}
+    };
 
-	struct Thresholds : public LLInitParam::Block<Thresholds>
-	{
-		Multiple<ThresholdParams> threshold;
+    struct Thresholds : public LLInitParam::Block<Thresholds>
+    {
+        Multiple<ThresholdParams> threshold;
 
-		Thresholds()
-		:	threshold("threshold")
-		{}
-	};
+        Thresholds()
+        :   threshold("threshold")
+        {}
+    };
 
-	struct StatParams : public LLInitParam::ChoiceBlock<StatParams>
-	{
-		Alternative<LLTrace::StatType<LLTrace::CountAccumulator>* >	count_stat_float;
-		Alternative<LLTrace::StatType<LLTrace::EventAccumulator>* >	event_stat_float;
-		Alternative<LLTrace::StatType<LLTrace::SampleAccumulator>* >	sample_stat_float;
-	};
+    struct StatParams : public LLInitParam::ChoiceBlock<StatParams>
+    {
+        Alternative<LLTrace::StatType<LLTrace::CountAccumulator>* > count_stat_float;
+        Alternative<LLTrace::StatType<LLTrace::EventAccumulator>* > event_stat_float;
+        Alternative<LLTrace::StatType<LLTrace::SampleAccumulator>* >    sample_stat_float;
+    };
 
-	struct Params : public LLInitParam::Block<Params, LLView::Params>
-	{
-		//
-		//	"stat" is now optional so that the widget can be set up
-		//	in XML without it, and the actual value to use can be
-		//	set up in the code later
-		//
-		Optional<StatParams>	stat;
-		Optional<std::string>	label,
-								units;
-		Optional<S32>			precision;
-		Optional<F32>			min,
-								max;
-		Optional<bool>			per_sec;
-		Optional<bool>			last_value; // KKA-821 report based on last value, overrides per_sec if set
-		Optional<bool>			invert_bar; // KKA-821 draw the bar as max-value for cases where a minimal value should get attention
-		Optional<F32>			value;
-		Optional<LLUIColor>		color,
-								background_color,
-								border_color;
-		Optional<Thresholds>	thresholds;
+    struct Params : public LLInitParam::Block<Params, LLView::Params>
+    {
+        //
+        //  "stat" is now optional so that the widget can be set up
+        //  in XML without it, and the actual value to use can be
+        //  set up in the code later
+        //
+        Optional<StatParams>    stat;
+        Optional<std::string>   label,
+                                units;
+        Optional<S32>           precision;
+        Optional<F32>           min,
+                                max;
+        Optional<bool>          per_sec;
+        Optional<bool>          last_value; // KKA-821 report based on last value, overrides per_sec if set
+        Optional<bool>          invert_bar; // KKA-821 draw the bar as max-value for cases where a minimal value should get attention
+        Optional<F32>           value;
+        Optional<LLUIColor>     color,
+                                background_color,
+                                border_color;
+        Optional<Thresholds>    thresholds;
 
-		Params()
-		:	stat("stat"),
-			label("label"),
-			units("units"),
-			precision("precision", 0),
-			min("min", 0.f),
-			max("max", 125.f),
-			per_sec("per_sec", true),
-			last_value("last_value", false), // KKA-821
-			invert_bar("invert_bar", false), // KKA-821
-			value("value", 0.f),
-			color("color", LLColor4::white),
-			background_color("background_color", LLColor4::transparent),
-			border_color("border_color", LLColor4::black),
-			thresholds("thresholds")
-		{
-		}
-	};
-	LLStatGraph(const Params&);
+        Params()
+        :   stat("stat"),
+            label("label"),
+            units("units"),
+            precision("precision", 0),
+            min("min", 0.f),
+            max("max", 125.f),
+            per_sec("per_sec", true),
+            last_value("last_value", false), // KKA-821
+            invert_bar("invert_bar", false), // KKA-821
+            value("value", 0.f),
+            color("color", LLColor4::white),
+            background_color("background_color", LLColor4::transparent),
+            border_color("border_color", LLColor4::black),
+            thresholds("thresholds")
+        {
+        }
+    };
+    LLStatGraph(const Params&);
 
-	typedef boost::function<void(void)> callback_t;
+    typedef boost::function<void(void)> callback_t;
 
-	void setMin(const F32 min);
-	void setMax(const F32 max);
-	void setStat(LLTrace::StatType<LLTrace::CountAccumulator> *stat);
-	void setStat(LLTrace::StatType<LLTrace::EventAccumulator> *stat);
-	void setStat(LLTrace::StatType<LLTrace::SampleAccumulator> *stat);
-	void setThreshold(S32 threshold, F32 newval);
-	void setClickedCallback(callback_t cb);
+    void setMin(const F32 min);
+    void setMax(const F32 max);
+    void setStat(LLTrace::StatType<LLTrace::CountAccumulator> *stat);
+    void setStat(LLTrace::StatType<LLTrace::EventAccumulator> *stat);
+    void setStat(LLTrace::StatType<LLTrace::SampleAccumulator> *stat);
+    void setThreshold(S32 threshold, F32 newval);
+    void setClickedCallback(callback_t cb);
 
-	virtual void draw();
+    virtual void draw();
 
-	/*virtual*/ void setValue(const LLSD& value);
-	
+    /*virtual*/ void setValue(const LLSD& value);
+    
 private:
-	LLTrace::StatType<LLTrace::CountAccumulator>*	mNewStatFloatp;
+    LLTrace::StatType<LLTrace::CountAccumulator>*   mNewStatFloatp;
 
-	BOOL mPerSec;
-	BOOL mLastValue; // KKA_821
-	BOOL mInvertBar; // KKA-821
+    BOOL mPerSec;
+    BOOL mLastValue; // KKA_821
+    BOOL mInvertBar; // KKA-821
 
-	F32 mValue;
+    F32 mValue;
 
-	F32 mMin;
-	F32 mMax;
-	LLFrameTimer mUpdateTimer;
-	std::string mLabel;
-	std::string mUnits;
-	S32 mPrecision; // Num of digits of precision after dot
+    F32 mMin;
+    F32 mMax;
+    LLFrameTimer mUpdateTimer;
+    std::string mLabel;
+    std::string mUnits;
+    S32 mPrecision; // Num of digits of precision after dot
 
-	LLUIColor mColor;
-	LLUIColor mBackgroundColor;
-	LLUIColor mBorderColor;
+    LLUIColor mColor;
+    LLUIColor mBackgroundColor;
+    LLUIColor mBorderColor;
 
-	struct Threshold
-	{
-		Threshold(F32 value, const LLUIColor& color)
-		:	mValue(value),
-			mColor(color)
-		{}
+    struct Threshold
+    {
+        Threshold(F32 value, const LLUIColor& color)
+        :   mValue(value),
+            mColor(color)
+        {}
 
-		F32 mValue;
-		LLUIColor mColor;
-		bool operator <(const Threshold& other) const
-		{
-			return mValue < other.mValue;
-		}
-	};
-	typedef std::vector<Threshold> threshold_vec_t;
-	threshold_vec_t mThresholds;
+        F32 mValue;
+        LLUIColor mColor;
+        bool operator <(const Threshold& other) const
+        {
+            return mValue < other.mValue;
+        }
+    };
+    typedef std::vector<Threshold> threshold_vec_t;
+    threshold_vec_t mThresholds;
 
-	callback_t mClickedCallback;
+    callback_t mClickedCallback;
 
-	/*virtual*/ BOOL handleMouseDown(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL handleMouseUp(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
+    /*virtual*/ BOOL handleMouseDown(S32 x, S32 y, MASK mask);
+    /*virtual*/ BOOL handleMouseUp(S32 x, S32 y, MASK mask);
+    /*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
 };
 
 #endif  // LL_LLSTATGRAPH_H

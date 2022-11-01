@@ -54,288 +54,288 @@ class LLSearchEditor;
 class LLRegionDetails
 {
 public:
-	LLRegionDetails() :
-		mRegionName("Unknown"),
-		mParcelName("Unknown"),
-		mAccessString("Unknown"),
-		mX(0),
-		mY(0),
-		mZ(0),
-		mArea (0),
-		mForSale(FALSE),
-		mOwner("Unknown"),
-		mTraffic(0),
-		mBalance(0),
-		mPing(0)
-	{
-	}
-	std::string mRegionName;
-	std::string	mParcelName;
-	std::string	mAccessString;
-	S32		mX;
-	S32		mY;
-	S32		mZ;
-	S32		mArea;
-	BOOL	mForSale;
-	std::string	mOwner;
-	F32		mTraffic;
-	S32		mBalance;
-	std::string mTime;
-	U32		mPing;
+    LLRegionDetails() :
+        mRegionName("Unknown"),
+        mParcelName("Unknown"),
+        mAccessString("Unknown"),
+        mX(0),
+        mY(0),
+        mZ(0),
+        mArea (0),
+        mForSale(FALSE),
+        mOwner("Unknown"),
+        mTraffic(0),
+        mBalance(0),
+        mPing(0)
+    {
+    }
+    std::string mRegionName;
+    std::string mParcelName;
+    std::string mAccessString;
+    S32     mX;
+    S32     mY;
+    S32     mZ;
+    S32     mArea;
+    BOOL    mForSale;
+    std::string mOwner;
+    F32     mTraffic;
+    S32     mBalance;
+    std::string mTime;
+    U32     mPing;
 };
 
 namespace ll
 {
-	namespace statusbar
-	{
-		struct SearchData;
-	}
+    namespace statusbar
+    {
+        struct SearchData;
+    }
 }
 class LLStatusBar
-:	public LLPanel
+:   public LLPanel
 {
 public:
-	LLStatusBar(const LLRect& rect );
-	/*virtual*/ ~LLStatusBar();
-	
-	/*virtual*/ void draw();
+    LLStatusBar(const LLRect& rect );
+    /*virtual*/ ~LLStatusBar();
+    
+    /*virtual*/ void draw();
 
-	/*virtual*/ BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL postBuild();
+    /*virtual*/ BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
+    /*virtual*/ BOOL postBuild();
 
-	// MANIPULATORS
-	void		setBalance(S32 balance);
-	void		debitBalance(S32 debit);
-	void		creditBalance(S32 credit);
+    // MANIPULATORS
+    void        setBalance(S32 balance);
+    void        debitBalance(S32 debit);
+    void        creditBalance(S32 credit);
 
-	// Request the latest currency balance from the server
-	static void sendMoneyBalanceRequest();
+    // Request the latest currency balance from the server
+    static void sendMoneyBalanceRequest();
 
-	void		setHealth(S32 percent);
+    void        setHealth(S32 percent);
 
-	void setLandCredit(S32 credit);
-	void setLandCommitted(S32 committed);
+    void setLandCredit(S32 credit);
+    void setLandCommitted(S32 committed);
 
-	void		refresh();
-	void setVisibleForMouselook(bool visible);
-		// some elements should hide in mouselook
+    void        refresh();
+    void setVisibleForMouselook(bool visible);
+        // some elements should hide in mouselook
 
 
-	void hideBalance(bool hide);
+    void hideBalance(bool hide);
 
-	void handleLoginComplete();
+    void handleLoginComplete();
 
-	// ACCESSORS
-	S32			getBalance() const;
-	S32			getHealth() const;
+    // ACCESSORS
+    S32         getBalance() const;
+    S32         getHealth() const;
 
-	BOOL isUserTiered() const;
-	S32 getSquareMetersCredit() const;
-	S32 getSquareMetersCommitted() const;
-	S32 getSquareMetersLeft() const;
-	LLRegionDetails mRegionDetails;
+    BOOL isUserTiered() const;
+    S32 getSquareMetersCredit() const;
+    S32 getSquareMetersCommitted() const;
+    S32 getSquareMetersLeft() const;
+    LLRegionDetails mRegionDetails;
 
-	LLPanelNearByMedia* getNearbyMediaPanel() { return mPanelNearByMedia; }
+    LLPanelNearByMedia* getNearbyMediaPanel() { return mPanelNearByMedia; }
     BOOL getAudioStreamEnabled() const;
-	void setBackgroundColor( const LLColor4& color );
+    void setBackgroundColor( const LLColor4& color );
 
-   	// <FS:Zi> External toggles for media and streams
-	void toggleMedia(bool enable);
-	void toggleStream(bool enable);
-	// </FS:Zi>
+    // <FS:Zi> External toggles for media and streams
+    void toggleMedia(bool enable);
+    void toggleStream(bool enable);
+    // </FS:Zi>
     
 private:
-	
-	void onClickBuyCurrency();
-	void onVolumeChanged(const LLSD& newvalue);
+    
+    void onClickBuyCurrency();
+    void onVolumeChanged(const LLSD& newvalue);
 
-	void onMouseEnterPresetsCamera();
-	void onMouseEnterPresets();
-	void onMouseEnterVolume();
-	void onMouseEnterNearbyMedia();
-	void onClickStatistics();
-	void onClickScreen(S32 x, S32 y);
+    void onMouseEnterPresetsCamera();
+    void onMouseEnterPresets();
+    void onMouseEnterVolume();
+    void onMouseEnterNearbyMedia();
+    void onClickStatistics();
+    void onClickScreen(S32 x, S32 y);
 
-	static void onClickStreamToggle(void* data);		// ## Zi: Media/Stream separation
-	static void onClickMediaToggle(void* data);
-	static void onClickBalance(void* data);
+    static void onClickStreamToggle(void* data);        // ## Zi: Media/Stream separation
+    static void onClickMediaToggle(void* data);
+    static void onClickBalance(void* data);
 
-	class LLParcelChangeObserver;
-	// <FS:Ansariel> FIRE-19697: Add setting to disable graphics preset menu popup on mouse over
-	//NP graphics presets no longer disabled
-	void onPopupRolloverChanged(const LLSD& newvalue);
+    class LLParcelChangeObserver;
+    // <FS:Ansariel> FIRE-19697: Add setting to disable graphics preset menu popup on mouse over
+    //NP graphics presets no longer disabled
+    void onPopupRolloverChanged(const LLSD& newvalue);
 
-	LLSearchEditor *mFilterEdit;
-	LLPanel *mSearchPanel;
-	void onUpdateFilterTerm();
+    LLSearchEditor *mFilterEdit;
+    LLPanel *mSearchPanel;
+    void onUpdateFilterTerm();
 
-	std::unique_ptr< ll::statusbar::SearchData > mSearchData;
-	void collectSearchableItems();
-	void updateMenuSearchVisibility( const LLSD& data );
-	void updateMenuSearchPosition(); // depends onto balance position
-	void updateBalancePanelPosition();
+    std::unique_ptr< ll::statusbar::SearchData > mSearchData;
+    void collectSearchableItems();
+    void updateMenuSearchVisibility( const LLSD& data );
+    void updateMenuSearchPosition(); // depends onto balance position
+    void updateBalancePanelPosition();
 
-	friend class LLParcelChangeObserver;
+    friend class LLParcelChangeObserver;
 
-	enum EParcelIcon
-	{
-		VOICE_ICON = 0,
-		FLY_ICON,
-		PUSH_ICON,
-		BUILD_ICON,
-		SCRIPTS_ICON,
-		DAMAGE_ICON,
-		ICON_COUNT
-	};
+    enum EParcelIcon
+    {
+        VOICE_ICON = 0,
+        FLY_ICON,
+        PUSH_ICON,
+        BUILD_ICON,
+        SCRIPTS_ICON,
+        DAMAGE_ICON,
+        ICON_COUNT
+    };
 
-	/**
-	 * Initializes parcel icons controls. Called from the constructor.
-	 */
-	void initParcelIcons();
+    /**
+     * Initializes parcel icons controls. Called from the constructor.
+     */
+    void initParcelIcons();
 
-	/**
-	 * Handles clicks on the parcel icons.
-	 */
-	void onParcelIconClick(EParcelIcon icon);
+    /**
+     * Handles clicks on the parcel icons.
+     */
+    void onParcelIconClick(EParcelIcon icon);
 
-	/**
-	 * Handles clicks on the info buttons.
-	 */
-	void onInfoButtonClicked();
+    /**
+     * Handles clicks on the info buttons.
+     */
+    void onInfoButtonClicked();
 
-	/**
-	 * Handles clicks on the parcel wl info button.
-	 */
-	void onParcelWLClicked();
+    /**
+     * Handles clicks on the parcel wl info button.
+     */
+    void onParcelWLClicked();
 
-	/**
-	 * Called when agent changes the parcel.
-	 */
-	void onAgentParcelChange();
+    /**
+     * Called when agent changes the parcel.
+     */
+    void onAgentParcelChange();
 
-	/**
-	 * Called when context menu item is clicked.
-	 */
-	void onContextMenuItemClicked(const LLSD::String& userdata);
+    /**
+     * Called when context menu item is clicked.
+     */
+    void onContextMenuItemClicked(const LLSD::String& userdata);
 
-	/**
-	 * Called when user checks/unchecks Show Coordinates menu item.
-	 */
-	void onNavBarShowParcelPropertiesCtrlChanged();
+    /**
+     * Called when user checks/unchecks Show Coordinates menu item.
+     */
+    void onNavBarShowParcelPropertiesCtrlChanged();
 
-	/**
-	 * Handles clicks on the info buttons.
-	 */
-	void onAvatarHeightOffsetResetButtonClicked();
+    /**
+     * Handles clicks on the info buttons.
+     */
+    void onAvatarHeightOffsetResetButtonClicked();
 
-	/**
-	 * Shorthand to call updateParcelInfoText() and updateParcelIcons().
-	 */
-	void update();
+    /**
+     * Shorthand to call updateParcelInfoText() and updateParcelIcons().
+     */
+    void update();
 
-	/**
-	 * Updates parcel info text (mParcelInfoText).
-	 */
-	void updateParcelInfoText();
+    /**
+     * Updates parcel info text (mParcelInfoText).
+     */
+    void updateParcelInfoText();
 
 public:
 
-	/**
-	 * Updates parcel panel pos (mParcelPanel).
-	 */
-	void updateParcelPanel();
+    /**
+     * Updates parcel panel pos (mParcelPanel).
+     */
+    void updateParcelPanel();
 
-	/**
-	 * Updates parcel icons (mParcelIcon[]).
-	 */
-	void updateParcelIcons();
-
-private:
-
-	/**
-	 * Updates health information (mDamageText).
-	 */
-	void updateHealth();
-
-	/**
-	 * Lays out all parcel icons starting from right edge of the mParcelInfoText + 11px
-	 * (see screenshots in EXT-5808 for details).
-	 */
-	void layoutParcelIcons();
-
-	/**
-	 * Lays out a widget. Widget's rect mLeft becomes equal to the 'left' argument.
-	 */
-	S32 layoutWidget(LLUICtrl* ctrl, S32 left);
-
-	/**
-	 * Generates location string and returns it in the loc_str parameter.
-	 */
-	void buildLocationString(std::string& loc_str, bool show_coords);
-
-	/**
-	 * Sets new value to the mParcelInfoText and updates the size of the top bar.
-	 */
-	void setParcelInfoText(const std::string& new_text);
+    /**
+     * Updates parcel icons (mParcelIcon[]).
+     */
+    void updateParcelIcons();
 
 private:
-	LLTextBox	*mTextHealth;
-	LLTextBox	*mTextTime;
-	LLTextBox	*mFPSText;
 
-	LLLayoutPanel	*mPurchasePanel;
-	LLLayoutPanel	*mDrawDistancePanel;
-	LLLayoutPanel	*mStatisticsPanel;
-	LLLayoutPanel	*mFPSPanel;
+    /**
+     * Updates health information (mDamageText).
+     */
+    void updateHealth();
 
-	LLStatGraph	*mSGBandwidth;
-	LLStatGraph	*mSGPacketLoss;
-	LLStatGraph	*mSGScriptPctRun; // KKA-821
-	LLStatGraph	*mSGSpareTime; // KKA-821
-	LLStatGraph	*mSGScriptTime; // KKA-821
-	LLIconCtrl	*mIconPresetsCamera;
-	LLIconCtrl	*mIconPresetsGraphic;
-	LLButton	*mBtnVolume;
-	LLTextBox	*mBoxBalance;
-	LLButton	*mStreamToggle;		// ## Zi: Media/Stream separation
-	LLButton	*mMediaToggle;
-	LLButton	*mBandwidthButton;
-	LLView		*mScriptOut;
-	LLFrameTimer	mStatusBarUpdateTimer;
-	LLFrameTimer	mClockUpdateTimer;
+    /**
+     * Lays out all parcel icons starting from right edge of the mParcelInfoText + 11px
+     * (see screenshots in EXT-5808 for details).
+     */
+    void layoutParcelIcons();
 
-	bool				mInMouselookMode;
-	S32				mBalance;
-	S32				mHealth;
-	S32				mSquareMetersCredit;
-	S32				mSquareMetersCommitted;
-	BOOL			mAudioStreamEnabled;
-	LLFrameTimer*	mBalanceTimer;
-	LLFrameTimer*	mHealthTimer;
-	LLPanelPresetsCameraPulldown* mPanelPresetsCameraPulldown;
-	LLPanelPresetsPulldown* mPanelPresetsPulldown;
-	LLPanelVolumePulldown* mPanelVolumePulldown;
-	LLPanelNearByMedia*	mPanelNearByMedia;
-	// <FS:Ansariel> FIRE-19697: Add setting to disable graphics preset menu popup on mouse over
-	//NP graphics presets no longer disabled
-	boost::signals2::connection mMouseEnterVolumeConnection;
-	boost::signals2::connection mMouseEnterNearbyMediaConnection;
-	// </FS:Ansariel
-	
+    /**
+     * Lays out a widget. Widget's rect mLeft becomes equal to the 'left' argument.
+     */
+    S32 layoutWidget(LLUICtrl* ctrl, S32 left);
+
+    /**
+     * Generates location string and returns it in the loc_str parameter.
+     */
+    void buildLocationString(std::string& loc_str, bool show_coords);
+
+    /**
+     * Sets new value to the mParcelInfoText and updates the size of the top bar.
+     */
+    void setParcelInfoText(const std::string& new_text);
+
+private:
+    LLTextBox   *mTextHealth;
+    LLTextBox   *mTextTime;
+    LLTextBox   *mFPSText;
+
+    LLLayoutPanel   *mPurchasePanel;
+    LLLayoutPanel   *mDrawDistancePanel;
+    LLLayoutPanel   *mStatisticsPanel;
+    LLLayoutPanel   *mFPSPanel;
+
+    LLStatGraph *mSGBandwidth;
+    LLStatGraph *mSGPacketLoss;
+    LLStatGraph *mSGScriptPctRun; // KKA-821
+    LLStatGraph *mSGSpareTime; // KKA-821
+    LLStatGraph *mSGScriptTime; // KKA-821
+    LLIconCtrl  *mIconPresetsCamera;
+    LLIconCtrl  *mIconPresetsGraphic;
+    LLButton    *mBtnVolume;
+    LLTextBox   *mBoxBalance;
+    LLButton    *mStreamToggle;     // ## Zi: Media/Stream separation
+    LLButton    *mMediaToggle;
+    LLButton    *mBandwidthButton;
+    LLView      *mScriptOut;
+    LLFrameTimer    mStatusBarUpdateTimer;
+    LLFrameTimer    mClockUpdateTimer;
+
+    bool                mInMouselookMode;
+    S32             mBalance;
+    S32             mHealth;
+    S32             mSquareMetersCredit;
+    S32             mSquareMetersCommitted;
+    BOOL            mAudioStreamEnabled;
+    LLFrameTimer*   mBalanceTimer;
+    LLFrameTimer*   mHealthTimer;
+    LLPanelPresetsCameraPulldown* mPanelPresetsCameraPulldown;
+    LLPanelPresetsPulldown* mPanelPresetsPulldown;
+    LLPanelVolumePulldown* mPanelVolumePulldown;
+    LLPanelNearByMedia* mPanelNearByMedia;
+    // <FS:Ansariel> FIRE-19697: Add setting to disable graphics preset menu popup on mouse over
+    //NP graphics presets no longer disabled
+    boost::signals2::connection mMouseEnterVolumeConnection;
+    boost::signals2::connection mMouseEnterNearbyMediaConnection;
+    // </FS:Ansariel
+    
 //MK
-	LLPanel* 				mParcelInfoPanel;
-	LLButton* 				mInfoBtn;
-	LLTextBox* 				mParcelInfoText;
-	LLTextBox* 				mDamageText;
-	LLIconCtrl*				mParcelIcon[ICON_COUNT];
-	LLParcelChangeObserver*	mParcelChangedObserver;
-	LLButton* 				mPWLBtn;
-	LLButton* 				mAvatarHeightOffsetResetBtn;
+    LLPanel*                mParcelInfoPanel;
+    LLButton*               mInfoBtn;
+    LLTextBox*              mParcelInfoText;
+    LLTextBox*              mDamageText;
+    LLIconCtrl*             mParcelIcon[ICON_COUNT];
+    LLParcelChangeObserver* mParcelChangedObserver;
+    LLButton*               mPWLBtn;
+    LLButton*               mAvatarHeightOffsetResetBtn;
 //mk
 
-	boost::signals2::connection	mParcelPropsCtrlConnection;
-	boost::signals2::connection	mShowCoordsCtrlConnection;
-	boost::signals2::connection	mParcelMgrConnection;
+    boost::signals2::connection mParcelPropsCtrlConnection;
+    boost::signals2::connection mShowCoordsCtrlConnection;
+    boost::signals2::connection mParcelMgrConnection;
 };
 
 

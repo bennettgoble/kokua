@@ -36,45 +36,45 @@
 
 namespace tut
 {
-	struct modularmath_data
-	{
-	};
-	typedef test_group<modularmath_data> modularmath_test;
-	typedef modularmath_test::object modularmath_object;
-	tut::modularmath_test modularmath_testcase("LLModularMath");
+    struct modularmath_data
+    {
+    };
+    typedef test_group<modularmath_data> modularmath_test;
+    typedef modularmath_test::object modularmath_object;
+    tut::modularmath_test modularmath_testcase("LLModularMath");
 
-	template<> template<>
-	void modularmath_object::test<1>()
-	{
-		// lhs < rhs
-		const U32 lhs = 0x000001;
-		const U32 rhs = 0xFFFFFF;
-		const U32 width = 24;
-		U32 result = LLModularMath::subtract<width>(lhs, rhs); 
-		ensure_equals("diff(0x000001, 0xFFFFFF, 24)", result, 2);
-	}
+    template<> template<>
+    void modularmath_object::test<1>()
+    {
+        // lhs < rhs
+        const U32 lhs = 0x000001;
+        const U32 rhs = 0xFFFFFF;
+        const U32 width = 24;
+        U32 result = LLModularMath::subtract<width>(lhs, rhs); 
+        ensure_equals("diff(0x000001, 0xFFFFFF, 24)", result, 2);
+    }
 
-	template<> template<>
-	void modularmath_object::test<2>()
-	{
-		// lhs > rhs
-		const U32 lhs = 0x000002;
-		const U32 rhs = 0x000001;
-		const U32 width = 24;
-		U32 result = LLModularMath::subtract<width>(lhs, rhs); 
-		ensure_equals("diff(0x000002, 0x000001, 24)", result, 1);
-	}
+    template<> template<>
+    void modularmath_object::test<2>()
+    {
+        // lhs > rhs
+        const U32 lhs = 0x000002;
+        const U32 rhs = 0x000001;
+        const U32 width = 24;
+        U32 result = LLModularMath::subtract<width>(lhs, rhs); 
+        ensure_equals("diff(0x000002, 0x000001, 24)", result, 1);
+    }
 
-	template<> template<>
-	void modularmath_object::test<3>()
-	{
-		// lhs == rhs
-		const U32 lhs = 0xABCDEF;
-		const U32 rhs = 0xABCDEF;
-		const U32 width = 24;
-		U32 result = LLModularMath::subtract<width>(lhs, rhs); 
-		ensure_equals("diff(0xABCDEF, 0xABCDEF, 24)", result, 0);
-	}	
+    template<> template<>
+    void modularmath_object::test<3>()
+    {
+        // lhs == rhs
+        const U32 lhs = 0xABCDEF;
+        const U32 rhs = 0xABCDEF;
+        const U32 width = 24;
+        U32 result = LLModularMath::subtract<width>(lhs, rhs); 
+        ensure_equals("diff(0xABCDEF, 0xABCDEF, 24)", result, 0);
+    }   
 }
 #if LL_LINUX && (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__ ) >= 49000
 #pragma GCC diagnostic pop

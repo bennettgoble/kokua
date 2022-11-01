@@ -40,7 +40,7 @@
 //mk
 
 LLFloaterDestinations::LLFloaterDestinations(const LLSD& key)
-	:	LLFloater(key)
+    :   LLFloater(key)
 {
 }
 
@@ -50,31 +50,31 @@ LLFloaterDestinations::~LLFloaterDestinations()
 
 BOOL LLFloaterDestinations::postBuild()
 {
-	enableResizeCtrls(true, true, false);
-	return TRUE;
+    enableResizeCtrls(true, true, false);
+    return TRUE;
 }
 
 //MK
 void LLFloaterDestinations::onOpen(const LLSD& key)
 {
-	if (gRRenabled && gAgent.mRRInterface.mContainsTp)
-	{
-		closeFloater();
-		return;
-	}
+    if (gRRenabled && gAgent.mRRInterface.mContainsTp)
+    {
+        closeFloater();
+        return;
+    }
 
-	LLFloater::onOpen(key);
+    LLFloater::onOpen(key);
 }
 
 void LLFloaterDestinations::draw()
 {
-	if (gRRenabled && gAgent.mRRInterface.mContainsTp)
-	{
-		closeFloater();
-		return;
-	}
+    if (gRRenabled && gAgent.mRRInterface.mContainsTp)
+    {
+        closeFloater();
+        return;
+    }
 
-	LLFloater::draw();
+    LLFloater::draw();
 }
 //mk
 
